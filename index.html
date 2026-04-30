@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
 <title>NearPop Marketing Hub</title>
 
 <style>
@@ -12,68 +13,95 @@
 
 body {
   font-family: 'Nunito', sans-serif;
-  background: #0F172A;
+  background: radial-gradient(circle at top, #1f2937, #020617);
   color: #fff;
 }
 
 /* HEADER */
 .header {
   background: linear-gradient(135deg, #FF5722, #FF3D00);
-  padding: 20px;
+  padding: 8px;
   text-align: center;
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 1px;
+  box-shadow: 0 10px 30px rgba(255,87,34,0.3);
+}
+.header img { height: 70px; }
+.header p { font-size: 14px; opacity: 0.9; }
+
+/* SEARCH */
+.search-box {
+  max-width: 900px;
+  margin: 15px auto;
+  padding: 0 20px;
+}
+.search-box input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #111827;
+  color: #fff;
+  font-size: 14px;
 }
 
 /* CONTAINER */
 .container {
   max-width: 900px;
   margin: auto;
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 /* SECTION */
-.section {
-  margin-bottom: 30px;
-}
-
 .section h2 {
-  font-size: 14px;
+  font-size: 12px;
   color: #FB923C;
+  margin: 15px 0;
   letter-spacing: 1px;
-  margin-bottom: 12px;
 }
 
 /* CARD */
 .card {
-  background: #111827;
-  border-radius: 12px;
-  padding: 14px 16px;
+  background: rgba(17,24,39,0.8);
+  backdrop-filter: blur(8px);
+  border-radius: 14px;
+  padding: 14px;
   margin-bottom: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid #1F2937;
-  transition: 0.2s;
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: 0.25s;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
-/* DOC NAME */
+/* LEFT */
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.icon {
+  font-size: 20px;
+}
+
+/* DOC */
 .doc-name {
   font-size: 14px;
   font-weight: 800;
+}
+.tag {
+  font-size: 10px;
+  color: #9CA3AF;
 }
 
 /* BUTTONS */
 .actions a {
   text-decoration: none;
   font-size: 11px;
-  margin-left: 8px;
+  margin-left: 6px;
   padding: 6px 10px;
   border-radius: 6px;
   font-weight: 800;
@@ -100,48 +128,82 @@ body {
 </head>
 
 <body>
-
-<div class="header">NearPop Marketing Hub</div>
+<div class="header">
+  <img src="https://nearpop.in/icons/logo.png" style="height: 70px; width: auto; object-fit: contain;" />
+  <p style="color: #fff;">NearPop Marketing Hub</p>
+</div>
 
 <div class="container">
 
-  <!-- HTML FILES -->
   <div class="section">
-    <h2>HTML DOCUMENTS</h2>
+    <h2>FLYERS</h2>
 
+    <!-- ITEM -->
     <div class="card">
-      <div class="doc-name">Merchant Pitch Page</div>
+      <div class="left">
+        <div class="icon">📣</div>
+        <div>
+          <div class="doc-name">Faridabad Merchant</div>
+          <div class="tag">Pitch / Sales</div>
+        </div>
+      </div>
+
       <div class="actions">
-        <a href="files/merchant.html" target="_blank" class="view">View</a>
+        <a href="files/Faridabad_Merchant.html" target="_blank" class="view">HTML</a>
+        <a href="files/Faridabad_Merchant.pdf" target="_blank" class="download">PDF</a>
       </div>
     </div>
 
+    <!-- ITEM -->
     <div class="card">
-      <div class="doc-name">Promo Landing Page</div>
+      <div class="left">
+        <div class="icon">📣</div>
+        <div>
+          <div class="doc-name">Delhi Merchant</div>
+          <div class="tag">Pitch / Sales</div>
+        </div>
+      </div>
+
       <div class="actions">
-        <a href="files/promo.html" target="_blank" class="view">View</a>
+        <a href="files/Delhi_Merchant.html" target="_blank" class="view">HTML</a>
+        <a href="files/Delhi_Merchant.pdf" target="_blank" class="download">PDF</a>
       </div>
     </div>
 
   </div>
 
-  <!-- PDF FILES -->
   <div class="section">
-    <h2>PDF DOCUMENTS</h2>
+    <h2>FAQ</h2>
 
+    <!-- ITEM -->
     <div class="card">
-      <div class="doc-name">Sales Pitch PDF</div>
+      <div class="left">
+        <div class="icon">📣</div>
+        <div>
+          <div class="doc-name">Merchant FAQ</div>
+          <div class="tag">Frequently Asked Questions</div>
+        </div>
+      </div>
+
       <div class="actions">
-        <a href="files/sales.pdf" target="_blank" class="view">View</a>
-        <a href="files/sales.pdf" download class="download">Download</a>
+        <a href="files/Merchant_FAQ.html" target="_blank" class="view">HTML</a>
+        <a href="files/Merchant_FAQ.pdf" target="_blank" class="download">PDF</a>
       </div>
     </div>
 
+    <!-- ITEM -->
     <div class="card">
-      <div class="doc-name">Flyer</div>
+      <div class="left">
+        <div class="icon">📣</div>
+        <div>
+          <div class="doc-name">Customer FAQ</div>
+          <div class="tag">Frequently Asked Questions</div>
+        </div>
+      </div>
+
       <div class="actions">
-        <a href="files/flyer.pdf" target="_blank" class="view">View</a>
-        <a href="files/flyer.pdf" download class="download">Download</a>
+        <a href="files/Customer_FAQ.html" target="_blank" class="view">HTML</a>
+        <a href="files/Customer_FAQ.pdf" target="_blank" class="download">PDF</a>
       </div>
     </div>
 

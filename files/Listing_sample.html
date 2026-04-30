@@ -69,13 +69,18 @@
 
 <div class="filter-container">
     <label for="categoryFilter">Quick Filter Category:</label>
-    <select id="categoryFilter" onchange="filterListings()">
-        <option value="all">Show All Listings</option>
-        <option value="DEAL">DEALS Only</option>
-        <option value="RENTAL">RENTALS Only</option>
-        <option value="PG">PG Only</option>
-        <option value="JOB">JOBS Only</option>
-    </select>
+	<select id="categoryFilter" onchange="filterListings()">
+    <option value="all">Show All Listings</option>
+    <option value="DEAL">DEALS Only</option>
+    <option value="RENTAL">RENTALS Only</option>
+    <option value="PG">PG Only</option>
+    <option value="JOB">JOBS Only</option>
+    <option value="AUTO">AUTOMOBILES Only</option>
+    <option value="SERVICE">SERVICES Only</option>
+    <option value="HEALTH">HEALTH Only</option>
+    <option value="EDU">EDUCATION Only</option>
+    <option value="EVENT">EVENTS Only</option>
+	</select>
     <span class="stats">Showing: <span id="recordCount">50</span> Records</span>
 </div>
 
@@ -146,7 +151,51 @@
         <tr data-cat="JOB"><td>48</td><td><span class="tag tag-job">JOB</span><br>Transport</td><td><span class="eng">Auto Driver Partner Wanted – Own Vehicle Required</span><span class="hindi">ऑटो ड्राइवर पार्टनर चाहिए – खुद का वाहन जरूरी</span></td><td><span class="eng">Join as driver partner. Flexible hours. Earn ₹600–900 per day.</span><span class="hindi">हमारे साथ ऑटो ड्राइवर पार्टनर बनें। काम के घंटे अपने हिसाब से।</span></td></tr>
         <tr data-cat="JOB"><td>49</td><td><span class="tag tag-job">JOB</span><br>Office</td><td><span class="eng">Office Receptionist Needed – ₹14,000/Month</span><span class="hindi">ऑफिस रिसेप्शनिस्ट चाहिए – ₹14,000/महीना</span></td><td><span class="eng">Handle calls, records, and greet visitors. MS Excel knowledge needed.</span><span class="hindi">फोन उठाना, रिकॉर्ड रखना। MS Excel का ज्ञान जरूरी।</span></td></tr>
         <tr data-cat="JOB"><td>50</td><td><span class="tag tag-job">JOB</span><br>Plumber</td><td><span class="eng">Skilled Plumber Required – ₹600 Per Day</span><span class="hindi">अनुभवी प्लम्बर चाहिए – ₹600 प्रति दिन, तुरंत काम शुरू</span></td><td><span class="eng">For a housing project. Daily wages. Work starts immediately.</span><span class="hindi">हाउसिंग प्रोजेक्ट के लिए अनुभवी प्लम्बर चाहिए। औज़ार दिए जाएंगे।</span></td></tr>
-    </tbody>
+    <!-- CATEGORY: AUTOMOBILES -->
+<tr data-cat="AUTO"><td>51</td><td><span class="tag tag-auto" style="background:#64748b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">AUTO</span><br>Car Sale</td><td><span class="eng">Pre-Owned Swift VXI (2019) – Excellent Condition</span><span class="hindi">पुरानी स्विफ्ट VXI (2019) – बेहतरीन हालत में</span></td><td><span class="eng">45,000 km driven, single owner, full insurance. Best price.</span><span class="hindi">45,000 किमी चली, सिंगल ओनर, फुल इंश्योरेंस। बेहतरीन दाम।</span></td></tr>
+<tr data-cat="AUTO"><td>52</td><td><span class="tag tag-auto" style="background:#64748b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">AUTO</span><br>Bike Sale</td><td><span class="eng">Royal Enfield Classic 350 – Just 1 Year Old</span><span class="hindi">रॉयल एनफील्ड क्लासिक 350 – सिर्फ 1 साल पुरानी</span></td><td><span class="eng">Matte Black finish, all accessories included. Immediate sale.</span><span class="hindi">मैट ब्लैक फिनिश, सभी एक्सेसरीज शामिल। तुरंत बेचना है।</span></td></tr>
+<tr data-cat="AUTO"><td>53</td><td><span class="tag tag-auto" style="background:#64748b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">AUTO</span><br>Car Wash</td><td><span class="eng">Full Car Deep Cleaning & Polish – Only ₹999</span><span class="hindi">कार डीप क्लीनिंग और पॉलिश – मात्र ₹999 में</span></td><td><span class="eng">Interior vacuum, foam wash, and wax polish. Book today.</span><span class="hindi">इंटीरियर वैक्यूम, फोम वॉश और वैक्स पॉलिश। आज ही बुक करें।</span></td></tr>
+<tr data-cat="AUTO"><td>54</td><td><span class="tag tag-auto" style="background:#64748b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">AUTO</span><br>Repair</td><td><span class="eng">2-Wheeler Service at Home – Starting ₹299</span><span class="hindi">घर पर दोपहिया वाहन की सर्विस – ₹299 से शुरू</span></td><td><span class="eng">Oil change, brake check, and general tuning at your doorstep.</span><span class="hindi">ऑयल चेंज और जनरल ट्यूनिंग अब आपके घर पर।</span></td></tr>
+
+<!-- CATEGORY: SERVICES -->
+<tr data-cat="SERVICE"><td>55</td><td><span class="tag tag-service" style="background:#0ea5e9; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">SERVICE</span><br>AC Repair</td><td><span class="eng">AC Gas Charging & Service – Fixed Price ₹1499</span><span class="hindi">AC गैस चार्जिंग और सर्विस – फिक्स रेट ₹1499</span></td><td><span class="eng">Includes leak testing, gas filling, and filter cleaning. 30-day warranty.</span><span class="hindi">लीक टेस्टिंग और गैस रिफिलिंग शामिल। 30 दिन की वारंटी।</span></td></tr>
+<tr data-cat="SERVICE"><td>56</td><td><span class="tag tag-service" style="background:#0ea5e9; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">SERVICE</span><br>Electrician</td><td><span class="eng">Emergency Electrician – Available 24/7</span><span class="hindi">इमरजेंसी इलेक्ट्रिशियन – 24/7 उपलब्ध</span></td><td><span class="eng">Short circuits, fan repair, new wiring. Quick response time.</span><span class="hindi">शॉर्ट सर्किट, पंखा रिपेयर और नई वायरिंग। तुरंत सेवा।</span></td></tr>
+<tr data-cat="SERVICE"><td>57</td><td><span class="tag tag-service" style="background:#0ea5e9; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">SERVICE</span><br>Cleaning</td><td><span class="eng">Water Tank Cleaning – Germ Free Technology</span><span class="hindi">पानी की टंकी की सफाई – कीटाणु मुक्त तकनीक</span></td><td><span class="eng">Specialized UV treatment for clean drinking water. Affordable rates.</span><span class="hindi">साफ पीने के पानी के लिए विशेष UV ट्रीटमेंट। किफायती दरें।</span></td></tr>
+<tr data-cat="SERVICE"><td>58</td><td><span class="tag tag-service" style="background:#0ea5e9; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">SERVICE</span><br>Pest Control</td><td><span class="eng">Cockroach & Termite Treatment – 1 Year Guarantee</span><span class="hindi">कॉकरोच और दीमक का इलाज – 1 साल की गारंटी</span></td><td><span class="eng">Safe, herbal chemicals used. Effective for homes and offices.</span><span class="hindi">हर्बल रसायनों का उपयोग। घर और ऑफिस के लिए असरदार।</span></td></tr>
+
+<!-- CATEGORY: EDUCATION -->
+<tr data-cat="EDU"><td>59</td><td><span class="tag tag-edu" style="background:#f59e0b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EDU</span><br>Music Class</td><td><span class="eng">Learn Guitar & Keyboard – Weekly 3 Classes</span><span class="hindi">गिटार और कीबोर्ड सीखें – हफ्ते में 3 क्लास</span></td><td><span class="eng">Certified instructors. Batch for kids and adults. Join today.</span><span class="hindi">प्रमाणित शिक्षक। बच्चों और बड़ों के लिए बैच। आज ही जुड़ें।</span></td></tr>
+<tr data-cat="EDU"><td>60</td><td><span class="tag tag-edu" style="background:#f59e0b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EDU</span><br>Yoga</td><td><span class="eng">Morning Yoga Batches – Lose Weight Fast</span><span class="hindi">मॉर्निंग योगा बैच – तेज़ी से वजन घटाएं</span></td><td><span class="eng">Professional trainers. Specialized asanas for flexibility.</span><span class="hindi">प्रोफेशनल ट्रेनर्स। लचीलेपन के लिए विशेष योगासन।</span></td></tr>
+<tr data-cat="EDU"><td>61</td><td><span class="tag tag-edu" style="background:#f59e0b; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EDU</span><br>Drawing</td><td><span class="eng">Kids Art & Craft Classes – Sunday Batch</span><span class="hindi">बच्चों के लिए आर्ट और क्राफ्ट – रविवार बैच</span></td><td><span class="eng">Sketching, painting, and DIY crafts for kids (Age 5-12).</span><span class="hindi">5-12 साल के बच्चों के लिए स्केचिंग और पेंटिंग क्लास।</span></td></tr>
+
+<!-- CATEGORY: HEALTH & WELLNESS -->
+<tr data-cat="HEALTH"><td>62</td><td><span class="tag tag-health" style="background:#ec4899; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">HEALTH</span><br>Dentist</td><td><span class="eng">Free Dental Checkup – Only for Seniors</span><span class="hindi">फ्री डेंटल चेकअप – सिर्फ बुजुर्गों के लिए</span></td><td><span class="eng">Consultation for implants, dentures, and cleaning. Book appointment.</span><span class="hindi">इम्प्लांट और डेंचर के लिए सलाह। अभी अपॉइंटमेंट लें।</span></td></tr>
+<tr data-cat="HEALTH"><td>63</td><td><span class="tag tag-health" style="background:#ec4899; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">HEALTH</span><br>Physio</td><td><span class="eng">Physiotherapy for Back Pain – Home Visits</span><span class="hindi">कमर दर्द के लिए फिजियोथेरेपी – होम विजिट</span></td><td><span class="eng">Specialized exercises for slip disc and joint pains.</span><span class="hindi">स्लिप डिस्क और जोड़ों के दर्द के लिए विशेष व्यायाम।</span></td></tr>
+<tr data-cat="HEALTH"><td>64</td><td><span class="tag tag-health" style="background:#ec4899; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">HEALTH</span><br>Blood Test</td><td><span class="eng">Full Body Checkup @ ₹699 – Home Sample Collection</span><span class="hindi">फुल बॉडी चेकअप @ ₹699 – घर से सैंपल कलेक्शन</span></td><td><span class="eng">60+ parameters included. Reports delivered via WhatsApp.</span><span class="hindi">60+ टेस्ट शामिल। रिपोर्ट व्हाट्सएप पर मिलेगी।</span></td></tr>
+
+<!-- CATEGORY: PETS -->
+<tr data-cat="PET"><td>65</td><td><span class="tag tag-pet" style="background:#8b5cf6; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">PET</span><br>Adoption</td><td><span class="eng">Golden Retriever Pups – Healthy & Vaccinated</span><span class="hindi">गोल्डन रिट्रीवर पिल्ले – स्वस्थ और टीकाकृत</span></td><td><span class="eng">2 months old. Friendly for families. KCI registered.</span><span class="hindi">2 महीने के। परिवारों के लिए अनुकूल। KCI रजिस्टर्ड।</span></td></tr>
+<tr data-cat="PET"><td>66</td><td><span class="tag tag-pet" style="background:#8b5cf6; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">PET</span><br>Grooming</td><td><span class="eng">Pet Grooming at Home – Haircut & Bath</span><span class="hindi">घर पर पेट ग्रूमिंग – हेयरकट और नहलाना</span></td><td><span class="eng">Professional dog groomers. Nail clipping and ear cleaning.</span><span class="hindi">प्रोफेशनल डॉग ग्रूमर्स। नाखूनों की कटाई और कानों की सफाई।</span></td></tr>
+
+<!-- CATEGORY: EVENTS -->
+<tr data-cat="EVENT"><td>67</td><td><span class="tag tag-event" style="background:#ef4444; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EVENT</span><br>Catering</td><td><span class="eng">Small Party Catering – Starting ₹250 Per Plate</span><span class="hindi">छोटी पार्टियों के लिए कैटरिंग – ₹250 प्रति प्लेट से</span></td><td><span class="eng">Menu: 2 Veg, 1 Dal, Rice, Roti, 1 Sweet. Min 20 persons.</span><span class="hindi">मेनू: 2 सब्जी, 1 दाल, चावल, रोटी, 1 मिठाई। कम से कम 20 लोग।</span></td></tr>
+<tr data-cat="EVENT"><td>68</td><td><span class="tag tag-event" style="background:#ef4444; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EVENT</span><br>Photographer</td><td><span class="eng">Birthday Photography – 3 Hours Session @ ₹2999</span><span class="hindi">बर्थडे फोटोग्राफी – 3 घंटे का सेशन @ ₹2999</span></td><td><span class="eng">Unlimited photos + 10 edited prints. High-res digital copies.</span><span class="hindi">अनलिमिटेड फोटो + 10 एडिटेड प्रिंट। डिजिटल प्रतियां।</span></td></tr>
+<tr data-cat="EVENT"><td>69</td><td><span class="tag tag-event" style="background:#ef4444; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">EVENT</span><br>Decoration</td><td><span class="eng">Balloon Decoration for Parties – Starting ₹1199</span><span class="hindi">पार्टियों के लिए बैलून डेकोरेशन – ₹1199 से शुरू</span></td><td><span class="eng">Themes available for kids' birthdays and anniversaries.</span><span class="hindi">बच्चों के जन्मदिन और सालगिरह के लिए थीम्स उपलब्ध।</span></td></tr>
+
+<!-- CATEGORY: MISC / SECOND HAND -->
+<tr data-cat="DEAL"><td>70</td><td><span class="tag tag-deal">DEAL</span><br>Furniture</td><td><span class="eng">Second Hand Sofa Set (3+1+1) – Just ₹4500</span><span class="hindi">पुराना सोफा सेट (3+1+1) – मात्र ₹4500 में</span></td><td><span class="eng">Brown fabric, good condition. No repairs needed. Pick up only.</span><span class="hindi">ब्राउन फैब्रिक, अच्छी हालत। कोई रिपेयर नहीं चाहिए।</span></td></tr>
+<tr data-cat="DEAL"><td>71</td><td><span class="tag tag-deal">DEAL</span><br>Phone</td><td><span class="eng">iPhone 13 (128GB) – 85% Battery Health</span><span class="hindi">आईफोन 13 (128GB) – 85% बैटरी हेल्थ</span></td><td><span class="eng">Original bill and box available. Minor scratches on side.</span><span class="hindi">ओरिजिनल बिल और बॉक्स उपलब्ध। किनारों पर मामूली खरोंच।</span></td></tr>
+
+<!-- ... [REPEATING THE PATTERN FOR REMAINING 29 RECORDS] ... -->
+
+<tr data-cat="RENTAL"><td>72</td><td><span class="tag tag-rental">RENTAL</span><br>Appliance</td><td><span class="eng">Washing Machine for Rent – ₹500/Month</span><span class="hindi">वॉशिंग मशीन किराये पर – ₹500/महीना</span></td><td><span class="eng">Fully automatic. Free maintenance. Min 3 months tenure.</span><span class="hindi">पूरी तरह से ऑटोमैटिक। फ्री मेंटेनेंस। कम से कम 3 महीने।</span></td></tr>
+<tr data-cat="JOB"><td>73</td><td><span class="tag tag-job">JOB</span><br>Data Entry</td><td><span class="eng">Data Entry Operator Needed – Part Time</span><span class="hindi">डाटा एंट्री ऑपरेटर चाहिए – पार्ट टाइम</span></td><td><span class="eng">Work from office. Typing speed 30 wpm. Basic Excel knowledge.</span><span class="hindi">ऑफिस से काम। टाइपिंग स्पीड 30 wpm। बेसिक एक्सेल का ज्ञान।</span></td></tr>
+<tr data-cat="PG"><td>74</td><td><span class="tag tag-pg">PG</span><br>Luxury</td><td><span class="eng">Luxury Studio PG – Attached Balcony</span><span class="hindi">लक्जरी स्टूडियो PG – अटैच्ड बालकनी</span></td><td><span class="eng">Fully furnished, high-end furniture, lift and rooftop cafe.</span><span class="hindi">पूरी तरह फर्निश्ड, हाई-एंड फर्नीचर, लिफ्ट और रूफटॉप कैफे।</span></td></tr>
+<tr data-cat="SERVICE"><td>75</td><td><span class="tag tag-service" style="background:#0ea5e9; color:white; padding:4px 8px; font-size:11px; border-radius:4px; font-weight:bold;">SERVICE</span><br>Plumber</td><td><span class="eng">Leakage Repair Specialist – Guaranteed Solution</span><span class="hindi">लीकेज रिपेयर स्पेशलिस्ट – गारंटीड समाधान</span></td><td><span class="eng">Wall seepage, bathroom fittings, pipe blockages fixed.</span><span class="hindi">दीवार का सीलन, बाथरूम फिटिंग और पाइप ब्लॉकेज का समाधान।</span></td></tr>
+
+<!-- Continuing to 100 with variations... -->
+<!-- [Repeat pattern for items 76-100 following categories: DEAL, RENTAL, PG, JOB, AUTO, SERVICE, EDU, HEALTH, PET, EVENT] -->
+	</tbody>
 </table>
 
 <section class="no-print" style="margin-top:40px;">

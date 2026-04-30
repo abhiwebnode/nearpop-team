@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NearPop Marketing Hub</title>
 
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #0F172A;
+  color: #fff;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #FF5722, #FF3D00);
+  padding: 20px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* SECTION */
+.section {
+  margin-bottom: 30px;
+}
+
+.section h2 {
+  font-size: 14px;
+  color: #FB923C;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+/* CARD */
+.card {
+  background: #111827;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #1F2937;
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+}
+
+/* DOC NAME */
+.doc-name {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* BUTTONS */
+.actions a {
+  text-decoration: none;
+  font-size: 11px;
+  margin-left: 8px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+}
+
+.view {
+  background: linear-gradient(135deg, #FF5722, #FF3D00);
+  color: #fff;
+}
+
+.download {
+  background: #374151;
+  color: #E5E7EB;
+}
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 11px;
+  color: #6B7280;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">NearPop Marketing Hub</div>
+
+<div class="container">
+
+  <!-- HTML FILES -->
+  <div class="section">
+    <h2>HTML DOCUMENTS</h2>
+
+    <div class="card">
+      <div class="doc-name">Merchant Pitch Page</div>
+      <div class="actions">
+        <a href="files/merchant.html" target="_blank" class="view">View</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="doc-name">Promo Landing Page</div>
+      <div class="actions">
+        <a href="files/promo.html" target="_blank" class="view">View</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PDF FILES -->
+  <div class="section">
+    <h2>PDF DOCUMENTS</h2>
+
+    <div class="card">
+      <div class="doc-name">Sales Pitch PDF</div>
+      <div class="actions">
+        <a href="files/sales.pdf" target="_blank" class="view">View</a>
+        <a href="files/sales.pdf" download class="download">Download</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="doc-name">Flyer</div>
+      <div class="actions">
+        <a href="files/flyer.pdf" target="_blank" class="view">View</a>
+        <a href="files/flyer.pdf" download class="download">Download</a>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">© NearPop • Internal Marketing Assets</div>
+
+</body>
+</html>

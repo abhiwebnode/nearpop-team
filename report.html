@@ -637,9 +637,16 @@
         }
         try {
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Executives!A:F`;
-            const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
-            const data = await res.json();
-            const rows = data.values || [];
+const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
+const data = await res.json();
+
+if (!res.ok || data.error) {
+    showError('Google Sheet Error: ' + (data.error?.message || res.statusText));
+    showScreen('login');
+    return;
+}
+
+const rows = data.values || [];
             const match = rows.find(r => r[0]?.toLowerCase() === email.toLowerCase());
             if (!match) { showScreen('not-registered'); return; }
             currentUser = {

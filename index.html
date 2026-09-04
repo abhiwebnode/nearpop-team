@@ -6,6 +6,8 @@
     <meta name="robots" content="noindex, nofollow">
     <title>NearPop Marketing Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="google-client-id" content="694448916478-bsnjhu3kanvo85qm2q7837eveucq9uo1.apps.googleusercontent.com">
+    <meta name="sheet-id" content="1xpsSCQtxUxnTWOGxCykI3rQFEEmbtxhKyo881Ac2x8U">
     <style>
         :root {
             --primary: #FF5722;
@@ -161,10 +163,11 @@
         .cross { color: #DC2626; }
 
         /* TRACKER TABLE */
-        .tracker-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; overflow: hidden; border-radius: 8px; border: 1px solid var(--border); }
-        .tracker-table th { background: #F3F4F6; padding: 8px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
-        .tracker-table td { padding: 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+        .tracker-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 0; overflow: hidden; border-radius: 8px; }
+        .tracker-table th { background: #F3F4F6; padding: 10px 8px; text-align: left; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); white-space: nowrap; }
+        .tracker-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); color: var(--text); }
         .tracker-table tr:last-child td { border-bottom: none; }
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
         /* PRIVACY LIST */
         .privacy-list { list-style: none; padding: 0; }
@@ -199,7 +202,7 @@
     <img src="https://nearpop.in/icons/logo.png" alt="NearPop">
     <div class="header-text" style="flex:1;">
         <h1>Marketing Hub</h1>
-        <p>All materials in one place • Internal use only</p>
+        <p id="user-status-text">All materials in one place • Internal use only</p>
     </div>
     <a href="report.html" style="background:var(--primary);color:#fff;font-size:12px;font-weight:700;padding:8px 12px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;">📋 My Report</a>
 </div>
@@ -477,48 +480,47 @@
         </div>
     </div>
 
-    <!-- DAILY VISIT TRACKER -->
+    <!-- DAILY VISIT TRACKER (LIVE FROM SHEET) -->
     <div class="section">
-        <div class="section-title">Daily Visit Tracker — Structure to log every day</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <div class="section-title" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">Daily Visit Tracker — Structure to log every day</div>
+            <button id="refresh-tracker-btn" onclick="fetchLiveVisits()" style="font-size:11px; background:var(--bg); border:1px solid var(--border); padding:4px 8px; border-radius:6px; cursor:pointer; font-weight:600; color:var(--text-muted);">🔄 Refresh</button>
+        </div>
+
+        <div id="tracker-login-cta" style="display:none; margin-bottom:10px;" class="info-box">
+            <strong>🔒 Sign in to view your live visits</strong>
+            Your Google account is not signed in on this page.
+            <div style="margin-top:8px;">
+                <button onclick="loginFromHub()" class="btn btn-view" style="display:inline-block; padding:6px 14px; font-size:12px;">Sign In with Google</button>
+            </div>
+        </div>
+
         <div class="card" style="padding: 0; overflow: hidden;">
-            <table class="tracker-table">
-                <tr>
-                    <th>Shop Name</th>
-                    <th>Area / Lane</th>
-                    <th>Status</th>
-                    <th>Gmail Collected</th>
-                    <th>Standee Placed</th>
-                    <th>Follow-up Date</th>
-                </tr>
-                <tr>
-                    <td>Sharma General Store</td>
-                    <td>Sector 16, Lane 3</td>
-                    <td>✅ Onboarded</td>
-                    <td>✅ Yes</td>
-                    <td>✅ Yes</td>
-                    <td>—</td>
-                </tr>
-                <tr>
-                    <td>Gupta Medicals</td>
-                    <td>Sector 16, Lane 3</td>
-                    <td>⏳ Follow-up</td>
-                    <td>❌ No</td>
-                    <td>❌ No</td>
-                    <td>Tomorrow</td>
-                </tr>
-                <tr>
-                    <td>Café Adda</td>
-                    <td>Sector 16, Lane 4</td>
-                    <td>❌ Not interested</td>
-                    <td>❌ No</td>
-                    <td>❌ No</td>
-                    <td>—</td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class="tracker-table" id="tracker-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Shop Name</th>
+                            <th>Area / Lane</th>
+                            <th>Status</th>
+                            <th>Gmail</th>
+                            <th>Standee</th>
+                            <th>Follow-up</th>
+                            <th>Photos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tracker-tbody">
+                        <tr>
+                            <td colspan="8" style="text-align:center; padding:16px; color:var(--text-muted);">Loading tracker data from Google Sheet...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="info-box" style="margin-top:10px; margin-bottom:0; border-radius: var(--radius);">
-            <strong>📊 Copy this structure into Google Sheets</strong>
-            Share one sheet per field person with view access for the founder. Add a "Notes" column for objections heard. Review every Friday.
+            <strong>📊 Live Synchronized Data</strong>
+            Visits logged via <a href="report.html" style="color:var(--blue); font-weight:600; text-decoration:none;">My Report</a> appear directly in this table.
         </div>
     </div>
 
@@ -916,7 +918,7 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
                 <li><span class="dot">❌</span> Do not promise anything beyond the free listing — no guarantees of customers, no revenue promises.</li>
                 <li><span class="dot">❌</span> Do not share merchant contact details with anyone outside the NearPop team.</li>
                 <li><span class="dot">❌</span> Do not create listings for shops that explicitly said no. Respect opt-outs.</li>
-                <li><span class="dot">❌</span> Do not collect Aadhaar, PAN, or any government ID. Not needed, not allowed.</li>
+                <li><span class="dot">❌</span> Do not collect any government IDs. Not needed, not allowed.</li>
             </ul>
         </div>
     </div>
@@ -1014,7 +1016,12 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
 <div class="footer">NearPop Marketing Hub v3.0 • Internal Use Only</div>
 <div class="toast" id="toast">Copied!</div>
 
+<script src="https://accounts.google.com/gsi/client" async></script>
 <script>
+    const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
+    const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
+    const SHEET_NAME = 'ShopVisits';
+
     function switchTab(name, el) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -1095,7 +1102,106 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         setTimeout(() => t.classList.remove("show"), 2000);
     }
 
+    // ================================================
+    // LIVE SHEET SYNC FOR DAILY VISIT TRACKER
+    // ================================================
+    function loginFromHub() {
+        google.accounts.oauth2.initTokenClient({
+            client_id: CLIENT_ID,
+            scope: 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile',
+            callback: async (resp) => {
+                if (resp.access_token) {
+                    const expiry = Date.now() + ((resp.expires_in || 3600) * 1000);
+                    localStorage.setItem('nearpop_token', resp.access_token);
+                    localStorage.setItem('nearpop_token_exp', expiry);
+                    
+                    const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                        headers: { Authorization: 'Bearer ' + resp.access_token }
+                    }).then(r => r.json()).catch(() => null);
+
+                    if (info) {
+                        localStorage.setItem('nearpop_user', JSON.stringify({ email: info.email, name: info.name }));
+                    }
+                    fetchLiveVisits();
+                }
+            }
+        }).requestAccessToken();
+    }
+
+    async function fetchLiveVisits() {
+        const tbody = document.getElementById('tracker-tbody');
+        const cta = document.getElementById('tracker-login-cta');
+        const token = localStorage.getItem('nearpop_token');
+        const exp = localStorage.getItem('nearpop_token_exp');
+        const cachedUserStr = localStorage.getItem('nearpop_user');
+
+        if (!token || !exp || Date.now() > parseInt(exp) || !cachedUserStr) {
+            cta.style.display = 'block';
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:16px; color:var(--text-muted);">Please sign in above to load your visits.</td></tr>`;
+            return;
+        }
+
+        cta.style.display = 'none';
+        const user = JSON.parse(cachedUserStr);
+        document.getElementById('user-status-text').textContent = `Logged in as ${user.name || user.email}`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:16px; color:var(--text-muted);">Fetching your live shop visits...</td></tr>`;
+
+        try {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A:K`;
+            const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token }});
+            const data = await res.json();
+
+            if (!res.ok || data.error) {
+                throw new Error(data.error?.message || res.statusText);
+            }
+
+            const rows = (data.values || []).slice(1);
+            // Filter by the logged-in user's email
+            const userVisits = rows.filter(r => r[1]?.trim().toLowerCase() === user.email.trim().toLowerCase());
+
+            if (userVisits.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:16px; color:var(--text-muted);">No visits recorded yet for ${user.email}.</td></tr>`;
+                return;
+            }
+
+            // Display latest visits at the top
+            tbody.innerHTML = [...userVisits].reverse().map(r => {
+                const date = r[0] || '—';
+                const shop = r[3] || '—';
+                const area = r[4] || '—';
+                const status = r[5] || '—';
+                const gmail = r[6] || '—';
+                const standee = r[7] || '—';
+                const followup = r[8] || '—';
+                const shopPic = r[9] && r[9] !== '—' ? `<a href="${r[9]}" target="_blank" style="color:var(--blue); font-weight:600; text-decoration:none;">📷 Shop</a>` : '';
+                const standeePic = r[10] && r[10] !== '—' ? `<a href="${r[10]}" target="_blank" style="color:var(--blue); font-weight:600; text-decoration:none;">🖼️ Standee</a>` : '';
+                const photos = (shopPic || standeePic) ? `${shopPic} ${standeePic}`.trim() : '—';
+
+                let statusBadge = status;
+                if (status.includes('Onboarded')) statusBadge = `✅ ${status}`;
+                else if (status.includes('Interested')) statusBadge = `⏳ ${status}`;
+                else if (status.includes('Not Interested')) statusBadge = `❌ ${status}`;
+
+                return `
+                    <tr>
+                        <td>${date}</td>
+                        <td><strong>${shop}</strong></td>
+                        <td>${area}</td>
+                        <td>${statusBadge}</td>
+                        <td>${gmail}</td>
+                        <td>${standee}</td>
+                        <td>${followup}</td>
+                        <td>${photos}</td>
+                    </tr>
+                `;
+            }).join('');
+        } catch (e) {
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:16px; color:#DC2626;">Could not load visits: ${e.message}</td></tr>`;
+        }
+    }
+
     loadChecklist();
+    window.addEventListener('DOMContentLoaded', fetchLiveVisits);
 </script>
 </body>
 </html>

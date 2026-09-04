@@ -578,7 +578,8 @@
     // ================================================
     function startLogin() {
         if (CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID') {
-            showError('OAuth Client ID not set yet. Add it to the meta tag at the top of this file.');
+            // DEV MODE — skip real login, use dummy user
+            loadExecutiveData('dev@nearpop.in', 'Test Executive');
             return;
         }
         google.accounts.oauth2.initTokenClient({
@@ -616,8 +617,8 @@
     // Columns: Email | Name | Zone | TargetVisits | TargetOnboard | TargetStandee
     // ================================================
     async function loadExecutiveData(email, googleName) {
-        if (SHEET_ID === 'YOUR_SHEET_ID') {
-            // DEV MODE: use dummy data so UI can be tested
+        if (CLIENT_ID === 'YOUR_GOOGLE_CLIENT_ID' || SHEET_ID === 'YOUR_SHEET_ID') {
+            // DEV MODE: use dummy data so UI can be tested before setup
             currentUser = {
                 name: googleName || 'Test Executive',
                 email: email,

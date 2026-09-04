@@ -593,6 +593,10 @@
         if (resp.error) { showError('Login failed: ' + resp.error); return; }
         accessToken = resp.access_token;
         showScreen('loading');
+        if (SHEET_ID === 'YOUR_SHEET_ID') {
+            await loadExecutiveData('dev@nearpop.in', 'Test Executive');
+            return;
+        }
         try {
             const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
                 headers: { Authorization: 'Bearer ' + accessToken }

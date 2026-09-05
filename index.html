@@ -95,10 +95,7 @@
         .logo-preview { background: #F8F9FA; border: 1px solid var(--border); border-radius: 8px; padding: 12px; text-align: center; margin-bottom: 10px; }
         .logo-preview img { height: 50px; }
 
-        /* MISSING */
-        .missing-card { border: 1.5px dashed #FCA5A5; background: #FFF5F5; border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
-        .missing-card .card-top { margin-bottom: 6px; }
-        .missing-label { font-size: 10px; font-weight: 700; color: #DC2626; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+
 
         /* SCRIPT BOX */
         .script-box { background: #F8FAFF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px; font-size: 13px; line-height: 1.6; color: var(--text); white-space: pre-wrap; margin-bottom: 8px; }
@@ -135,12 +132,7 @@
         .route-text strong { display: block; font-size: 13px; margin-bottom: 2px; }
         .route-text span { font-size: 12px; color: var(--text-muted); }
 
-        /* STORY CARD */
-        .story-card { background: var(--green-light); border: 1.5px solid var(--green-border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
-        .story-card .shop-name { font-size: 15px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
-        .story-card .shop-meta { font-size: 12px; color: #166534; margin-bottom: 8px; }
-        .story-card .result { font-size: 13px; color: #14532D; line-height: 1.5; }
-        .story-card .quote { font-size: 13px; font-style: italic; color: #166534; margin-top: 8px; border-left: 3px solid var(--green); padding-left: 10px; }
+
 
         /* CONTACT CARD */
         .contact-card { background: var(--primary-light); border: 1.5px solid #FFCCBC; border-radius: var(--radius); padding: 16px; margin-bottom: 10px; text-align: center; }
@@ -184,6 +176,38 @@
         .req-text span { font-size: 12px; color: var(--text-muted); }
         .req-qty { background: var(--primary-light); color: var(--primary); font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
 
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .lang-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        /* Hide Google Translate toolbar completely */
+        .goog-te-banner-frame, .skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+        .goog-te-gadget { display: none !important; }
+
         /* NO RESULTS */
         #no-results { text-align: center; color: var(--text-muted); padding: 40px 20px; display: none; }
         #no-results .emoji { font-size: 32px; margin-bottom: 8px; }
@@ -204,7 +228,11 @@
         <h1>Marketing Hub</h1>
         <p id="user-status-text">All materials in one place • Internal use only</p>
     </div>
-    <a href="report.html" style="background:var(--primary);color:#fff;font-size:12px;font-weight:700;padding:8px 12px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;">📋 My Report</a>
+    <div class="lang-toggle" style="margin-left:8px;">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
+    </div>
+    <a href="report.html" style="background:var(--primary);color:#fff;font-size:12px;font-weight:700;padding:8px 12px;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;margin-left:8px;">📋 My Report</a>
 </div>
 
 <div class="search-wrap">
@@ -466,17 +494,7 @@
         <div class="section-title">Merchant Welcome Card — Hand this after onboarding</div>
         <div class="tip-box">
             <strong>🪪 What goes on the welcome card (get this printed)</strong>
-            Welcome to NearPop! • Your listing is now live • Login: nearpop.in → Sign in with Gmail → My Listings • Your QR is on the standee we placed • Support: [WhatsApp number] • Founder: Abhishek
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">🪪</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Printed Welcome Card (Business card size)</h3>
-                    <p>Bilingual (Hindi/English). Has login steps, support WhatsApp, and a small NearPop QR to the app. Get 500 printed.</p>
-                </div>
-            </div>
+            Welcome to NearPop! • Your listing is now live • Login: nearpop.in → Sign in with Gmail → My Listings • Your QR is on the standee we placed • Support: WhatsApp Abhishek (Founder)
         </div>
     </div>
 
@@ -597,26 +615,6 @@
                 <a href="#" onclick="whatsapp('Merchant Poster','files/merchant_poster.jpg')" class="btn btn-wa">WhatsApp</a>
             </div>
         </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">📌</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Shop QR Standee (A5) + Counter Sticker</h3>
-                    <p>Unique per shop. Bilingual. Glossy laminated for standee, vinyl sticker for glass door.</p>
-                </div>
-            </div>
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">🪪</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Merchant Welcome Card (Business card size)</h3>
-                    <p>Login steps, support WhatsApp, NearPop QR. Bilingual. Get 500 printed.</p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="section">
@@ -655,30 +653,7 @@
         </div>
     </div>
 
-    <!-- SUCCESS STORIES -->
-    <div class="section">
-        <div class="section-title">Verified Merchant Success Stories — Show these to hesitant shops</div>
-        <div class="tip-box">
-            <strong>💡 How to use this section</strong>
-            As merchants start seeing results, add their story here. A real quote from a neighbour shop convinces better than any flyer.
-        </div>
-        <div class="story-card">
-            <div class="shop-name">📍 [Your first success story]</div>
-            <div class="shop-meta">Shop type • Area, Faridabad</div>
-            <div class="result">Add their result here: e.g. "Got 200+ profile views in first week. 3 new customers walked in saying they found the shop on NearPop."</div>
-            <div class="quote">"[Merchant's own words in Hindi or English]" — Shop Owner Name</div>
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">⭐</div>
-                <div class="details">
-                    <div class="missing-label">Pending — Fill as you collect</div>
-                    <h3>More success stories needed</h3>
-                    <p>After the first 10 merchants are active for 2 weeks, call them and ask: "Kitne log aaye NearPop se?" Add their answer here.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 </div>
@@ -702,16 +677,6 @@
                 <a href="files/customer_flyers.html" target="_blank" class="btn btn-view">Open</a>
                 <a href="files/customer_flyers.pdf" target="_blank" class="btn btn-pdf">PDF</a>
                 <a href="#" onclick="whatsapp('Discover deals near you on NearPop','files/customer_flyers.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">🤝</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Refer-a-Friend Card</h3>
-                    <p>Small card users can share with friends. "Tell your friend, they find deals near home."</p>
-                </div>
             </div>
         </div>
     </div>
@@ -742,29 +707,7 @@
         </div>
     </div>
 
-    <div class="section">
-        <div class="section-title">Social Media — Templates needed</div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">📱</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Instagram / WhatsApp Status Templates</h3>
-                    <p>"5 best deals in Sector 15 this week" style posts. Reusable, area-specific captions.</p>
-                </div>
-            </div>
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">🎬</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Reel Script Template</h3>
-                    <p>30-second script for Instagram Reels. Hindi + English. "Aaj sector 15 mein kya deal hai..."</p>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
 </div>
 </div>
@@ -880,26 +823,8 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
                 <a href="https://nearpop.in/icons/icon-512.png" download="NearPop_Icon.png" class="btn btn-dl">Download</a>
             </div>
         </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">🎨</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Brand Color & Font Guide</h3>
-                    <p>1-page reference: exact hex colors (#FF5722 primary, etc.), font names, dos and don'ts. Essential for any new hire.</p>
-                </div>
-            </div>
-        </div>
-        <div class="missing-card">
-            <div class="card-top">
-                <div class="icon">📐</div>
-                <div class="details">
-                    <div class="missing-label">⚠ Missing — Create this</div>
-                    <h3>Social Media Size Templates (Canva)</h3>
-                    <p>Blank branded templates: Instagram post (1080×1080), Story (1080×1920), WhatsApp status, YouTube thumbnail.</p>
-                </div>
-            </div>
-        </div>
+
+
     </div>
 
     <!-- DATA & PRIVACY RULES -->
@@ -941,8 +866,8 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
             <div class="name">Abhishek</div>
             <div class="role">Founder, NearPop • All escalations go here</div>
             <div class="contact-btn-row">
-                <a href="https://wa.me/91XXXXXXXXXX" target="_blank" class="contact-btn contact-btn-wa">💬 WhatsApp</a>
-                <a href="tel:+91XXXXXXXXXX" class="contact-btn contact-btn-call">📞 Call</a>
+                <a href="https://wa.me/917982785804" target="_blank" class="contact-btn contact-btn-wa">💬 WhatsApp</a>
+                <a href="tel:+917982785804" class="contact-btn contact-btn-call">📞 Call</a>
             </div>
         </div>
 
@@ -982,7 +907,7 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
 
         <div class="contact-card" style="margin-top:10px;">
             <div class="name">NearPop Support</div>
-            <div class="role">App: nearpop.in • [Add support email here]</div>
+            <div class="role">App: nearpop.in • support@nearpop.in</div>
             <div class="contact-btn-row">
                 <a href="https://nearpop.in" target="_blank" class="contact-btn contact-btn-call">🌐 Open App</a>
             </div>
@@ -1033,12 +958,12 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         const val = this.value.toLowerCase().trim();
         document.getElementById("search-term").textContent = this.value;
         if (!val) {
-            document.querySelectorAll(".card, .missing-card, .story-card").forEach(c => c.style.display = "");
+            document.querySelectorAll(".card").forEach(c => c.style.display = "");
             document.getElementById("no-results").style.display = "none";
             return;
         }
         let visible = 0;
-        document.querySelectorAll(".card, .missing-card, .story-card").forEach(c => {
+        document.querySelectorAll(".card").forEach(c => {
             const match = c.innerText.toLowerCase().includes(val);
             c.style.display = match ? "" : "none";
             if (match) visible++;
@@ -1202,6 +1127,66 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
 
     loadChecklist();
     window.addEventListener('DOMContentLoaded', fetchLiveVisits);
+
+    // ── LANGUAGE TOGGLE ──────────────────────────────
+    let currentLang = 'en';
+
+    function initTranslate() {
+        // Create hidden Google Translate element
+        const el = document.createElement('div');
+        el.id = 'google_translate_element';
+        el.style.display = 'none';
+        document.body.appendChild(el);
+
+        // Load Google Translate script
+        const s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+        document.head.appendChild(s);
+    }
+
+    function googleTranslateInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi',
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+
+    function setLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.lang === lang);
+        });
+
+        if (lang === 'hi') {
+            // Trigger Hindi translation
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = 'hi';
+                sel.dispatchEvent(new Event('change'));
+            } else {
+                // Script not loaded yet — wait and retry
+                setTimeout(() => setLang('hi'), 600);
+            }
+        } else {
+            // Restore English — reload without translate cookie
+            const frame = document.querySelector('.goog-te-menu-frame');
+            // Use Google's restore mechanism
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = '';
+                sel.dispatchEvent(new Event('change'));
+            }
+            // Fallback: remove cookie and reload
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+            if (currentLang !== 'en') location.reload();
+        }
+    }
+
+    initTranslate();
+    // ─────────────────────────────────────────────────
+
 </script>
 </body>
 </html>

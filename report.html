@@ -177,6 +177,56 @@
         .status-rejected { background: #FEE2E2; color: #DC2626; }
         .status-closed { background: #F3F4F6; color: var(--muted); }
 
+        /* DELETE BUTTON */
+        .delete-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            color: #DC2626;
+            opacity: 0.5;
+            transition: opacity 0.15s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .delete-btn:active { opacity: 1; background: #FEE2E2; }
+
+        /* CONFIRM OVERLAY */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 9998;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .confirm-box {
+            background: var(--white);
+            border-radius: 20px 20px 0 0;
+            padding: 24px 20px 36px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+        }
+        .confirm-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+        .confirm-box p  { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.4; }
+        .confirm-btn-row { display: flex; gap: 10px; }
+        .confirm-btn {
+            flex: 1;
+            padding: 13px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            cursor: pointer;
+        }
+        .confirm-cancel { background: var(--bg); color: var(--text); border: 1.5px solid var(--border); }
+        .confirm-delete { background: #DC2626; color: #fff; }
+
         /* FORM */
         .form-group { margin-bottom: 14px; }
         label {
@@ -313,6 +363,38 @@
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
 
+
+        /* LANGUAGE TOGGLE */
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .lang-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            transition: 0.15s;
+            white-space: nowrap;
+        }
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+        /* Hide Google Translate toolbar completely */
+        .goog-te-banner-frame, .skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+        .goog-te-gadget { display: none !important; }
+
         /* BOTTOM NAV */
         .bottom-nav {
             position: fixed;
@@ -348,6 +430,10 @@
             <h1>Field Visit Tracker</h1>
             <p id="header-name">NearPop</p>
         </div>
+    </div>
+    <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
     </div>
     <button class="signout-btn" id="signout-btn" onclick="signOut()">Sign out</button>
 </div>
@@ -637,7 +723,10 @@
             const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
             const data = await res.json();
             const rows = (data.values || []).slice(1);
-            allVisits = rows.filter(r => r[1]?.trim().toLowerCase() === currentUser.email.toLowerCase());
+            // Store each row with its 1-based sheet row index (slice(1) removed header = row 1, so data row 0 = sheet row 2)
+            allVisits = rows
+                .map((r, i) => ({ data: r, sheetRow: i + 2 }))
+                .filter(entry => entry.data[1]?.trim().toLowerCase() === currentUser.email.toLowerCase());
         } catch(e) { 
             allVisits = []; 
         }
@@ -662,14 +751,14 @@
         document.getElementById('target-standee').textContent = currentUser.targetStandee;
 
         const today = todayStr();
-        const todayRows = allVisits.filter(r => r[0] === today);
+        const todayRows = allVisits.filter(entry => entry.data[0] === today);
 
         let onboardCount = 0;
         let standeeCount = 0;
 
-        todayRows.forEach(r => {
-            if (r[5]?.toLowerCase().includes('onboarded')) onboardCount++;
-            if (r[7]?.toLowerCase() === 'yes') standeeCount++;
+        todayRows.forEach(entry => {
+            if (entry.data[5]?.toLowerCase().includes('onboarded')) onboardCount++;
+            if (entry.data[7]?.toLowerCase() === 'yes') standeeCount++;
         });
 
         document.getElementById('today-visits').textContent = todayRows.length;
@@ -680,7 +769,9 @@
         if (todayRows.length === 0) {
             list.innerHTML = '<div style="text-align:center;color:var(--muted);font-size:13px;padding:10px 0;">No shops logged today yet</div>';
         } else {
-            list.innerHTML = [...todayRows].reverse().map(r => {
+            list.innerHTML = [...todayRows].reverse().map(entry => {
+                const r = entry.data;
+                const sheetRow = entry.sheetRow;
                 let badgeClass = 'status-closed';
                 const st = r[5] || '';
                 if (st.includes('Onboarded')) badgeClass = 'status-onboarded';
@@ -692,12 +783,15 @@
                 const photos = (shopPic || standeePic) ? `• ${shopPic} ${standeePic}` : '';
 
                 return `
-                <div class="visit-row">
+                <div class="visit-row" id="row-${sheetRow}">
                     <div class="visit-info">
                         <h4>${r[3]}</h4>
                         <p>📍 ${r[4]} ${r[6] && r[6] !== '—' ? '• ✉️ ' + r[6] : ''} ${photos}</p>
                     </div>
-                    <span class="status-tag ${badgeClass}">${r[5]}</span>
+                    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+                        <span class="status-tag ${badgeClass}">${r[5]}</span>
+                        <button class="delete-btn" onclick="confirmDelete(${sheetRow}, '${r[3].replace(/'/g,"\'")}')">🗑️</button>
+                    </div>
                 </div>`;
             }).join('');
         }
@@ -833,7 +927,16 @@
 
             if (!res.ok) throw new Error('Sheet write failed');
 
-            allVisits.push(row);
+            // Parse the appended row number from API response
+            let newSheetRow = allVisits.length + 2; // fallback estimate
+            try {
+                const appendData = await res.clone().json().catch(() => null);
+                if (appendData?.updates?.updatedRange) {
+                    const match = appendData.updates.updatedRange.match(/(\d+)$/);
+                    if (match) newSheetRow = parseInt(match[1]);
+                }
+            } catch(e) {}
+            allVisits.push({ data: row, sheetRow: newSheetRow });
             showToast('Visit logged! ✅');
 
             // Reset form fields
@@ -857,6 +960,76 @@
         } finally {
             btn.disabled = false;
             btn.textContent = 'Log Visit';
+        }
+    }
+
+    // ================================================
+    // DELETE VISIT
+    // ================================================
+    function confirmDelete(sheetRow, shopName) {
+        // Remove existing overlay if any
+        const existing = document.getElementById('confirm-overlay');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.className = 'confirm-overlay';
+        overlay.id = 'confirm-overlay';
+        overlay.innerHTML = `
+            <div class="confirm-box">
+                <h3>Delete this entry?</h3>
+                <p><strong>${shopName}</strong><br>This will remove the record from the sheet. This cannot be undone.</p>
+                <div class="confirm-btn-row">
+                    <button class="confirm-btn confirm-cancel" onclick="document.getElementById('confirm-overlay').remove()">Cancel</button>
+                    <button class="confirm-btn confirm-delete" onclick="deleteRow(${sheetRow})">Delete</button>
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+    }
+
+    async function deleteRow(sheetRow) {
+        // Remove overlay immediately for snappy feel
+        const overlay = document.getElementById('confirm-overlay');
+        if (overlay) overlay.remove();
+
+        // Grey out the row visually while deleting
+        const rowEl = document.getElementById('row-' + sheetRow);
+        if (rowEl) rowEl.style.opacity = '0.4';
+
+        try {
+            // Sheets API: delete a single row by index (0-based: sheetRow-1)
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`;
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    requests: [{
+                        deleteDimension: {
+                            range: {
+                                sheetId: 0,
+                                dimension: 'ROWS',
+                                startIndex: sheetRow - 1,
+                                endIndex: sheetRow
+                            }
+                        }
+                    }]
+                })
+            });
+
+            if (!res.ok) throw new Error('Delete failed');
+
+            // Remove from local allVisits and re-index remaining rows
+            allVisits = allVisits.filter(e => e.sheetRow !== sheetRow);
+            // Decrement sheetRow for all rows below the deleted one
+            allVisits = allVisits.map(e => ({
+                data: e.data,
+                sheetRow: e.sheetRow > sheetRow ? e.sheetRow - 1 : e.sheetRow
+            }));
+
+            showToast('Entry deleted ✓');
+            renderDashboard();
+        } catch(e) {
+            if (rowEl) rowEl.style.opacity = '1';
+            showToast('Delete failed — try again');
         }
     }
 
@@ -892,6 +1065,66 @@
         document.getElementById('today-date').textContent = formatDate(new Date());
         tryRestoreSession();
     });
+
+    // ── LANGUAGE TOGGLE ──────────────────────────────
+    let currentLang = 'en';
+
+    function initTranslate() {
+        // Create hidden Google Translate element
+        const el = document.createElement('div');
+        el.id = 'google_translate_element';
+        el.style.display = 'none';
+        document.body.appendChild(el);
+
+        // Load Google Translate script
+        const s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+        document.head.appendChild(s);
+    }
+
+    function googleTranslateInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi',
+            autoDisplay: false
+        }, 'google_translate_element');
+    }
+
+    function setLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.lang === lang);
+        });
+
+        if (lang === 'hi') {
+            // Trigger Hindi translation
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = 'hi';
+                sel.dispatchEvent(new Event('change'));
+            } else {
+                // Script not loaded yet — wait and retry
+                setTimeout(() => setLang('hi'), 600);
+            }
+        } else {
+            // Restore English — reload without translate cookie
+            const frame = document.querySelector('.goog-te-menu-frame');
+            // Use Google's restore mechanism
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = '';
+                sel.dispatchEvent(new Event('change'));
+            }
+            // Fallback: remove cookie and reload
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+            if (currentLang !== 'en') location.reload();
+        }
+    }
+
+    initTranslate();
+    // ─────────────────────────────────────────────────
+
 </script>
 </body>
 </html>

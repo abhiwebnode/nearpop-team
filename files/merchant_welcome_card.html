@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearPop - Merchant Welcome Card</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF5722;
+            --primary-dark: #D84315;
+            --primary-light: #FFF3EF;
+            --text-dark: #1A1A2E;
+            --text-muted: #555A6B;
+            --border: #E5E7EB;
+            --green: #16A34A;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F0F2F5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            padding: 40px 16px;
+            min-height: 100vh;
+        }
+
+        /* Business Card Dimensions: 3.5in x 2.0in */
+        .card-canvas {
+            width: 336px;
+            height: 192px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 14px 16px;
+        }
+
+        /* FRONT SIDE */
+        .card-front {
+            background: linear-gradient(135deg, #ffffff 65%, var(--primary-light) 100%);
+            border-left: 6px solid var(--primary);
+        }
+
+        .header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand-logo {
+            height: 24px;
+        }
+
+        .brand-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .welcome-title {
+            margin-top: 2px;
+        }
+
+        .welcome-title h2 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .welcome-title p {
+            font-size: 10px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .steps-box {
+            background: var(--white);
+            border: 1px solid #FFCCBC;
+            border-radius: 8px;
+            padding: 8px 10px;
+        }
+
+        .step-item {
+            font-size: 9.5px;
+            color: var(--text-dark);
+            line-height: 1.35;
+            display: flex;
+            gap: 6px;
+            align-items: flex-start;
+            margin-bottom: 3px;
+        }
+
+        .step-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-num {
+            background: var(--primary);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .front-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 8px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 6px;
+        }
+
+        /* BACK SIDE */
+        .card-back {
+            background: #ffffff;
+            border-right: 6px solid var(--primary);
+        }
+
+        .back-grid {
+            display: flex;
+            gap: 12px;
+            height: 100%;
+            align-items: center;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 96px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .qr-img {
+            width: 82px;
+            height: 82px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            padding: 3px;
+            background: #fff;
+        }
+
+        .qr-lbl {
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 4px;
+            line-height: 1.1;
+        }
+
+        .info-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            padding: 2px 0;
+        }
+
+        .support-header h3 {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .support-header p {
+            font-size: 9px;
+            color: var(--text-muted);
+            line-height: 1.25;
+        }
+
+        .contact-pill-box {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin: 6px 0;
+        }
+
+        .contact-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9px;
+            font-weight: 600;
+            color: var(--text-dark);
+            background: var(--primary-light);
+            border: 1px solid #FFCCBC;
+            border-radius: 6px;
+            padding: 4px 8px;
+            text-decoration: none;
+        }
+
+        .contact-pill.whatsapp {
+            background: #DCFCE7;
+            border-color: #86EFAC;
+            color: #14532D;
+        }
+
+        .founder-tag {
+            font-size: 8px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+            padding-top: 4px;
+        }
+
+        /* PRINT MEDIA STYLES */
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+                gap: 20px;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .card-canvas {
+                box-shadow: none;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print" style="text-align: center; margin-bottom: 4px;">
+        <h1 style="font-size: 18px; font-weight: 700; color: #1A1A2E;">NearPop Merchant Welcome Card (3.5" × 2.0")</h1>
+        <p style="font-size: 12px; color: #6B7280; margin-top: 3px;">Standard business card dimensions • Hand this to store owners after onboarding</p>
+        <button onclick="window.print()" style="margin-top: 12px; padding: 8px 18px; background: #FF5722; color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">🖨️ Print Cards</button>
+    </div>
+
+    <!-- FRONT SIDE -->
+    <div class="card-canvas card-front">
+        <div class="header-row">
+            <div class="brand-wrap">
+                <img src="https://nearpop.in/icons/logo.png" alt="NearPop" class="brand-logo">
+            </div>
+            <span class="brand-badge">Official Merchant</span>
+        </div>
+
+        <div class="welcome-title">
+            <h2>Aapki Shop Ab Live Hai! 🎉</h2>
+            <p>Welcome to NearPop Local Network</p>
+        </div>
+
+        <div class="steps-box">
+            <div class="step-item">
+                <div class="step-num">1</div>
+                <div>Open <strong>nearpop.in</strong> on your phone</div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">2</div>
+                <div>Sign in with your registered <strong>Gmail ID</strong></div>
+            </div>
+            <div class="step-item">
+                <div class="step-num">3</div>
+                <div>Go to <strong>My Listings</strong> to view profile & analytics</div>
+            </div>
+        </div>
+
+        <div class="front-footer">
+            <span>Standee counter QR is active</span>
+            <strong>Zero Subscription • Zero Commission</strong>
+        </div>
+    </div>
+
+    <!-- BACK SIDE -->
+    <div class="card-canvas card-back">
+        <div class="back-grid">
+            <div class="qr-section">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=https://nearpop.in" alt="Scan QR" class="qr-img">
+                <div class="qr-lbl">Scan to visit<br>nearpop.in</div>
+            </div>
+
+            <div class="info-section">
+                <div class="support-header">
+                    <h3>Direct Merchant Support</h3>
+                    <p>Profile update, offers ya koi bhi sawaal ke liye sampark karein:</p>
+                </div>
+
+                <div class="contact-pill-box">
+                    <a href="https://wa.me/91XXXXXXXXXX" class="contact-pill whatsapp">
+                        <span>💬</span> WhatsApp Support
+                    </a>
+                    <a href="https://nearpop.in" class="contact-pill">
+                        <span>🌐</span> nearpop.in
+                    </a>
+                </div>
+
+                <div class="founder-tag">
+                    <strong>Abhishek</strong> • Founder, NearPop
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

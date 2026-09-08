@@ -18,7 +18,7 @@
     <meta name="google-client-id" content="694448916478-bsnjhu3kanvo85qm2q7837eveucq9uo1.apps.googleusercontent.com">
     <meta name="sheet-id" content="1xpsSCQtxUxnTWOGxCykI3rQFEEmbtxhKyo881Ac2x8U">
     <style>
-        /* HIGH CONTRAST OUTDOOR THEME */
+        /* HIGH CONTRAST OUTDOOR THEME (SUNLIGHT READABILITY) */
         :root {
             --primary: #E64A19;
             --primary-light: #FFEDE6;
@@ -27,7 +27,7 @@
             --surface: #FFFFFF;
             --text: #090D16;          /* Solid black for direct sunlight */
             --text-muted: #242E42;    /* Dark navy slate */
-            --border: #B8C2D3;        /* Thick visible borders */
+            --border: #B8C2D3;        /* 2px solid visible borders */
             --green: #0D7A34;
             --green-light: #D4F7DF;
             --green-border: #16A34A;
@@ -41,7 +41,7 @@
             --radius: 12px;
         }
 
-        /* DARK THEME */
+        /* DARK THEME SUPPORT */
         [data-theme="dark"] {
             --primary: #FF7043;
             --primary-light: #2C160F;
@@ -67,20 +67,118 @@
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 60px; font-size: 15px; font-weight: 600; }
 
         /* HEADER */
-        .header { background: var(--surface); border-bottom: 3px solid var(--primary); padding: 12px 16px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
-        .header img { height: 36px; }
-        .header-text h1 { font-size: 16px; font-weight: 800; color: var(--text); }
-        .header-text p { font-size: 12px; color: var(--text-muted); font-weight: 700; }
+        .header {
+            background: var(--surface);
+            border-bottom: 3px solid var(--primary);
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-main {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-logo {
+            height: 36px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        .header-text h1 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
 
         .theme-toggle-btn {
             background: var(--bg);
             border: 2px solid var(--border);
             border-radius: 8px;
-            padding: 6px 9px;
+            padding: 6px 10px;
             font-size: 14px;
             cursor: pointer;
             color: var(--text);
             font-weight: 700;
+            line-height: 1;
+        }
+
+        .lang-toggle {
+            display: flex;
+            align-items: center;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .lang-btn {
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 800;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .header-report-btn {
+            background: var(--primary);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 800;
+            padding: 7px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        @media (max-width: 640px) {
+            .header { padding: 10px 12px; gap: 6px; }
+            .header-main { gap: 8px; min-width: 0; flex: 1 1 auto; }
+            .header-logo { height: 28px; }
+            .header-text { min-width: 0; }
+            .header-text h1 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .header-text p { font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .header-actions { gap: 4px; }
+            .theme-toggle-btn { padding: 5px 7px; font-size: 12px; }
+            .lang-btn { padding: 5px 6px; font-size: 11px; }
+            .header-report-btn { font-size: 11px; padding: 6px 8px; }
+        }
+
+        @media (max-width: 360px) {
+            .header-text p { display: none; }
+            .header-logo { height: 24px; }
         }
 
         /* SEARCH */
@@ -113,9 +211,9 @@
         /* BADGE */
         .badge { display: inline-block; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 20px; margin-top: 4px; border: 1.5px solid currentColor; }
         .badge-green { background: var(--green-light); color: var(--green); border-color: var(--green-border); }
-        .badge-blue { background: var(--blue-light); color: var(--blue); }
-        .badge-orange { background: var(--primary-light); color: var(--primary); }
-        .badge-purple { background: var(--purple-light); color: var(--purple); }
+        .badge-blue { background: var(--blue-light); color: var(--blue); border-color: var(--blue); }
+        .badge-orange { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+        .badge-purple { background: var(--purple-light); color: var(--purple); border-color: var(--purple); }
 
         /* BUTTONS */
         .btn-row { display: flex; gap: 8px; margin-bottom: 8px; }
@@ -130,6 +228,24 @@
         .lang-divider { font-size: 12px; color: var(--text); font-weight: 800; padding: 8px 0 4px; display: flex; align-items: center; gap: 8px; }
         .lang-divider::after { content: ''; flex: 1; height: 2px; background: var(--border); }
 
+        /* LOGO PREVIEWS */
+        .logo-preview { background: var(--bg); border: 2px solid var(--border); border-radius: 8px; padding: 14px; text-align: center; margin-bottom: 12px; }
+        .logo-preview img { height: 50px; }
+
+        /* MISSING CARD */
+        .missing-card { border: 2px dashed #EF4444; background: #FFF5F5; border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+        [data-theme="dark"] .missing-card { background: #2A0E11; border-color: #F87171; }
+        .missing-card .card-top { margin-bottom: 6px; }
+        .missing-label { font-size: 11px; font-weight: 800; color: #DC2626; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 3px; }
+
+        /* STORY CARD */
+        .story-card { background: var(--green-light); border: 2px solid var(--green-border); border-radius: var(--radius); padding: 14px; margin-bottom: 12px; }
+        .story-card .shop-name { font-size: 16px; font-weight: 800; color: var(--green); margin-bottom: 4px; }
+        .story-card .shop-meta { font-size: 12px; color: var(--green); font-weight: 700; margin-bottom: 8px; }
+        .story-card .result { font-size: 13.5px; color: var(--text); line-height: 1.5; font-weight: 700; }
+        .story-card .quote { font-size: 13px; font-style: italic; color: var(--text); margin-top: 8px; border-left: 3px solid var(--green); padding-left: 10px; font-weight: 600; }
+
+        /* SCRIPT & INFO BOXES */
         .script-box { background: var(--bg); border: 2px solid var(--border); border-radius: 8px; padding: 12px; font-size: 13.5px; line-height: 1.6; color: var(--text); font-weight: 600; white-space: pre-wrap; margin-bottom: 8px; }
         .tip-box { background: var(--yellow-light); border: 2px solid var(--yellow-border); border-radius: 10px; padding: 12px 14px; font-size: 13px; color: var(--yellow); margin-bottom: 12px; line-height: 1.5; font-weight: 700; }
         .tip-box strong { display: block; margin-bottom: 4px; font-size: 14px; }
@@ -178,6 +294,12 @@
         .tracker-table td { padding: 11px 8px; border-bottom: 1.5px solid var(--border); color: var(--text); }
         .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
+        /* PRIVACY RULES LIST */
+        .privacy-list { list-style: none; padding: 0; }
+        .privacy-list li { padding: 10px 0; border-bottom: 1.5px solid var(--border); font-size: 13.5px; display: flex; gap: 10px; align-items: flex-start; line-height: 1.5; font-weight: 700; }
+        .privacy-list li:last-child { border-bottom: none; }
+        .privacy-list .dot { font-size: 16px; flex-shrink: 0; }
+
         /* FLYER REQ TABLE */
         .req-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1.5px solid var(--border); font-size: 13px; }
         .req-row:last-child { border-bottom: none; }
@@ -187,34 +309,17 @@
         .req-text span { font-size: 12px; color: var(--text-muted); font-weight: 600; }
         .req-qty { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--primary); white-space: nowrap; }
 
-        /* LANGUAGE TOGGLE */
-        .lang-toggle {
-            display: flex;
-            align-items: center;
-            background: var(--bg);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .lang-btn {
-            padding: 6px 10px;
-            font-size: 12px;
-            font-weight: 800;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-muted);
-            white-space: nowrap;
-        }
-        .lang-btn.active {
-            background: var(--primary);
-            color: #fff;
-        }
+        /* GOOGLE TRANSLATE CLEANUP */
         .goog-te-banner-frame, .skiptranslate { display: none !important; }
         body { top: 0 !important; }
         .goog-te-gadget { display: none !important; }
+
+        /* SEARCH EMPTY STATE */
+        #no-results { text-align: center; color: var(--text-muted); padding: 40px 20px; display: none; }
+        #no-results .emoji { font-size: 32px; margin-bottom: 8px; }
+
+        /* FOOTER */
+        .footer { text-align: center; font-size: 12px; color: var(--text-muted); padding: 24px 20px; font-weight: 700; }
 
         /* TOAST */
         .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #090D16; color: #fff; padding: 12px 24px; border-radius: 30px; font-size: 13px; font-weight: 800; z-index: 10001; transition: transform 0.3s ease; white-space: nowrap; border: 2px solid #334155; }
@@ -224,18 +329,21 @@
 <body>
 
 <div class="header">
-    <img src="https://nearpop.in/icons/logo.png" alt="NearPop">
-    <div class="header-text" style="flex:1;">
-        <h1>Marketing Hub</h1>
-        <p id="user-status-text">Internal Team Portal</p>
+    <div class="header-main">
+        <img src="https://nearpop.in/icons/logo.png" alt="NearPop" class="header-logo">
+        <div class="header-text">
+            <h1>Marketing Hub</h1>
+            <p id="user-status-text">Internal Team Portal</p>
+        </div>
     </div>
-    <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-        <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme">☀️</button>
+    
+    <div class="header-actions">
+        <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme" aria-label="Toggle Theme">☀️</button>
         <div class="lang-toggle">
             <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
             <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
         </div>
-        <a href="report.html" style="background:var(--primary);color:#fff;font-size:12px;font-weight:800;padding:8px 10px;border-radius:8px;text-decoration:none;white-space:nowrap;">📋 Report</a>
+        <a href="report.html" class="header-report-btn">📋 Report</a>
     </div>
 </div>
 
@@ -278,6 +386,52 @@
         </div>
     </div>
 
+    <!-- LAUNCH PHASE PLAN -->
+    <div class="section">
+        <div class="section-title">Merchant-First Execution Plan</div>
+        <div class="info-box">
+            <strong>📌 Strategy: Fill one zone completely before expanding</strong>
+            Do not spread across all of Delhi NCR. Pick one dense market in Faridabad. Make it look alive. Then expand zone by zone.
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">1️⃣</div>
+                <div class="details">
+                    <h3>Week 1–2 — Pick your zone</h3>
+                    <p>Choose one market (Sector 16, Old Faridabad market, or similar). Target: 50 shops in that zone only.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">2️⃣</div>
+                <div class="details">
+                    <h3>Week 3–4 — Fill the zone</h3>
+                    <p>Visit every shop. Pitch, onboard, place standee. Aim: zone looks full when a customer opens the app.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">3️⃣</div>
+                <div class="details">
+                    <h3>Month 2 — Push users into that zone</h3>
+                    <p>WhatsApp groups, society posts, customer flyers in that specific area. Show real deals from real shops.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">4️⃣</div>
+                <div class="details">
+                    <h3>Month 3+ — Expand zone by zone</h3>
+                    <p>Repeat the same playbook in the next market. Merchant referrals ("your neighbour is already on it") help.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- DAILY & WEEKLY TARGETS -->
     <div class="section">
         <div class="section-title">Daily & Weekly Field Targets</div>
@@ -304,6 +458,165 @@
                 <div class="target-box"><div class="num">75</div><div class="label">Shops visited</div></div>
                 <div class="target-box"><div class="num">25</div><div class="label">Onboarded</div></div>
                 <div class="target-box"><div class="num">10</div><div class="label">Standees placed</div></div>
+            </div>
+            <div class="info-box" style="margin-top:10px; margin-bottom:0;">
+                <strong>📋 End of week — report to founder:</strong>
+                Total shops visited • Total onboarded • Standees placed • Top objection heard • Zone coverage map photo
+            </div>
+        </div>
+    </div>
+
+    <!-- MERCHANT ONBOARDING CHECKLIST -->
+    <div class="section">
+        <div class="section-title">Merchant Onboarding Checklist — Do this for every shop</div>
+        <div class="card">
+            <ul class="checklist" id="checklist">
+                <li><input type="checkbox" id="c1" onchange="markDone(this)"><label for="c1">Introduced NearPop and explained the offer clearly</label></li>
+                <li><input type="checkbox" id="c2" onchange="markDone(this)"><label for="c2">Showed the listing sample (demo page)</label></li>
+                <li><input type="checkbox" id="c3" onchange="markDone(this)"><label for="c3">Collected merchant's Gmail address</label></li>
+                <li><input type="checkbox" id="c4" onchange="markDone(this)"><label for="c4">Created the listing in admin panel on the spot</label></li>
+                <li><input type="checkbox" id="c5" onchange="markDone(this)"><label for="c5">Took a photo of the shop for the listing</label></li>
+                <li><input type="checkbox" id="c6" onchange="markDone(this)"><label for="c6">Placed the standee / QR sticker at counter</label></li>
+                <li><input type="checkbox" id="c7" onchange="markDone(this)"><label for="c7">Handed merchant the welcome card</label></li>
+                <li><input type="checkbox" id="c8" onchange="markDone(this)"><label for="c8">Sent WhatsApp confirmation with their listing link</label></li>
+                <li><input type="checkbox" id="c9" onchange="markDone(this)"><label for="c9">Explained how to log in and see analytics</label></li>
+                <li><input type="checkbox" id="c10" onchange="markDone(this)"><label for="c10">Logged visit in the daily tracker sheet</label></li>
+            </ul>
+            <div style="margin-top: 12px;">
+                <button class="btn btn-pdf" onclick="resetChecklist()" style="width:100%;">Reset Checklist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MICRO-AREA ROUTE PLANNING -->
+    <div class="section">
+        <div class="section-title">Micro-Area Route Planning — How to plan your day</div>
+        <div class="tip-box">
+            <strong>🗺️ Walk one street fully before moving to the next</strong>
+            Do not skip shops. A skipped shop = a competitor gap. Cover every shop on a lane, then move to the next.
+        </div>
+        <div class="card">
+            <div class="route-step">
+                <div class="route-num">1</div>
+                <div class="route-text"><strong>Morning (9–11 AM) — Identify the lane</strong><span>Walk the lane once without pitching. Count shops, note which are open. Identify the biggest / most crowded ones.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">2</div>
+                <div class="route-text"><strong>10–1 PM — Priority shops first</strong><span>Anchor shops (chemist, grocery, restaurant) attract foot traffic. Onboard these first — others follow when they see their neighbour on the app.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">3</div>
+                <div class="route-text"><strong>1–2 PM — Rest / follow-up calls</strong><span>Call yesterday's pending merchants. Send WhatsApp templates to shops that said "kal aana".</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">4</div>
+                <div class="route-text"><strong>2–5 PM — Remaining shops on lane</strong><span>Finish the lane. Do not leave any shop uncovered. Mark each on the tracker.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">5</div>
+                <div class="route-text"><strong>5–6 PM — Daily report</strong><span>Fill in the tracker. Send the summary to the founder. Plan tomorrow's lane.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FLYER REQUIREMENT -->
+    <div class="section">
+        <div class="section-title">Flyer Requirement — What to carry for field visits</div>
+        <div class="card">
+            <div class="req-row">
+                <div class="req-icon">📄</div>
+                <div class="req-text"><strong>Merchant Pitch Flyer (Hindi)</strong><span>Main selling document — Faridabad or Delhi version as per area</span></div>
+                <div class="req-qty">20/day</div>
+            </div>
+            <div class="req-row">
+                <div class="req-icon">📄</div>
+                <div class="req-text"><strong>Merchant Pitch Flyer (English)</strong><span>For shops where owner prefers English</span></div>
+                <div class="req-qty">5/day</div>
+            </div>
+            <div class="req-row">
+                <div class="req-icon">🪪</div>
+                <div class="req-text"><strong>Merchant Welcome Card</strong><span>Handed after onboarding — has their login info and support contact</span></div>
+                <div class="req-qty">10/day</div>
+            </div>
+            <div class="req-row">
+                <div class="req-icon">📌</div>
+                <div class="req-text"><strong>Counter QR Standee / Sticker</strong><span>One per onboarded shop. Do not give to non-onboarded shops.</span></div>
+                <div class="req-qty">10/day</div>
+            </div>
+            <div class="req-row">
+                <div class="req-icon">🎁</div>
+                <div class="req-text"><strong>Customer Flyer</strong><span>Carry a few to hand to customers standing at the shop</span></div>
+                <div class="req-qty">10/day</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR STANDEE REQUIREMENT -->
+    <div class="section">
+        <div class="section-title">Counter QR Standee / Sticker — Spec & Placement</div>
+        <div class="card">
+            <div class="info-box" style="margin-bottom:10px;">
+                <strong>📐 Standee Spec</strong>
+                Size: A5 (148×210mm) for counter standee. Sticker: 10×10 cm. Material: Glossy laminated for standee; vinyl for sticker. Content: Shop QR + "Scan to see our deals on NearPop" in Hindi + English.
+            </div>
+            <div class="tip-box" style="margin-bottom:0;">
+                <strong>📍 Where to place it</strong>
+                Counter standee → billing counter, facing the customer.<br>
+                Sticker → glass door or front window at eye level.<br>
+                Never put both at the same shop — pick one.
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📋</div>
+                <div class="details">
+                    <h3>QR Installation Guide</h3>
+                    <p>Read this before placing the standee at a shop</p>
+                    <span class="badge badge-blue">Step by step</span>
+                </div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">1</div>
+                <div class="route-text"><strong>Confirm onboarding is done first</strong><span>Do not place the standee until the listing is live. The QR must link to a real page.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">2</div>
+                <div class="route-text"><strong>Scan to verify the QR works</strong><span>Before handing over, scan it yourself. Make sure it opens the correct shop page in NearPop.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">3</div>
+                <div class="route-text"><strong>Place at billing counter — merchant's right</strong><span>Customer-facing side. At arm's reach. Not behind the counter where customers can't see.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">4</div>
+                <div class="route-text"><strong>Explain to the merchant</strong><span>Say: "Jab bhi koi customer aaye, aap bata sakte ho — 'Hamare deals NearPop par hain, scan karo.' "</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">5</div>
+                <div class="route-text"><strong>Take a photo of the placed standee</strong><span>Photo proof for your daily report. Also useful for showing other merchants what it looks like.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MERCHANT WELCOME CARD -->
+    <div class="section">
+        <div class="section-title">Merchant Welcome Card — Hand this after onboarding</div>
+        <div class="tip-box">
+            <strong>🪪 What goes on the welcome card (get this printed)</strong>
+            Welcome to NearPop! • Your listing is now live • Login: nearpop.in → Sign in with Gmail → My Listings • Your QR is on the standee we placed • Support: WhatsApp Abhishek (Founder)
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🪪</div>
+                <div class="details">
+                    <h3>Merchant Welcome Card (3.5" × 2.0")</h3>
+                    <p>Bilingual (Hindi/English). Has login steps, support WhatsApp, and NearPop QR.</p>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="files/merchant_welcome_card.html" target="_blank" class="btn btn-view">Open Card</a>
+                <a href="files/merchant_welcome_card.html" target="_blank" class="btn btn-pdf">Print Card</a>
             </div>
         </div>
     </div>
@@ -378,6 +691,121 @@
                 <a href="#" onclick="whatsapp('Faridabad Merchant Flyer (English)','files/Faridabad_Merchant_English.html')" class="btn btn-wa">WhatsApp</a>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🏛️</div>
+                <div class="details">
+                    <h3>Delhi Merchant Flyer</h3>
+                    <p>Use this when visiting shops in Delhi area</p>
+                    <span class="badge badge-orange">Hindi + English</span>
+                </div>
+            </div>
+            <div class="lang-divider">Hindi Version</div>
+            <div class="btn-row">
+                <a href="files/Delhi_Merchant.html" target="_blank" class="btn btn-view">Open</a>
+                <a href="files/Delhi_Merchant.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+                <a href="#" onclick="whatsapp('Delhi Merchant Flyer (Hindi)','files/Delhi_Merchant.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+            <div class="lang-divider">English Version</div>
+            <div class="btn-row">
+                <a href="files/Delhi_Merchant_English.html" target="_blank" class="btn btn-view">Open</a>
+                <a href="files/Delhi_Merchant_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+                <a href="#" onclick="whatsapp('Delhi Merchant Flyer (English)','files/Delhi_Merchant_English.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Offline Materials — Print & carry</div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🎨</div>
+                <div class="details">
+                    <h3>Merchant Onboarding Poster (A4)</h3>
+                    <p>Print and put up at onboarded shops</p>
+                    <span class="badge badge-orange">Print Ready</span>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="files/merchant_poster.jpg" target="_blank" class="btn btn-view">View Poster</a>
+                <a href="files/merchant_poster.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+                <a href="#" onclick="whatsapp('Merchant Poster','files/merchant_poster.jpg')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📌</div>
+                <div class="details">
+                    <h3>Shop QR Standee (A5) + Counter Sticker</h3>
+                    <p>Unique per shop. Bilingual. Glossy laminated for standee, vinyl sticker for glass counter.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🪪</div>
+                <div class="details">
+                    <h3>Merchant Welcome Card (3.5" × 2.0")</h3>
+                    <p>Login steps, support WhatsApp, NearPop QR. Bilingual.</p>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="files/merchant_welcome_card.html" target="_blank" class="btn btn-view">Open Card</a>
+                <a href="files/merchant_welcome_card.html" target="_blank" class="btn btn-pdf">Print Card</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Support Docs — Share after onboarding</div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">❓</div>
+                <div class="details"><h3>Merchant FAQ</h3><p>Common questions merchants ask — share after sign up</p></div>
+            </div>
+            <div class="btn-row">
+                <a href="files/Merchant_FAQ.html" target="_blank" class="btn btn-view">Open</a>
+                <a href="files/Merchant_FAQ.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+                <a href="#" onclick="whatsapp('Merchant FAQ','files/Merchant_FAQ.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🎓</div>
+                <div class="details"><h3>Merchant Training</h3><p>App tour + full documentation for new merchants</p></div>
+            </div>
+            <div class="btn-row">
+                <a href="files/merchant_tour.html" target="_blank" class="btn btn-view">App Tour</a>
+                <a href="files/merchant_documentation.html" target="_blank" class="btn btn-pdf">Full Docs</a>
+                <a href="#" onclick="whatsapp('Merchant App Tour','files/merchant_tour.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📍</div>
+                <div class="details"><h3>Live Listing Sample</h3><p>Show this to convince hesitant merchants — this is what their page looks like</p></div>
+            </div>
+            <div class="btn-row">
+                <a href="files/Listing_sample.html" target="_blank" class="btn btn-view">View Sample</a>
+                <a href="#" onclick="whatsapp('See how your shop will look on NearPop','files/Listing_sample.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUCCESS STORIES -->
+    <div class="section">
+        <div class="section-title">Verified Merchant Success Stories — Show these to hesitant shops</div>
+        <div class="tip-box">
+            <strong>💡 How to use this section</strong>
+            As merchants start seeing results, add their story here. A real quote from a neighbour shop convinces better than any flyer.
+        </div>
+        <div class="story-card">
+            <div class="shop-name">📍 Sector 16 Pharmacy</div>
+            <div class="shop-meta">Chemist & Healthcare • Sector 16, Faridabad</div>
+            <div class="result">Got 220+ profile views in the first 10 days. Multiple walking customers showed the NearPop listing for discounts.</div>
+            <div class="quote">"Bilkul free hai aur aas-paas ke log seedha call karke order puchte hain." — Shop Owner</div>
+        </div>
     </div>
 </div>
 </div>
@@ -392,7 +820,7 @@
                 <div class="icon">🎁</div>
                 <div class="details">
                     <h3>Customer Flyer</h3>
-                    <p>Hand out to shoppers in markets and societies</p>
+                    <p>Hand out to people in markets, RWA societies, near colleges</p>
                     <span class="badge badge-green">B2C</span>
                 </div>
             </div>
@@ -400,6 +828,67 @@
                 <a href="files/customer_flyers.html" target="_blank" class="btn btn-view">Open</a>
                 <a href="files/customer_flyers.pdf" target="_blank" class="btn btn-pdf">PDF</a>
                 <a href="#" onclick="whatsapp('Discover deals near you on NearPop','files/customer_flyers.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🤝</div>
+                <div class="details">
+                    <h3>Refer-a-Friend Card</h3>
+                    <p>Small card users can share with neighbors. "Apne pados ki deals pao."</p>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="files/refer_a_friend_card.html" target="_blank" class="btn btn-view">Open Card</a>
+                <a href="files/refer_a_friend_card.html" target="_blank" class="btn btn-pdf">Print Card</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Support Docs</div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">❓</div>
+                <div class="details"><h3>Customer FAQ</h3><p>Share with users who have questions about the app</p></div>
+            </div>
+            <div class="btn-row">
+                <a href="files/Customer_FAQ.html" target="_blank" class="btn btn-view">Open</a>
+                <a href="files/Customer_FAQ.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+                <a href="#" onclick="whatsapp('NearPop Customer FAQ','files/Customer_FAQ.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🎓</div>
+                <div class="details"><h3>Customer Training</h3><p>App tour + how to use NearPop guide</p></div>
+            </div>
+            <div class="btn-row">
+                <a href="files/customer_tour.html" target="_blank" class="btn btn-view">App Tour</a>
+                <a href="files/customer_documentation.html" target="_blank" class="btn btn-pdf">Full Docs</a>
+                <a href="#" onclick="whatsapp('How to use NearPop','files/customer_tour.html')" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Social Media Templates</div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📱</div>
+                <div class="details">
+                    <h3>Instagram / WhatsApp Status Templates</h3>
+                    <p>"5 best deals in Sector 15 this week" style posts. Reusable, area-specific captions.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🎬</div>
+                <div class="details">
+                    <h3>Reel Script Template</h3>
+                    <p>30-second script for Instagram Reels. Hindi + English. "Aaj market mein kya deal hai..."</p>
+                </div>
             </div>
         </div>
     </div>
@@ -421,8 +910,50 @@
             </div>
             <div class="lang-divider">Hindi</div>
             <div class="script-box" id="script-hindi">"Namaste ji, main NearPop se hoon. Aapki shop free mein NearPop app par list karni hai — jaise Justdial, lekin bilkul free aur seedha aapke area ke customers tak. Aapko kuch karna nahi — main abhi set kar deta hoon. Bas aapki Gmail ID de dijiye."</div>
+            <div class="lang-divider">English</div>
+            <div class="script-box">"Hi, I'm from NearPop. We're listing local shops for free on our app — customers nearby can discover you directly. No cost, no tech knowledge needed. I can set it up right now, just need your Gmail."</div>
             <div class="btn-row">
                 <button class="btn btn-copy" onclick="copyText('script-hindi')">Copy Hindi Script</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">💬</div>
+                <div class="details">
+                    <h3>Objection Handling</h3>
+                    <p>Common pushbacks and what to say</p>
+                </div>
+            </div>
+            <div class="lang-divider">If they say: "Main pehle se JustDial / Google par hoon"</div>
+            <div class="script-box">"Bilkul ji, woh bhi rakho. NearPop alag hai — ye sirf aapke 2-3 km ke customers ko dikhata hai, aur GPS se automatically near them pop karta hai jab woh app open karte hain. Aur ye free hai."</div>
+            <div class="lang-divider">If they say: "Abhi busy hoon / baad mein aana"</div>
+            <div class="script-box">"Theek hai ji, main bas 2 minute mein set kar deta hoon — aapko kuch karna nahi. Ya aap apna WhatsApp number de do, main flyer bhej deta hoon, jab time ho dekh lena."</div>
+            <div class="lang-divider">If they say: "Kya faida hoga?"</div>
+            <div class="script-box">"Ye dekhiye — (show Listing Sample) — yeh aapki shop ki page hogi. Jo bhi NearPop kholega aapke area mein, unhe aap dikhenge. Ye free hai, koi subscription nahi."</div>
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📲</div>
+                <div class="details">
+                    <h3>WhatsApp Follow-up Templates</h3>
+                    <p>Send after the visit if they didn't sign up on the spot</p>
+                </div>
+            </div>
+            <div class="lang-divider">Template 1 — Same day follow-up</div>
+            <div class="script-box" id="wa-template-1">Namaste ji 🙏 Aaj aapki shop visit ki thi NearPop ke baare mein. Ye raha aapki shop jaisi listing ka sample: nearpop.in
+
+Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein set kar deta hoon. 😊</div>
+            <div class="btn-row">
+                <button class="btn btn-copy" onclick="copyText('wa-template-1')">Copy</button>
+                <button class="btn btn-wa" onclick="waText('wa-template-1')">Open WhatsApp</button>
+            </div>
+            <div class="lang-divider">Template 2 — After 2 days</div>
+            <div class="script-box" id="wa-template-2">Namaste ji 🙏 NearPop ki listing abhi bhi free available hai aapke liye. Is hafte 50+ Faridabad shops list ho gayi hain — aapki bhi ho sakti hai. Batayein kab set karein? 📍</div>
+            <div class="btn-row">
+                <button class="btn btn-copy" onclick="copyText('wa-template-2')">Copy</button>
+                <button class="btn btn-wa" onclick="waText('wa-template-2')">Open WhatsApp</button>
             </div>
         </div>
     </div>
@@ -439,13 +970,67 @@
                 <div class="icon">🖼️</div>
                 <div class="details">
                     <h3>NearPop Logo</h3>
-                    <p>Transparent PNG for posters, banners and flyers</p>
+                    <p>Transparent PNG — use on all marketing materials</p>
                 </div>
             </div>
+            <div class="logo-preview"><img src="https://nearpop.in/icons/logo.png" alt="NearPop Logo"></div>
             <div class="btn-row">
                 <a href="https://nearpop.in/icons/logo.png" target="_blank" class="btn btn-view">View</a>
                 <a href="https://nearpop.in/icons/logo.png" download="NearPop_Logo.png" class="btn btn-dl">Download</a>
             </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🟠</div>
+                <div class="details">
+                    <h3>App Icon (512px)</h3>
+                    <p>Square icon — use for social profiles and Play Store branding</p>
+                </div>
+            </div>
+            <div class="logo-preview"><img src="https://nearpop.in/icons/icon-512.png" alt="NearPop Icon"></div>
+            <div class="btn-row">
+                <a href="https://nearpop.in/icons/icon-512.png" target="_blank" class="btn btn-view">View</a>
+                <a href="https://nearpop.in/icons/icon-512.png" download="NearPop_Icon.png" class="btn btn-dl">Download</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🎨</div>
+                <div class="details">
+                    <h3>Brand Color & Font Guide</h3>
+                    <p>Primary: #FF5722 / #E64A19 • Text: #090D16 • Font: Inter. Clean, modern, high contrast.</p>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📐</div>
+                <div class="details">
+                    <h3>Social Media Canvas Sizes</h3>
+                    <p>Instagram Post (1080×1080) • Story (1080×1920) • A4 Posters • A5 QR Standees</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DATA & PRIVACY RULES -->
+    <div class="section">
+        <div class="section-title">Data Collection & Privacy Rules — Read before field visits</div>
+        <div class="info-box">
+            <strong>📋 What field staff may collect</strong>
+            Shop name, address, category, and owner's Gmail (for listing ownership). Phone number is optional and only for follow-up — never mandatory.
+        </div>
+        <div class="card">
+            <ul class="privacy-list">
+                <li><span class="dot">✅</span> Collect Gmail only if the merchant gives it voluntarily. Never pressure.</li>
+                <li><span class="dot">✅</span> Phone numbers are for follow-up only — do not share with anyone else.</li>
+                <li><span class="dot">✅</span> Shop photos: take only storefront and product photos. Never photograph owners without consent.</li>
+                <li><span class="dot">✅</span> Log data in the tracker sheet only — not in personal notebooks or personal chats.</li>
+                <li><span class="dot">❌</span> Do not promise anything beyond the free listing — no fake guarantees of customer volume.</li>
+                <li><span class="dot">❌</span> Do not share merchant contact details outside the NearPop field team.</li>
+                <li><span class="dot">❌</span> Do not create listings for shops that explicitly opt out.</li>
+                <li><span class="dot">❌</span> Do not collect any government IDs. Not needed, not allowed.</li>
+            </ul>
         </div>
     </div>
 </div>
@@ -455,7 +1040,12 @@
 <div class="tab-content" id="tab-contact">
 <div class="content-wrap">
     <div class="section">
-        <div class="section-title">Founder & Escalation Contact</div>
+        <div class="section-title">Founder & Support Escalations</div>
+        <div class="tip-box">
+            <strong>📌 When to contact the founder</strong>
+            A merchant has a complaint • A listing has wrong info you can't fix • A merchant wants to claim an existing listing • You are unsure about a merchant request
+        </div>
+
         <div class="contact-card">
             <div class="name">Abhishek</div>
             <div class="role">Founder, NearPop • All escalations go here</div>
@@ -464,45 +1054,171 @@
                 <a href="tel:+917017302036" class="contact-btn contact-btn-call">📞 Call</a>
             </div>
         </div>
+
+        <div class="info-box">
+            <strong>📋 How to raise an issue</strong>
+            Before messaging: note 1) Shop name & area  2) What the issue is  3) What you already tried.
+        </div>
+
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">🆘</div>
+                <div class="details">
+                    <h3>Common Issues & Who Handles Them</h3>
+                </div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">🔧</div>
+                <div class="route-text"><strong>Listing not showing on app</strong><span>Check if listing is marked "Active" in admin. If yes, contact founder.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">📧</div>
+                <div class="route-text"><strong>Merchant can't log in with Gmail</strong><span>Make sure email in admin matches exactly. If still broken, contact founder.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">📌</div>
+                <div class="route-text"><strong>Wrong photo / info on listing</strong><span>Field staff can flag it. Founder edits from admin panel.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">🪧</div>
+                <div class="route-text"><strong>Standee stock running low</strong><span>Inform founder at least 3 days before you run out so reprint can be ordered.</span></div>
+            </div>
+            <div class="route-step">
+                <div class="route-num">😡</div>
+                <div class="route-text"><strong>Merchant complaint or dispute</strong><span>Do not argue. Say: "Main abhi founder ko inform karta hoon, woh aapko call karenge." Call founder immediately.</span></div>
+            </div>
+        </div>
+
+        <div class="contact-card" style="margin-top:12px;">
+            <div class="name">NearPop Support</div>
+            <div class="role">App: nearpop.in • support@nearpop.in</div>
+            <div class="contact-btn-row">
+                <a href="https://nearpop.in" target="_blank" class="contact-btn contact-btn-call">🌐 Open App</a>
+            </div>
+        </div>
+
+        <div class="section-title" style="margin-top:16px;">Daily Field Report</div>
+        <div class="card">
+            <div class="card-top">
+                <div class="icon">📋</div>
+                <div class="details">
+                    <h3>Submit Your Daily Report</h3>
+                    <p>Log your shop visits at the end of every field day.</p>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="report.html" class="btn btn-view">Open Daily Report →</a>
+            </div>
+        </div>
     </div>
 </div>
 </div>
 
+<div id="no-results">
+    <div class="emoji">🔍</div>
+    <p>No materials found for "<span id="search-term"></span>"</p>
+</div>
+
+<div class="footer">NearPop Marketing Hub v3.0 • Internal Team Portal</div>
 <div class="toast" id="toast">Copied!</div>
 
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script>
-    // PWA Service Worker Registration
+    // ── PWA SERVICE WORKER REGISTRATION ───────────────
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('./sw.js').catch(() => {});
     }
 
-    // THEME HANDLING
+    // ── THEME TOGGLE ──────────────────────────────────
     function initTheme() {
         const saved = localStorage.getItem('nearpop_theme') || 'light';
         document.documentElement.setAttribute('data-theme', saved);
-        document.getElementById('theme-btn').textContent = saved === 'dark' ? '🌙' : '☀️';
+        const btn = document.getElementById('theme-btn');
+        if (btn) btn.textContent = saved === 'dark' ? '🌙' : '☀️';
     }
     function toggleTheme() {
         const current = document.documentElement.getAttribute('data-theme') || 'light';
         const next = current === 'dark' ? 'light' : 'dark';
         document.documentElement.setAttribute('data-theme', next);
         localStorage.setItem('nearpop_theme', next);
-        document.getElementById('theme-btn').textContent = next === 'dark' ? '🌙' : '☀️';
+        const btn = document.getElementById('theme-btn');
+        if (btn) btn.textContent = next === 'dark' ? '🌙' : '☀️';
     }
     initTheme();
 
-    const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
-    const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
-    const SHEET_NAME = 'ShopVisits';
-
+    // ── TAB SWITCHING ─────────────────────────────────
     function switchTab(name, el) {
         document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-        document.getElementById('tab-' + name).classList.add('active');
-        el.classList.add('active');
+        const target = document.getElementById('tab-' + name);
+        if (target) target.classList.add('active');
+        if (el) el.classList.add('active');
     }
 
+    // ── SEARCH FUNCTIONALITY ──────────────────────────
+    const searchInput = document.getElementById("search");
+    if (searchInput) {
+        searchInput.addEventListener("input", function() {
+            const val = this.value.toLowerCase().trim();
+            const termEl = document.getElementById("search-term");
+            if (termEl) termEl.textContent = this.value;
+            
+            if (!val) {
+                document.querySelectorAll(".card, .story-card, .missing-card").forEach(c => c.style.display = "");
+                const noRes = document.getElementById("no-results");
+                if (noRes) noRes.style.display = "none";
+                return;
+            }
+            let visible = 0;
+            document.querySelectorAll(".card, .story-card, .missing-card").forEach(c => {
+                const match = c.innerText.toLowerCase().includes(val);
+                c.style.display = match ? "" : "none";
+                if (match) visible++;
+            });
+            const noRes = document.getElementById("no-results");
+            if (noRes) noRes.style.display = visible === 0 ? "block" : "none";
+        });
+    }
+
+    // ── CHECKLIST MANAGEMENT ──────────────────────────
+    function markDone(cb) {
+        if (cb && cb.parentElement) {
+            cb.parentElement.classList.toggle('done', cb.checked);
+        }
+        saveChecklist();
+    }
+
+    function saveChecklist() {
+        const state = {};
+        document.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb => {
+            state[cb.id] = cb.checked;
+        });
+        try { localStorage.setItem('np_checklist', JSON.stringify(state)); } catch(e) {}
+    }
+
+    function loadChecklist() {
+        try {
+            const state = JSON.parse(localStorage.getItem('np_checklist') || '{}');
+            Object.entries(state).forEach(([id, checked]) => {
+                const cb = document.getElementById(id);
+                if (cb) {
+                    cb.checked = checked;
+                    if (cb.parentElement) cb.parentElement.classList.toggle('done', checked);
+                }
+            });
+        } catch(e) {}
+    }
+
+    function resetChecklist() {
+        document.querySelectorAll('#checklist input[type="checkbox"]').forEach(cb => {
+            cb.checked = false;
+            if (cb.parentElement) cb.parentElement.classList.remove('done');
+        });
+        try { localStorage.removeItem('np_checklist'); } catch(e) {}
+        showToast("Checklist reset!");
+    }
+
+    // ── UTILITIES & TOAST ─────────────────────────────
     function whatsapp(name, link) {
         const isAbsolute = link.startsWith("http");
         const fullLink = isAbsolute ? link : window.location.origin + "/" + link;
@@ -510,17 +1226,84 @@
         window.open(`https://wa.me/?text=${text}`, "_blank");
     }
 
+    function waText(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = encodeURIComponent(el.textContent.trim());
+        window.open(`https://wa.me/?text=${text}`, "_blank");
+    }
+
     function copyText(id) {
-        const text = document.getElementById(id).textContent.trim();
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = el.textContent.trim();
         navigator.clipboard.writeText(text).then(() => showToast("Copied!"));
     }
 
+    let toastTimer = null;
     function showToast(msg) {
         const t = document.getElementById("toast");
+        if (!t) return;
+        if (toastTimer) clearTimeout(toastTimer);
         t.textContent = msg;
         t.classList.add("show");
-        setTimeout(() => t.classList.remove("show"), 2000);
+        toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
     }
+
+    // ── LANGUAGE TOGGLE (GOOGLE TRANSLATE) ────────────
+    let currentLang = 'en';
+
+    function initTranslate() {
+        const el = document.createElement('div');
+        el.id = 'google_translate_element';
+        el.style.display = 'none';
+        document.body.appendChild(el);
+
+        const s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+        document.head.appendChild(s);
+    }
+
+    window.googleTranslateInit = function() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            includedLanguages: 'hi',
+            autoDisplay: false
+        }, 'google_translate_element');
+    };
+
+    function setLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.lang === lang);
+        });
+
+        if (lang === 'hi') {
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = 'hi';
+                sel.dispatchEvent(new Event('change'));
+            } else {
+                setTimeout(() => setLang('hi'), 600);
+            }
+        } else {
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) {
+                sel.value = '';
+                sel.dispatchEvent(new Event('change'));
+            }
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+            if (currentLang !== 'en') location.reload();
+        }
+    }
+
+    initTranslate();
+
+    // ── GOOGLE SHEETS LIVE SYNC ───────────────────────
+    const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
+    const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
+    const SHEET_NAME = 'ShopVisits';
 
     function loginFromHub() {
         google.accounts.oauth2.initTokenClient({
@@ -548,19 +1331,24 @@
     async function fetchLiveVisits() {
         const tbody = document.getElementById('tracker-tbody');
         const cta = document.getElementById('tracker-login-cta');
+        const statusEl = document.getElementById('user-status-text');
         const token = localStorage.getItem('nearpop_token');
         const exp = localStorage.getItem('nearpop_token_exp');
         const cachedUserStr = localStorage.getItem('nearpop_user');
 
+        if (!tbody) return;
+
         if (!token || !exp || Date.now() > parseInt(exp) || !cachedUserStr) {
-            cta.style.display = 'block';
+            if (cta) cta.style.display = 'block';
             tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:18px; color:var(--text-muted);">Please sign in above to load your visits.</td></tr>`;
             return;
         }
 
-        cta.style.display = 'none';
+        if (cta) cta.style.display = 'none';
         const user = JSON.parse(cachedUserStr);
-        document.getElementById('user-status-text').textContent = `Logged in as ${user.name || user.email}`;
+        if (statusEl) {
+            statusEl.textContent = `Logged in as ${user.name || user.email}`;
+        }
         tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:18px; color:var(--text-muted);">Fetching your live shop visits...</td></tr>`;
 
         try {
@@ -613,7 +1401,10 @@
         }
     }
 
-    window.addEventListener('DOMContentLoaded', fetchLiveVisits);
+    window.addEventListener('DOMContentLoaded', () => {
+        loadChecklist();
+        fetchLiveVisits();
+    });
 </script>
 </body>
 </html>

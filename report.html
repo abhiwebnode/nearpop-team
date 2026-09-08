@@ -160,6 +160,7 @@
             padding: 12px 0;
             border-bottom: 1px solid var(--border);
             font-size: 13px;
+            transition: opacity 0.2s;
         }
         .visit-row:last-child { border-bottom: none; }
         .visit-info h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
@@ -193,30 +194,33 @@
         }
         .delete-btn:active { opacity: 1; background: #FEE2E2; }
 
-        /* CONFIRM OVERLAY */
+        /* CENTERED CONFIRM OVERLAY */
         .confirm-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.45);
-            z-index: 9998;
+            background: rgba(0,0,0,0.6);
+            z-index: 10000;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(2px);
         }
         .confirm-box {
             background: var(--white);
-            border-radius: 20px 20px 0 0;
-            padding: 24px 20px 36px;
+            border-radius: var(--radius);
+            padding: 24px 20px;
             width: 100%;
-            max-width: 480px;
+            max-width: 380px;
             text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        .confirm-box h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-        .confirm-box p  { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.4; }
+        .confirm-box h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+        .confirm-box p  { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
         .confirm-btn-row { display: flex; gap: 10px; }
         .confirm-btn {
             flex: 1;
-            padding: 13px;
+            padding: 12px;
             border-radius: 10px;
             font-size: 14px;
             font-weight: 700;
@@ -357,12 +361,11 @@
             border-radius: 24px;
             font-size: 13px;
             font-weight: 600;
-            z-index: 9999;
+            z-index: 10001;
             transition: transform 0.3s ease;
             white-space: nowrap;
         }
         .toast.show { transform: translateX(-50%) translateY(0); }
-
 
         /* LANGUAGE TOGGLE */
         .lang-toggle {
@@ -382,7 +385,7 @@
             background: transparent;
             cursor: pointer;
             font-family: 'Inter', sans-serif;
-            color: var(--text-muted);
+            color: var(--muted);
             transition: 0.15s;
             white-space: nowrap;
         }
@@ -390,7 +393,6 @@
             background: var(--primary);
             color: #fff;
         }
-        /* Hide Google Translate toolbar completely */
         .goog-te-banner-frame, .skiptranslate { display: none !important; }
         body { top: 0 !important; }
         .goog-te-gadget { display: none !important; }
@@ -596,11 +598,12 @@
 <script>
     const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
     const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
-    const SHEET_NAME = 'ShopVisits'; // Target tab
+    const SHEET_NAME = 'ShopVisits';
 
     let currentUser  = null;  
     let accessToken  = null;
     let allVisits    = [];
+    let targetSheetNumericId = null;
 
     function todayStr() {
         return new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'2-digit', year:'numeric' });
@@ -613,6 +616,25 @@
     }
     function formatDate(d) {
         return d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
+    }
+
+    // Dynamic resolution of the numeric sheetId (gid)
+    async function getShopVisitsSheetId() {
+        if (targetSheetNumericId !== null) return targetSheetNumericId;
+        try {
+            const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`, {
+                headers: { Authorization: 'Bearer ' + accessToken }
+            });
+            const meta = await res.json();
+            const found = meta.sheets?.find(s => s.properties.title.toLowerCase() === SHEET_NAME.toLowerCase());
+            if (found) {
+                targetSheetNumericId = found.properties.sheetId;
+                return targetSheetNumericId;
+            }
+        } catch(e) {
+            console.error('Could not determine numeric sheetId:', e);
+        }
+        return 0; // Fallback to 0 if it's the first sheet
     }
 
     // ================================================
@@ -673,6 +695,7 @@
     function signOut() {
         accessToken = null; 
         currentUser = null;
+        targetSheetNumericId = null;
         localStorage.removeItem('nearpop_token');
         localStorage.removeItem('nearpop_token_exp');
         localStorage.removeItem('nearpop_user');
@@ -723,7 +746,7 @@
             const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
             const data = await res.json();
             const rows = (data.values || []).slice(1);
-            // Store each row with its 1-based sheet row index (slice(1) removed header = row 1, so data row 0 = sheet row 2)
+            
             allVisits = rows
                 .map((r, i) => ({ data: r, sheetRow: i + 2 }))
                 .filter(entry => entry.data[1]?.trim().toLowerCase() === currentUser.email.toLowerCase());
@@ -790,7 +813,7 @@
                     </div>
                     <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
                         <span class="status-tag ${badgeClass}">${r[5]}</span>
-                        <button class="delete-btn" onclick="confirmDelete(${sheetRow}, '${r[3].replace(/'/g,"\'")}')">🗑️</button>
+                        <button class="delete-btn" onclick="confirmDelete(${sheetRow}, decodeURIComponent('${encodeURIComponent(r[3] || '')}'))">🗑️</button>
                     </div>
                 </div>`;
             }).join('');
@@ -927,8 +950,7 @@
 
             if (!res.ok) throw new Error('Sheet write failed');
 
-            // Parse the appended row number from API response
-            let newSheetRow = allVisits.length + 2; // fallback estimate
+            let newSheetRow = allVisits.length + 2;
             try {
                 const appendData = await res.clone().json().catch(() => null);
                 if (appendData?.updates?.updatedRange) {
@@ -939,7 +961,7 @@
             allVisits.push({ data: row, sheetRow: newSheetRow });
             showToast('Visit logged! ✅');
 
-            // Reset form fields
+            // Reset form
             document.getElementById('form-shop').value = '';
             document.getElementById('form-area').value = '';
             document.getElementById('form-gmail').value = '';
@@ -964,20 +986,22 @@
     }
 
     // ================================================
-    // DELETE VISIT
+    // DELETE VISIT (DYNAMIC ID + CENTERED MODAL)
     // ================================================
     function confirmDelete(sheetRow, shopName) {
-        // Remove existing overlay if any
         const existing = document.getElementById('confirm-overlay');
         if (existing) existing.remove();
 
         const overlay = document.createElement('div');
         overlay.className = 'confirm-overlay';
         overlay.id = 'confirm-overlay';
+        
+        const safeShop = shopName ? shopName.replace(/</g, '&lt;').replace(/>/g, '&gt;') : 'this shop';
+
         overlay.innerHTML = `
             <div class="confirm-box">
                 <h3>Delete this entry?</h3>
-                <p><strong>${shopName}</strong><br>This will remove the record from the sheet. This cannot be undone.</p>
+                <p><strong>${safeShop}</strong><br>This will permanently remove the record from your Google Sheet.</p>
                 <div class="confirm-btn-row">
                     <button class="confirm-btn confirm-cancel" onclick="document.getElementById('confirm-overlay').remove()">Cancel</button>
                     <button class="confirm-btn confirm-delete" onclick="deleteRow(${sheetRow})">Delete</button>
@@ -987,16 +1011,14 @@
     }
 
     async function deleteRow(sheetRow) {
-        // Remove overlay immediately for snappy feel
         const overlay = document.getElementById('confirm-overlay');
         if (overlay) overlay.remove();
 
-        // Grey out the row visually while deleting
         const rowEl = document.getElementById('row-' + sheetRow);
-        if (rowEl) rowEl.style.opacity = '0.4';
+        if (rowEl) rowEl.style.opacity = '0.3';
 
         try {
-            // Sheets API: delete a single row by index (0-based: sheetRow-1)
+            const numericSheetId = await getShopVisitsSheetId();
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`;
             const res = await fetch(url, {
                 method: 'POST',
@@ -1005,7 +1027,7 @@
                     requests: [{
                         deleteDimension: {
                             range: {
-                                sheetId: 288627704,
+                                sheetId: numericSheetId,
                                 dimension: 'ROWS',
                                 startIndex: sheetRow - 1,
                                 endIndex: sheetRow
@@ -1015,11 +1037,12 @@
                 })
             });
 
-            if (!res.ok) throw new Error('Delete failed');
+            const respData = await res.json();
+            if (!res.ok || respData.error) {
+                throw new Error(respData.error?.message || 'Delete rejected');
+            }
 
-            // Remove from local allVisits and re-index remaining rows
             allVisits = allVisits.filter(e => e.sheetRow !== sheetRow);
-            // Decrement sheetRow for all rows below the deleted one
             allVisits = allVisits.map(e => ({
                 data: e.data,
                 sheetRow: e.sheetRow > sheetRow ? e.sheetRow - 1 : e.sheetRow
@@ -1029,7 +1052,7 @@
             renderDashboard();
         } catch(e) {
             if (rowEl) rowEl.style.opacity = '1';
-            showToast('Delete failed — try again');
+            showToast('Delete failed: ' + e.message);
         }
     }
 
@@ -1070,13 +1093,11 @@
     let currentLang = 'en';
 
     function initTranslate() {
-        // Create hidden Google Translate element
         const el = document.createElement('div');
         el.id = 'google_translate_element';
         el.style.display = 'none';
         document.body.appendChild(el);
 
-        // Load Google Translate script
         const s = document.createElement('script');
         s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
         document.head.appendChild(s);
@@ -1097,25 +1118,19 @@
         });
 
         if (lang === 'hi') {
-            // Trigger Hindi translation
             const sel = document.querySelector('.goog-te-combo');
             if (sel) {
                 sel.value = 'hi';
                 sel.dispatchEvent(new Event('change'));
             } else {
-                // Script not loaded yet — wait and retry
                 setTimeout(() => setLang('hi'), 600);
             }
         } else {
-            // Restore English — reload without translate cookie
-            const frame = document.querySelector('.goog-te-menu-frame');
-            // Use Google's restore mechanism
             const sel = document.querySelector('.goog-te-combo');
             if (sel) {
                 sel.value = '';
                 sel.dispatchEvent(new Event('change'));
             }
-            // Fallback: remove cookie and reload
             document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
             document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
             if (currentLang !== 'en') location.reload();
@@ -1123,8 +1138,6 @@
     }
 
     initTranslate();
-    // ─────────────────────────────────────────────────
-
 </script>
 </body>
 </html>

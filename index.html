@@ -678,17 +678,18 @@
                 </div>
             </div>
             <div class="lang-divider">Hindi Version</div>
-            <div class="btn-row">
-                <a href="files/Faridabad_Merchant.html" target="_blank" class="btn btn-view">Open</a>
-                <a href="files/Faridabad_Merchant.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Faridabad Merchant Flyer (Hindi)','files/Faridabad_Merchant.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
-            <div class="lang-divider">English Version</div>
-            <div class="btn-row">
-                <a href="files/Faridabad_Merchant_English.html" target="_blank" class="btn btn-view">Open</a>
-                <a href="files/Faridabad_Merchant_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Faridabad Merchant Flyer (English)','files/Faridabad_Merchant_English.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
+			<div class="btn-row">
+				<a href="files/Faridabad_Merchant.html" target="_blank" class="btn btn-view">Open</a>
+				<a href="files/Faridabad_Merchant.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+				<a href="#" onclick="shareFlyerFile('NearPop Faridabad Merchant Flyer (Hindi)', 'files/Faridabad_Merchant.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
+
+			<div class="lang-divider">English Version</div>
+			<div class="btn-row">
+				<a href="files/Faridabad_Merchant_English.html" target="_blank" class="btn btn-view">Open</a>
+				<a href="files/Faridabad_Merchant_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+				<a href="#" onclick="shareFlyerFile('NearPop Faridabad Merchant Flyer (English)', 'files/Faridabad_Merchant_English.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
         </div>
 
         <div class="card">
@@ -1224,6 +1225,44 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         const text = encodeURIComponent(`*NearPop:* ${name}\n${fullLink}`);
         window.open(`https://wa.me/?text=${text}`, "_blank");
     }
+
+	async function shareFlyerFile(title, serverPath, mimeType) {
+		showToast("Preparing file from server...");
+
+		try {
+			// 1. Download file directly from server into browser memory
+			const response = await fetch(serverPath);
+			if (!response.ok) throw new Error("File not found on server");
+			
+			const blob = await response.blob();
+			const fileName = serverPath.split('/').pop();
+			const file = new File([blob], fileName, { type: mimeType });
+
+			// 2. Pass the file directly to the device share system (Android/iOS)
+			if (navigator.canShare && navigator.canShare({ files: [file] })) {
+				await navigator.share({
+					files: [file],
+					title: title
+				});
+				return;
+			}
+
+			// 3. Fallback for desktop browsers where native file sharing isn't supported
+			const downloadLink = document.createElement('a');
+			downloadLink.href = URL.createObjectURL(blob);
+			downloadLink.download = fileName;
+			document.body.appendChild(downloadLink);
+			downloadLink.click();
+			document.body.removeChild(downloadLink);
+			URL.revokeObjectURL(downloadLink.href);
+			showToast("File saved to device. Attach it in WhatsApp.");
+		} catch (err) {
+			if (err.name === 'AbortError') return; // User closed the share menu
+			showToast("Could not fetch file from server");
+			console.error("Share error:", err);
+		}
+	}
+
 
     function waText(id) {
         const el = document.getElementById(id);

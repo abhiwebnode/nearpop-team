@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearPop - Official Merchant Onboarding Poster (A4)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary: #E64A19;
+            --primary-light: #FFF3EF;
+            --primary-dark: #BF360C;
+            --surface: #FFFFFF;
+            --text-main: #0A0E1A;
+            --text-sub: #2E384D;
+            --border: #CBD5E1;
+            --green: #0D7A34;
+            --green-light: #D4F7DF;
+            --green-border: #16A34A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #E2E8F0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 16px;
+            min-height: 100vh;
+        }
+
+        /* TOOLBAR FOR QUICK PRINT */
+        .toolbar {
+            width: 100%;
+            max-width: 794px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #1E293B;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        }
+
+        .toolbar h2 {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .toolbar p {
+            font-size: 12px;
+            color: #94A3B8;
+        }
+
+        .print-btn {
+            background: #FF5722;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* STANDARD A4 CANVAS: 210mm x 297mm (794px x 1123px at 96 DPI) */
+        .poster-canvas {
+            width: 794px;
+            height: 1123px;
+            background: var(--surface);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 44px 48px;
+            border: 1px solid var(--border);
+        }
+
+        /* HEADER SECTION */
+        .poster-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .logo-wrap img {
+            height: 48px;
+        }
+
+        .verified-badge {
+            background: var(--green-light);
+            color: var(--green);
+            border: 2px solid var(--green-border);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* HERO ANNOUNCEMENT */
+        .hero-section {
+            text-align: center;
+            margin: 20px 0 10px;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            background: var(--primary-light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .hero-title-hi {
+            font-size: 38px;
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1.25;
+            margin-bottom: 6px;
+        }
+
+        .hero-title-en {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        /* CENTRAL QR SHOWCASE */
+        .qr-card-container {
+            background: linear-gradient(180deg, #FFF6F3 0%, #FFFFFF 100%);
+            border: 3px solid var(--primary);
+            border-radius: 24px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(230, 74, 25, 0.08);
+            margin: 10px 0;
+        }
+
+        .qr-card-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .qr-card-sub {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 18px;
+        }
+
+        .qr-frame {
+            display: inline-block;
+            background: #FFFFFF;
+            padding: 14px;
+            border-radius: 16px;
+            border: 2px solid var(--border);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+
+        .qr-frame img {
+            width: 220px;
+            height: 220px;
+            display: block;
+        }
+
+        .scan-action {
+            margin-top: 14px;
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: 0.5px;
+        }
+
+        /* 3 VALUE PILLARS */
+        .pillars-row {
+            display: flex;
+            gap: 14px;
+            margin: 10px 0;
+        }
+
+        .pillar-box {
+            flex: 1;
+            background: #F8FAFC;
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 16px 12px;
+            text-align: center;
+        }
+
+        .pillar-icon {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .pillar-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .pillar-desc {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-sub);
+            line-height: 1.35;
+        }
+
+        /* FOOTER */
+        .poster-footer {
+            border-top: 3px solid var(--border);
+            padding-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-left h4 {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+
+        .footer-left p {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-top: 2px;
+        }
+
+        .footer-badges {
+            display: flex;
+            gap: 8px;
+        }
+
+        .footer-pill {
+            background: #F1F5F9;
+            border: 1.5px solid var(--border);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-main);
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+
+            body {
+                background: none;
+                padding: 0;
+            }
+
+            .toolbar {
+                display: none !important;
+            }
+
+            .poster-canvas {
+                width: 210mm;
+                height: 297mm;
+                border: none;
+                box-shadow: none;
+                page-break-after: always;
+                page-break-inside: avoid;
+                padding: 14mm 16mm;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toolbar">
+        <div>
+            <h2>Merchant Onboarding Wall Poster (A4)</h2>
+            <p>Ready to print or save as PDF • Display at billing counter or storefront</p>
+        </div>
+        <button class="print-btn" onclick="window.print()">🖨️ Print Poster (A4)</button>
+    </div>
+
+    <div class="poster-canvas">
+        <!-- HEADER -->
+        <div class="poster-header">
+            <div class="logo-wrap">
+                <img src="https://nearpop.in/icons/logo.png" alt="NearPop">
+            </div>
+            <div class="verified-badge">
+                <span>✔</span> NearPop Partner Shop
+            </div>
+        </div>
+
+        <!-- HERO ANNOUNCEMENT -->
+        <div class="hero-section">
+            <div class="hero-tag">Ab Yahan Available Hai</div>
+            <h1 class="hero-title-hi">Ab Hamari Shop NearPop Par Live Hai! 🎉</h1>
+            <div class="hero-title-en">Discover Our Exclusive Deals, Offers & Updates</div>
+        </div>
+
+        <!-- QR SHOWCASE -->
+        <div class="qr-card-container">
+            <div class="qr-card-title">📱 Scan With Any Camera or Google Lens</div>
+            <div class="qr-card-sub">Hamari official shop listing aur deals dekhne ke liye scan karein:</div>
+            
+            <div class="qr-frame">
+                <div id="qr-code" style="width:220px;height:220px;display:flex;align-items:center;justify-content:center;"></div>
+            </div>
+
+            <div class="scan-action">👉 Scan Karein • Deals Pao • Direct Connect</div>
+        </div>
+
+        <!-- 3 VALUE PILLARS -->
+        <div class="pillars-row">
+            <div class="pillar-box">
+                <div class="pillar-icon">📍</div>
+                <div class="pillar-title">Nearby Discovery</div>
+                <div class="pillar-desc">Sirf aapke area ke aas-paas ke verified offers</div>
+            </div>
+            <div class="pillar-box">
+                <div class="pillar-icon">🏷️</div>
+                <div class="pillar-title">Direct Deals</div>
+                <div class="pillar-desc">Zero commission, best price seedha local store se</div>
+            </div>
+            <div class="pillar-box">
+                <div class="pillar-icon">⚡</div>
+                <div class="pillar-title">Instant Connect</div>
+                <div class="pillar-desc">Call ya WhatsApp par seedha shopkeeper se baat karein</div>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="poster-footer">
+            <div class="footer-left">
+                <h4>nearpop.in</h4>
+                <p>Delhi NCR Ka Apna Hyperlocal Network</p>
+            </div>
+            <div class="footer-badges">
+                <div class="footer-pill">Zero Commission</div>
+                <div class="footer-pill">100% Free Forever</div>
+                <div class="footer-pill">Direct Store Connection</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    new QRCode(document.getElementById("qr-code"), {
+        text: "https://nearpop.in",
+        width: 220,
+        height: 220,
+        colorDark: "#0A0E1A",
+        colorLight: "#FFFFFF",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+</script>
+</body>
+</html>

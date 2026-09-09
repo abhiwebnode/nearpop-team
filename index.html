@@ -702,17 +702,17 @@
                 </div>
             </div>
             <div class="lang-divider">Hindi Version</div>
-            <div class="btn-row">
-                <a href="files/Delhi_Merchant.html" target="_blank" class="btn btn-view">Open</a>
-                <a href="files/Delhi_Merchant.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Delhi Merchant Flyer (Hindi)','files/Delhi_Merchant.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
-            <div class="lang-divider">English Version</div>
-            <div class="btn-row">
-                <a href="files/Delhi_Merchant_English.html" target="_blank" class="btn btn-view">Open</a>
-                <a href="files/Delhi_Merchant_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Delhi Merchant Flyer (English)','files/Delhi_Merchant_English.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
+			<div class="btn-row">
+				<a href="files/Delhi_Merchant.html" target="_blank" class="btn btn-view">Open</a>
+				<a href="files/Delhi_Merchant.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+				<a href="#" onclick="shareFlyerFile('NearPop Delhi Merchant Flyer (Hindi)', 'files/Delhi_Merchant.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
+			<div class="lang-divider">English Version</div>
+			<div class="btn-row">
+				<a href="files/Delhi_Merchant_English.html" target="_blank" class="btn btn-view">Open</a>
+				<a href="files/Delhi_Merchant_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+				<a href="#" onclick="shareFlyerFile('NearPop Delhi Merchant Flyer (English)', 'files/Delhi_Merchant_English.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
         </div>
     </div>
 
@@ -728,10 +728,10 @@
                 </div>
             </div>
             <div class="btn-row">
-                <a href="files/merchant_poster.jpg" target="_blank" class="btn btn-view">View Poster</a>
-                <a href="files/merchant_poster.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Merchant Poster','files/merchant_poster.jpg')" class="btn btn-wa">WhatsApp</a>
-            </div>
+				<a href="files/merchant_poster.jpg" target="_blank" class="btn btn-view">View Poster</a>
+				<a href="files/merchant_poster.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+				<a href="#" onclick="shareFlyerFile('NearPop Merchant Onboarding Poster', 'files/merchant_poster.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
         </div>
         <div class="card">
             <div class="card-top">
@@ -758,40 +758,55 @@
     </div>
 
     <div class="section">
-        <div class="section-title">Support Docs — Share after onboarding</div>
-        <div class="card">
-            <div class="card-top">
-                <div class="icon">❓</div>
-                <div class="details"><h3>Merchant FAQ</h3><p>Common questions merchants ask — share after sign up</p></div>
-            </div>
-            <div class="btn-row">
-                <a href="files/Merchant_FAQ.html" target="_blank" class="btn btn-view">Open</a>
-                <a href="files/Merchant_FAQ.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-                <a href="#" onclick="whatsapp('Merchant FAQ','files/Merchant_FAQ.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-top">
-                <div class="icon">🎓</div>
-                <div class="details"><h3>Merchant Training</h3><p>App tour + full documentation for new merchants</p></div>
-            </div>
-            <div class="btn-row">
-                <a href="files/merchant_tour.html" target="_blank" class="btn btn-view">App Tour</a>
-                <a href="files/merchant_documentation.html" target="_blank" class="btn btn-pdf">Full Docs</a>
-                <a href="#" onclick="whatsapp('Merchant App Tour','files/merchant_tour.html')" class="btn btn-wa">WhatsApp</a>
+    <div class="section-title">Support Docs — Share after onboarding</div>
+    
+    <!-- Merchant FAQ Card -->
+    <div class="card">
+        <div class="card-top">
+            <div class="icon">❓</div>
+            <div class="details">
+                <h3>Merchant FAQ</h3>
+                <p>Common questions merchants ask — share after sign up</p>
             </div>
         </div>
-        <div class="card">
-            <div class="card-top">
-                <div class="icon">📍</div>
-                <div class="details"><h3>Live Listing Sample</h3><p>Show this to convince hesitant merchants — this is what their page looks like</p></div>
-            </div>
-            <div class="btn-row">
-                <a href="files/Listing_sample.html" target="_blank" class="btn btn-view">View Sample</a>
-                <a href="#" onclick="whatsapp('See how your shop will look on NearPop','files/Listing_sample.html')" class="btn btn-wa">WhatsApp</a>
-            </div>
+        <div class="btn-row">
+            <a href="files/Merchant_FAQ.html" target="_blank" class="btn btn-view">Open</a>
+            <a href="files/Merchant_FAQ.pdf" target="_blank" class="btn btn-pdf">PDF</a>
+            <a href="#" onclick="shareFlyerFile('NearPop Merchant FAQ', 'files/Merchant_FAQ.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
         </div>
     </div>
+
+    <!-- Merchant Training Card -->
+    <div class="card">
+        <div class="card-top">
+            <div class="icon">🎓</div>
+            <div class="details">
+                <h3>Merchant Training</h3>
+                <p>App tour + full documentation for new merchants</p>
+            </div>
+        </div>
+        <div class="btn-row">
+            <a href="files/merchant_tour.html" target="_blank" class="btn btn-view">App Tour</a>
+            <a href="files/merchant_documentation.html" target="_blank" class="btn btn-pdf">Full Docs</a>
+            <a href="#" onclick="shareFlyerFile('NearPop Merchant App Tour', 'files/merchant_tour.html', 'text/html'); return false;" class="btn btn-wa">WhatsApp</a>
+        </div>
+    </div>
+
+    <!-- Live Listing Sample Card -->
+    <div class="card">
+        <div class="card-top">
+            <div class="icon">📍</div>
+            <div class="details">
+                <h3>Live Listing Sample</h3>
+                <p>Show this to convince hesitant merchants — this is what their page looks like</p>
+            </div>
+        </div>
+        <div class="btn-row">
+            <a href="files/Listing_sample.html" target="_blank" class="btn btn-view">View Sample</a>
+            <a href="#" onclick="shareFlyerFile('NearPop Store Listing Sample', 'files/Listing_sample.html', 'text/html'); return false;" class="btn btn-wa">WhatsApp</a>
+        </div>
+    </div>
+</div>
 
     <!-- SUCCESS STORIES -->
     <div class="section">

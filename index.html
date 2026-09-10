@@ -1525,7 +1525,7 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         // Role-based visibility
         if (hubUser.role === 'founder') {
             // Founder sees everything including tracker
-            document.querySelectorAll('.founder-only').forEach(el => el.style.display = '');
+            document.querySelectorAll('.founder-only').forEach(el => el.style.display = 'block');
             // Founder tracker shows ALL visits not just their own
             fetchLiveVisits(true);
         } else {

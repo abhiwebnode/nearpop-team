@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NearPop Social Media Templates</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF5722;
+            --primary-light: #FFF3EF;
+            --bg: #F5F6FA;
+            --white: #fff;
+            --text: #1A1A2E;
+            --muted: #6B7280;
+            --border: #E5E7EB;
+            --green: #16A34A;
+            --green-light: #DCFCE7;
+            --green-border: #22C55E;
+            --blue: #2563EB;
+            --blue-light: #EFF6FF;
+            --wa: #25D366;
+            --wa-light: #DCFCE7;
+            --ig: #E1306C;
+            --ig-light: #FDE8EF;
+            --fb: #1877F2;
+            --fb-light: #EFF6FF;
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 60px; font-size: 15px; }
+
+        /* HEADER */
+        .header { background: var(--white); border-bottom: 3px solid var(--primary); padding: 14px 16px; display: flex; align-items: center; gap: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .header a { font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; background: var(--bg); border: 1px solid var(--border); padding: 6px 10px; border-radius: 8px; white-space: nowrap; flex-shrink: 0; }
+        .header-text { flex: 1; }
+        .header-text h1 { font-size: 15px; font-weight: 700; }
+        .header-text p { font-size: 11px; color: var(--muted); }
+
+        /* ZONE PICKER */
+        .zone-wrap { padding: 16px; background: var(--white); border-bottom: 1px solid var(--border); }
+        .zone-label { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+        .zone-row { display: flex; gap: 8px; align-items: center; }
+        .zone-input { flex: 1; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif; color: var(--text); outline: none; }
+        .zone-input:focus { border-color: var(--primary); }
+        .zone-btn { padding: 11px 16px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer; white-space: nowrap; }
+        .zone-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+        .zone-chip { padding: 5px 12px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer; }
+        .zone-chip:active { background: var(--primary-light); border-color: var(--primary); color: var(--primary); }
+
+        /* TABS */
+        .tabs { display: flex; gap: 0; padding: 14px 16px 0; overflow-x: auto; scrollbar-width: none; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab { padding: 9px 14px; border-radius: 8px 8px 0 0; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; border: 1.5px solid transparent; border-bottom: none; color: var(--muted); background: transparent; transition: 0.15s; }
+        .tab.active { background: var(--white); color: var(--primary); border-color: var(--border); border-bottom-color: var(--white); position: relative; z-index: 1; }
+
+        /* CONTENT */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .content-wrap { background: var(--white); border: 1.5px solid var(--border); border-radius: 0 var(--radius) var(--radius) var(--radius); margin: 0 16px; padding: 6px 0 8px; }
+
+        /* SECTION */
+        .section { padding: 14px 16px 4px; }
+        .section-title { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; padding: 0 0 10px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+
+        /* TEMPLATE CARD */
+        .tpl-card { border: 1.5px solid var(--border); border-radius: var(--radius); margin-bottom: 12px; overflow: hidden; }
+        .tpl-header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+        .tpl-title { font-size: 13px; font-weight: 700; }
+        .tpl-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+        .tag-wa { background: var(--wa-light); color: var(--wa); }
+        .tag-ig { background: var(--ig-light); color: var(--ig); }
+        .tag-fb { background: var(--fb-light); color: var(--fb); }
+        .tag-hi { background: var(--primary-light); color: var(--primary); }
+        .tag-en { background: var(--blue-light); color: var(--blue); }
+
+        .tpl-body { padding: 12px 14px; font-size: 13px; line-height: 1.7; color: var(--text); white-space: pre-wrap; background: #FAFAFA; font-family: 'Inter', sans-serif; }
+        .tpl-body .zone-highlight { color: var(--primary); font-weight: 700; }
+
+        .tpl-footer { padding: 10px 14px; display: flex; gap: 8px; border-top: 1px solid var(--border); }
+        .btn { flex: 1; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 12px; font-weight: 700; border: none; font-family: 'Inter', sans-serif; cursor: pointer; transition: opacity 0.1s, transform 0.1s; }
+        .btn:active { transform: scale(0.96); opacity: 0.85; }
+        .btn-copy { background: var(--blue-light); color: var(--blue); border: 1px solid #93C5FD; }
+        .btn-wa { background: var(--wa-light); color: var(--wa); border: 1px solid var(--green-border); }
+
+        /* TIP BOX */
+        .tip-box { background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #92400E; margin-bottom: 12px; line-height: 1.5; }
+        .tip-box strong { display: block; margin-bottom: 4px; }
+
+        /* CHAR COUNT */
+        .char-count { font-size: 10px; color: var(--muted); text-align: right; padding: 4px 14px 0; }
+        .char-count.over { color: #DC2626; }
+
+        /* TOAST */
+        .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px); background: #1A1A2E; color: #fff; padding: 10px 20px; border-radius: 24px; font-size: 13px; font-weight: 600; z-index: 9999; transition: transform 0.3s ease; white-space: nowrap; }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        /* LANG TOGGLE */
+        .lang-toggle { display: flex; align-items: center; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+        .lang-btn { padding: 6px 10px; font-size: 12px; font-weight: 700; border: none; background: transparent; cursor: pointer; font-family: 'Inter', sans-serif; color: var(--muted); transition: 0.15s; white-space: nowrap; }
+        .lang-btn.active { background: var(--primary); color: #fff; }
+        .goog-te-banner-frame, .skiptranslate { display: none !important; }
+        body { top: 0 !important; }
+        .goog-te-gadget { display: none !important; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <a href="index.html">← Hub</a>
+    <div class="header-text">
+        <h1>Social Templates</h1>
+        <p>Copy & post — update zone above</p>
+    </div>
+    <div class="lang-toggle">
+        <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
+    </div>
+</div>
+
+<!-- ZONE PICKER -->
+<div class="zone-wrap">
+    <div class="zone-label">📍 Your Area — all templates update automatically</div>
+    <div class="zone-row">
+        <input type="text" class="zone-input" id="zone-input" placeholder="e.g. Sector 15, Faridabad" oninput="updateZone()">
+        <button class="zone-btn" onclick="clearZone()">Reset</button>
+    </div>
+    <div class="zone-chips">
+        <div class="zone-chip" onclick="setZone('Sector 15, Faridabad')">Sector 15</div>
+        <div class="zone-chip" onclick="setZone('Sector 16, Faridabad')">Sector 16</div>
+        <div class="zone-chip" onclick="setZone('Old Faridabad Market')">Old Market</div>
+        <div class="zone-chip" onclick="setZone('NIT, Faridabad')">NIT</div>
+        <div class="zone-chip" onclick="setZone('Ballabhgarh')">Ballabhgarh</div>
+        <div class="zone-chip" onclick="setZone('Lajpat Nagar, Delhi')">Lajpat Nagar</div>
+    </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+    <div class="tab active" onclick="switchTab('wa-status', this)">📱 WA Status</div>
+    <div class="tab" onclick="switchTab('wa-group', this)">💬 WA Group</div>
+    <div class="tab" onclick="switchTab('ig-caption', this)">📸 IG Caption</div>
+    <div class="tab" onclick="switchTab('ig-story', this)">🎬 IG Story</div>
+    <div class="tab" onclick="switchTab('facebook', this)">👥 Facebook</div>
+</div>
+
+<!-- ===== WHATSAPP STATUS TAB ===== -->
+<div class="tab-content active" id="tab-wa-status">
+<div class="content-wrap">
+    <div class="section">
+        <div class="section-title">WhatsApp Status — Keep under 700 chars, image optional</div>
+
+        <div class="tip-box">
+            <strong>📌 Best practice for WA Status</strong>
+            Post between 7–9 AM or 6–8 PM. Add a screenshot of the NearPop app showing deals in your area as the image. Text appears as caption.
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Weekly Deals Announcement</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-s-1">🛍️ <span class="zone-highlight">[ZONE]</span> ke sabse acche deals ab NearPop par!
+
+Is hafte ke top offers:
+✅ Local shops ke exclusive deals
+✅ GPS se seedha aapke paas ke stores
+✅ Koi app download nahi chahiye
+
+👉 Abhi dekho: nearpop.in
+📍 Sirf <span class="zone-highlight">[ZONE]</span> aur aas-paas</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-s-1')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-s-1')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Weekend Special</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-s-2">🎉 Weekend Special — <span class="zone-highlight">[ZONE]</span>!
+
+Aaj apne paas ke shops pe special deals hain 🏪
+
+NearPop kholein → Location on karein → Deals dekhen
+
+Bilkul free • No registration • Sirf scan karo
+🔗 nearpop.in</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-s-2')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-s-2')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">New Shops Added</span>
+                <span class="tpl-tag tag-en">English</span>
+            </div>
+            <div class="tpl-body" id="wa-s-3">📍 New shops just added in <span class="zone-highlight">[ZONE]</span> on NearPop!
+
+Discover deals from local stores near you — restaurants, grocery, medical, fashion & more.
+
+Open nearpop.in → Turn on GPS → See what's near you 🗺️
+
+100% Free. No app needed.</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-s-3')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-s-3')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Short Punchy (Under 100 chars)</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-s-4"><span class="zone-highlight">[ZONE]</span> ke deals ab NearPop par 🔥
+GPS on karo, deals dhundo → nearpop.in</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-s-4')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-s-4')">Share on WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ===== WHATSAPP GROUP TAB ===== -->
+<div class="tab-content" id="tab-wa-group">
+<div class="content-wrap">
+    <div class="section">
+        <div class="section-title">WhatsApp Group Message — Society / Colony / Market groups</div>
+
+        <div class="tip-box">
+            <strong>📌 Best practice for WA Groups</strong>
+            Post in RWA groups, colony WhatsApp groups, market association groups. Don't post more than twice a week in the same group — admins may remove you. Always add personal touch at the start.
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">RWA / Colony Group</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-g-1">Namaste sabko 🙏
+
+<span class="zone-highlight">[ZONE]</span> ke residents ke liye ek kaam ki cheez share kar raha/rahi hoon —
+
+NearPop — ek free app jahan aapke 2-3 km ke andar ke local shops ke deals GPS se automatically dikhte hain. Koi subscription nahi, koi registration nahi.
+
+Abhi try karein: nearpop.in
+📍 <span class="zone-highlight">[ZONE]</span> ke 50+ shops already listed hain
+
+Apne neighbours ko bhi share karein 🙂</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-g-1')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-g-1')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Market / Trader Group</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-g-2">Jai Hind 🙏 Sabhi vyapari bhai-behno ko —
+
+NearPop par <span class="zone-highlight">[ZONE]</span> ke shops FREE mein list ho rahe hain. GPS se customers automatically aapki shop discover karte hain.
+
+✅ Apna listing free mein banao
+✅ Apne deals post karo
+✅ Customers seedha aapke paas aayenge
+
+Abhi join karein: nearpop.in
+Ya mujhse directly contact karein 📞</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-g-2')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-g-2')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Friends & Family Group</span>
+                <span class="tpl-tag tag-en">English + Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-g-3">Hey everyone! 👋
+
+Found something really useful for <span class="zone-highlight">[ZONE]</span> people — NearPop shows you deals from shops literally near your location. GPS based, completely free.
+
+Useful for:
+🛒 Grocery deals
+🍽️ Restaurant offers  
+💊 Medical shop discounts
+👗 Local fashion stores
+
+Try it: nearpop.in — no signup needed, just open and allow location.</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-g-3')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-g-3')">Share on WhatsApp</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Follow-up Message (after 1 week)</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="wa-g-4">Update 📢 — <span class="zone-highlight">[ZONE]</span> NearPop par aur bhi shops aa gaye hain!
+
+Pichle hafte se kaafi naye listings add hue hain. Agar pehle nahi dekha toh ab zaroor dekho —
+
+nearpop.in → Location on → Deals dekho 🎁
+
+Koi sawaal ho toh poochh sakte hain 😊</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('wa-g-4')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('wa-g-4')">Share on WhatsApp</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ===== INSTAGRAM CAPTION TAB ===== -->
+<div class="tab-content" id="tab-ig-caption">
+<div class="content-wrap">
+    <div class="section">
+        <div class="section-title">Instagram Feed Caption — Use with deal screenshot or shop photo</div>
+
+        <div class="tip-box">
+            <strong>📌 Best practice for IG Captions</strong>
+            Always pair with a visual — screenshot of NearPop showing deals, or a photo of the area/shop. Post between 11 AM–1 PM or 7–9 PM. Use all hashtags provided.
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Discovery Post</span>
+                <span class="tpl-tag tag-en">English</span>
+            </div>
+            <div class="tpl-body" id="ig-c-1">📍 <span class="zone-highlight">[ZONE]</span> — Your neighbourhood just got smarter.
+
+NearPop shows you the best deals from local shops near your GPS location. No app download. No sign up. Just open and discover.
+
+👉 Try it free at nearpop.in
+
+🏪 Restaurants • Grocery • Medical • Fashion • and more
+🗺️ Only shows shops within 2–3 km of you
+💸 100% Free, zero commission
+
+Save this post for later! 🔖
+
+#NearPop #<span class="zone-highlight">[ZONE_TAG]</span> #FaridabadDeals #LocalDeals #DelhiNCR #HyperlocalDeals #ShopLocal #FaridabadShopping #NearbyDeals #LocalShops</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-c-1')">Copy</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Hinglish Casual Post</span>
+                <span class="tpl-tag tag-hi">Hinglish</span>
+            </div>
+            <div class="tpl-body" id="ig-c-2">Yaar, ye try kiya kya? 👀
+
+<span class="zone-highlight">[ZONE]</span> ke local shops ke deals GPS se automatically dikhta hai — kisi ne NearPop banana shuru kiya hai aur it's actually useful 🔥
+
+🆓 Free hai
+📍 Location based
+🏪 Local shops only
+⚡ Koi app download nahi
+
+nearpop.in pe jao aur dekho apne area mein kya deals hain!
+
+#NearPop #LocalDeals #<span class="zone-highlight">[ZONE_TAG]</span> #DelhiNCR #FaridabadLife #ShopLocalIndia #HyperlocalApp</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-c-2')">Copy</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Weekly Deals Roundup</span>
+                <span class="tpl-tag tag-en">English</span>
+            </div>
+            <div class="tpl-body" id="ig-c-3">🛍️ This Week's Best Local Deals — <span class="zone-highlight">[ZONE]</span>
+
+Check out what's live on NearPop near you this week 👇
+
+🍽️ Food & Restaurants — special offers
+🛒 Grocery — fresh deals  
+👗 Fashion — discounts live
+💊 Medical — check availability
+
+All discoverable on NearPop with GPS — no searching, just open and see what's near you.
+
+🔗 nearpop.in (link in bio)
+
+#NearPop #WeeklyDeals #<span class="zone-highlight">[ZONE_TAG]</span> #LocalOffers #FaridabadDeals #DelhiNCRDeals #ShopLocal #NearbyStores</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-c-3')">Copy</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ===== INSTAGRAM STORY TAB ===== -->
+<div class="tab-content" id="tab-ig-story">
+<div class="content-wrap">
+    <div class="section">
+        <div class="section-title">Instagram Story Text — Short, punchy, swipe-up friendly</div>
+
+        <div class="tip-box">
+            <strong>📌 Best practice for IG Stories</strong>
+            Stories disappear in 24 hours — post daily if you can. Use NearPop app screenshot as background image. Add the link sticker pointing to nearpop.in. Keep text very short — people swipe fast.
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Story Text 1 — Question Hook</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="ig-s-1"><span class="zone-highlight">[ZONE]</span> mein rehte ho?
+
+Kya pata tha itne saare deals hain paas mein? 👀
+
+NearPop kholein aur dekho 👇
+nearpop.in</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-s-1')">Copy</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Story Text 2 — Urgency</span>
+                <span class="tpl-tag tag-hi">Hinglish</span>
+            </div>
+            <div class="tpl-body" id="ig-s-2">🔥 <span class="zone-highlight">[ZONE]</span> ke local shops
+pe deals live hain!
+
+GPS on karo → nearpop.in
+Free hai, 2 second ka kaam 🙌</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-s-2')">Copy</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Story Text 3 — Clean English</span>
+                <span class="tpl-tag tag-en">English</span>
+            </div>
+            <div class="tpl-body" id="ig-s-3">Local deals near <span class="zone-highlight">[ZONE]</span>
+
+Open nearpop.in
+Allow location
+See what's near you 📍
+
+Free. No sign up.</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-s-3')">Copy</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Story Text 4 — Poll style</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="ig-s-4">Aapko pata tha? 🤔
+
+<span class="zone-highlight">[ZONE]</span> mein 50+ shops
+NearPop par free listed hain!
+
+Aaj pehli baar dekho 👇
+nearpop.in</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('ig-s-4')">Copy</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- ===== FACEBOOK TAB ===== -->
+<div class="tab-content" id="tab-facebook">
+<div class="content-wrap">
+    <div class="section">
+        <div class="section-title">Facebook — Groups & Page posts</div>
+
+        <div class="tip-box">
+            <strong>📌 Best practice for Facebook</strong>
+            Post in local Facebook groups — "<span class="zone-highlight">[ZONE]</span> Community", "Faridabad Buy Sell", "Delhi NCR Local Groups". Facebook allows longer posts. Always add the link. Morning 8–10 AM and evening 7–9 PM work best.
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Community Group Post</span>
+                <span class="tpl-tag tag-hi">Hindi</span>
+            </div>
+            <div class="tpl-body" id="fb-1">📢 <span class="zone-highlight">[ZONE]</span> ke saathi — ek useful cheez share kar raha hoon
+
+NearPop ek free hyperlocal app hai jo GPS se aapke 2-3 km ke andar ke local shops ke deals automatically dikhata hai. JustDial ya Google jaisa nahi — ye sirf aapke bilkul paas ke shops dikhata hai, aur deals bhi.
+
+Kya milega:
+🏪 Local restaurants, grocery, medical, fashion ke deals
+📍 GPS based — koi manual search nahi
+💸 Bilkul free — koi subscription, koi commission nahi
+⚡ Koi app download nahi — seedha website se chalta hai
+
+<span class="zone-highlight">[ZONE]</span> ke 50+ shops already listed hain.
+
+Try karein: nearpop.in
+
+Apne doston aur family ko bhi share karein jo is area mein rehte hain 🙏</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('fb-1')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('fb-1')">WhatsApp bhi</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">Buy/Sell Group Post</span>
+                <span class="tpl-tag tag-en">English</span>
+            </div>
+            <div class="tpl-body" id="fb-2">🛍️ Looking for deals near <span class="zone-highlight">[ZONE]</span>? Try NearPop!
+
+NearPop is a free hyperlocal discovery platform that shows you deals from shops within 2–3 km of your GPS location. No app download, no sign up — just open and explore.
+
+What you'll find:
+✅ Local grocery deals
+✅ Restaurant offers & menus  
+✅ Medical shops & availability
+✅ Fashion & lifestyle discounts
+✅ And much more from your neighbourhood
+
+Everything is FREE. Shops list themselves for free, customers discover for free.
+
+👉 Visit: nearpop.in
+📍 Currently live in <span class="zone-highlight">[ZONE]</span> and surrounding areas of Delhi NCR
+
+Share this with anyone living nearby! 🙌</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('fb-2')">Copy</button>
+                <button class="btn btn-wa" onclick="waShare('fb-2')">WhatsApp bhi</button>
+            </div>
+        </div>
+
+        <div class="tpl-card">
+            <div class="tpl-header">
+                <span class="tpl-title">NearPop Facebook Page Post</span>
+                <span class="tpl-tag tag-en">English + Hindi</span>
+            </div>
+            <div class="tpl-body" id="fb-3">📍 Now Live in <span class="zone-highlight">[ZONE]</span>!
+
+Hamne <span class="zone-highlight">[ZONE]</span> area mein 50+ local shops ki listings add kar li hain NearPop par 🎉
+
+Ab aap GPS se seedha apne paas ke deals dekh sakte hain — restaurants, grocery, medical, fashion aur bahut kuch.
+
+Bilkul free. Koi app download nahi. Bas open karo aur location allow karo.
+
+👉 nearpop.in
+
+Apne <span class="zone-highlight">[ZONE]</span> ke doston ko tag karo jo deals dhundte hain! 👇
+
+#NearPop #<span class="zone-highlight">[ZONE_TAG]</span> #DelhiNCR #LocalDeals #FaridabadDeals #ShopLocal</div>
+            <div class="tpl-footer">
+                <button class="btn btn-copy" onclick="copyTemplate('fb-3')">Copy</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script src="https://accounts.google.com/gsi/client" async></script>
+<script>
+    let currentZone = 'Sector 15, Faridabad';
+
+    function updateZone() {
+        const val = document.getElementById('zone-input').value.trim();
+        currentZone = val || 'Sector 15, Faridabad';
+        refreshTemplates();
+    }
+
+    function setZone(zone) {
+        document.getElementById('zone-input').value = zone;
+        currentZone = zone;
+        refreshTemplates();
+    }
+
+    function clearZone() {
+        document.getElementById('zone-input').value = '';
+        currentZone = 'Sector 15, Faridabad';
+        document.getElementById('zone-input').placeholder = 'e.g. Sector 15, Faridabad';
+        refreshTemplates();
+    }
+
+    function zoneTag(zone) {
+        // Convert zone name to hashtag: "Sector 15, Faridabad" → "Sector15Faridabad"
+        return zone.replace(/[^a-zA-Z0-9\u0900-\u097F]/g, '');
+    }
+
+    function refreshTemplates() {
+        document.querySelectorAll('.tpl-body').forEach(el => {
+            el.querySelectorAll('.zone-highlight').forEach(span => {
+                if (span.dataset.type === 'tag') {
+                    span.textContent = zoneTag(currentZone);
+                } else {
+                    span.textContent = currentZone;
+                }
+            });
+        });
+        // Fix zone tag spans
+        document.querySelectorAll('.tpl-body').forEach(el => {
+            el.innerHTML = el.innerHTML.replace(/\[ZONE_TAG\]/g, zoneTag(currentZone));
+        });
+    }
+
+    function getPlainText(id) {
+        const el = document.getElementById(id);
+        // Get text content, replacing zone highlights with current zone
+        let text = '';
+        el.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE) {
+                text += node.textContent;
+            } else if (node.classList && node.classList.contains('zone-highlight')) {
+                text += node.textContent;
+            } else {
+                text += node.textContent;
+            }
+        });
+        return text.trim();
+    }
+
+    function copyTemplate(id) {
+        const text = getPlainText(id);
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('Copied! Paste anywhere 📋');
+        }).catch(() => {
+            // Fallback for older mobile browsers
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast('Copied! Paste anywhere 📋');
+        });
+    }
+
+    function waShare(id) {
+        const text = encodeURIComponent(getPlainText(id));
+        window.open(`https://wa.me/?text=${text}`, '_blank');
+    }
+
+    function switchTab(name, el) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + name).classList.add('active');
+        el.classList.add('active');
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2500);
+    }
+
+    // Language toggle
+    let currentLang = 'en';
+    function initTranslate() {
+        const el = document.createElement('div');
+        el.id = 'google_translate_element';
+        el.style.display = 'none';
+        document.body.appendChild(el);
+        const s = document.createElement('script');
+        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
+        document.head.appendChild(s);
+    }
+    function googleTranslateInit() {
+        new google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi', autoDisplay: false }, 'google_translate_element');
+    }
+    function setLang(lang) {
+        currentLang = lang;
+        document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+        if (lang === 'hi') {
+            const sel = document.querySelector('.goog-te-combo');
+            if (sel) { sel.value = 'hi'; sel.dispatchEvent(new Event('change')); }
+            else setTimeout(() => setLang('hi'), 600);
+        } else {
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
+            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
+            if (currentLang !== 'en') location.reload();
+        }
+    }
+    initTranslate();
+
+    // Init with default zone highlighted
+    refreshTemplates();
+</script>
+</body>
+</html>

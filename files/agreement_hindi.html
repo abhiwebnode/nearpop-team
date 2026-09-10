@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NearPop — फील्ड मार्केटिंग एग्जीक्यूटिव अनुबंध</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Noto Sans Devanagari', 'Inter', sans-serif;
+            background: #F0F2F5;
+            padding: 32px 16px 60px;
+            font-size: 15px;
+            color: #0A0E1A;
+            line-height: 1.7;
+        }
+
+        /* TOOLBAR */
+        .toolbar {
+            max-width: 794px;
+            margin: 0 auto 24px;
+            background: #1E293B;
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .toolbar-left h2 { font-size: 14px; font-weight: 700; color: #fff; }
+        .toolbar-left p  { font-size: 12px; color: #94A3B8; margin-top: 2px; }
+        .toolbar-right { display: flex; gap: 10px; }
+        .btn-print {
+            background: #E64A19; color: #fff; border: none;
+            padding: 10px 18px; border-radius: 8px; font-size: 13px;
+            font-weight: 700; font-family: 'Noto Sans Devanagari', sans-serif; cursor: pointer;
+        }
+        .btn-reset {
+            background: transparent; color: #94A3B8; border: 1.5px solid #334155;
+            padding: 10px 14px; border-radius: 8px; font-size: 13px;
+            font-weight: 700; font-family: 'Noto Sans Devanagari', sans-serif; cursor: pointer;
+        }
+        .btn-eng {
+            background: #0D7A34; color: #fff; border: none;
+            padding: 10px 14px; border-radius: 8px; font-size: 13px;
+            font-weight: 700; font-family: 'Inter', sans-serif; cursor: pointer;
+            text-decoration: none; display: inline-block;
+        }
+
+        /* DOCUMENT */
+        .doc {
+            max-width: 794px; margin: 0 auto; background: #fff;
+            border: 1px solid #CBD5E1; border-radius: 4px;
+            padding: 48px 56px; box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+        }
+
+        /* HEADER */
+        .doc-header {
+            text-align: center; border-bottom: 3px solid #E64A19;
+            padding-bottom: 20px; margin-bottom: 24px;
+        }
+        .doc-logo { height: 44px; margin-bottom: 10px; }
+        .doc-title { font-size: 18px; font-weight: 800; color: #0A0E1A; }
+        .doc-subtitle {
+            font-size: 12px; color: #64748B; font-weight: 600;
+            margin-top: 4px; letter-spacing: 0.5px;
+        }
+
+        /* PARTIES BOX */
+        .parties-box {
+            background: #F8FAFC; border: 1.5px solid #E2E8F0;
+            border-radius: 10px; padding: 18px 20px; margin-bottom: 28px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+        .party h4 {
+            font-size: 11px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.8px; color: #E64A19; margin-bottom: 8px;
+        }
+        .party-row { display: flex; flex-direction: column; gap: 4px; margin-bottom: 6px; }
+        .party-row label { font-size: 11px; font-weight: 700; color: #64748B; }
+        .party-row .val { font-size: 13px; font-weight: 700; color: #0A0E1A; }
+
+        /* EDITABLE FIELDS */
+        .edit-field {
+            border: none; border-bottom: 1.5px dashed #CBD5E1;
+            background: transparent; font-family: 'Noto Sans Devanagari', sans-serif;
+            font-size: 13px; font-weight: 700; color: #0A0E1A;
+            width: 100%; padding: 2px 0; outline: none; transition: border-color 0.2s;
+        }
+        .edit-field:focus { border-bottom-color: #E64A19; }
+        .edit-field::placeholder { color: #94A3B8; font-weight: 400; }
+        .date-field {
+            border: none; border-bottom: 1.5px dashed #CBD5E1;
+            background: transparent; font-family: 'Inter', sans-serif;
+            font-size: 13px; font-weight: 700; color: #0A0E1A;
+            padding: 2px 4px; outline: none; width: 160px;
+        }
+        .date-field:focus { border-bottom-color: #E64A19; }
+
+        /* SECTIONS */
+        .section { margin-bottom: 24px; }
+        .section-num {
+            font-size: 11px; font-weight: 800; color: #E64A19;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+        }
+        .section h3 {
+            font-size: 15px; font-weight: 800; color: #0A0E1A;
+            margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1.5px solid #F1F5F9;
+        }
+        .section p {
+            font-size: 13.5px; line-height: 1.8; color: #1E293B;
+            font-weight: 500; margin-bottom: 8px;
+        }
+
+        /* BULLET LIST */
+        .doc-list { list-style: none; padding: 0; margin: 8px 0; }
+        .doc-list li {
+            display: flex; gap: 10px; align-items: flex-start;
+            font-size: 13.5px; line-height: 1.7; color: #1E293B;
+            font-weight: 500; padding: 6px 0; border-bottom: 1px solid #F8FAFC;
+        }
+        .doc-list li:last-child { border-bottom: none; }
+        .doc-list .bullet { font-size: 13px; flex-shrink: 0; margin-top: 3px; }
+
+        /* HIGHLIGHT BOX */
+        .highlight-box {
+            background: #FFF7F5; border-left: 4px solid #E64A19;
+            border-radius: 0 8px 8px 0; padding: 12px 16px; margin: 10px 0;
+            font-size: 13.5px; line-height: 1.8; color: #1E293B; font-weight: 500;
+        }
+        .highlight-box strong {
+            display: block; color: #E64A19; margin-bottom: 4px;
+            font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* PAY TABLE */
+        .pay-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 13px; }
+        .pay-table th {
+            background: #E64A19; color: #fff; padding: 10px 12px;
+            text-align: left; font-size: 12px; font-weight: 800;
+        }
+        .pay-table th:first-child { border-radius: 6px 0 0 0; }
+        .pay-table th:last-child  { border-radius: 0 6px 0 0; }
+        .pay-table td {
+            padding: 10px 12px; border-bottom: 1px solid #F1F5F9;
+            color: #1E293B; font-weight: 600; vertical-align: top;
+        }
+        .pay-table tr:nth-child(even) td { background: #FAFAFA; }
+        .pay-table tr:last-child td { border-bottom: none; }
+        .tick { color: #0D7A34; font-weight: 800; }
+
+        /* ALERT BOX */
+        .alert-box {
+            background: #FFF5F5; border: 1.5px solid #FCA5A5;
+            border-radius: 8px; padding: 12px 16px; margin: 10px 0;
+            font-size: 13.5px; line-height: 1.8; color: #7F1D1D; font-weight: 500;
+        }
+        .alert-box strong { display: block; margin-bottom: 4px; color: #DC2626; }
+
+        /* SIGNATURES */
+        .signatures { margin-top: 32px; border-top: 2px solid #E64A19; padding-top: 24px; }
+        .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 24px; }
+        .sig-block h4 {
+            font-size: 12px; font-weight: 800; color: #E64A19;
+            text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 14px;
+        }
+        .sig-line { display: flex; flex-direction: column; gap: 12px; }
+        .sig-row { display: flex; flex-direction: column; gap: 3px; }
+        .sig-row label { font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sig-row .sig-val { border-bottom: 1.5px solid #CBD5E1; min-height: 28px; padding-bottom: 4px; font-size: 13px; font-weight: 700; }
+        .witness-box { background: #F8FAFC; border: 1.5px solid #E2E8F0; border-radius: 8px; padding: 14px 16px; }
+        .witness-box h4 { font-size: 11px; font-weight: 800; color: #64748B; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
+        .witness-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+        /* PRINT */
+        @media print {
+            @page { size: A4; margin: 12mm 14mm; }
+            body { background: none; padding: 0; font-size: 13px; }
+            .toolbar { display: none !important; }
+            .doc { box-shadow: none; border: none; padding: 0; max-width: 100%; border-radius: 0; }
+            .edit-field { border-bottom: 1px solid #999; }
+            .date-field  { border-bottom: 1px solid #999; }
+            .section { margin-bottom: 18px; }
+            .pay-table { font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+    <div class="toolbar-left">
+        <h2>फील्ड मार्केटिंग एग्जीक्यूटिव अनुबंध — हिंदी</h2>
+        <p>एग्जीक्यूटिव की जानकारी भरें → प्रिंट करें / PDF सेव करें</p>
+    </div>
+    <div class="toolbar-right">
+        <a href="agreement.html" class="btn-eng">🇬🇧 English</a>
+        <button class="btn-reset" onclick="resetForm()">↺ रीसेट</button>
+        <button class="btn-print" onclick="window.print()">🖨️ प्रिंट / PDF</button>
+    </div>
+</div>
+
+<!-- DOCUMENT -->
+<div class="doc">
+
+    <!-- HEADER -->
+    <div class="doc-header">
+        <img src="https://nearpop.in/icons/logo.png" class="doc-logo" alt="NearPop">
+        <div class="doc-title">फील्ड मार्केटिंग एग्जीक्यूटिव अनुबंध</div>
+        <div class="doc-subtitle">NearPop Private Limited • फरीदाबाद, दिल्ली NCR</div>
+    </div>
+
+    <!-- DATE -->
+    <p style="font-size:13px; font-weight:600; color:#64748B; margin-bottom:20px; text-align:center;">
+        यह अनुबंध दिनांक &nbsp;<input type="date" class="date-field" id="agreement-date">&nbsp; को किया गया है।
+    </p>
+
+    <!-- PARTIES -->
+    <div class="parties-box">
+        <div class="party">
+            <h4>कंपनी (नियोक्ता)</h4>
+            <div class="party-row">
+                <label>नाम</label>
+                <span class="val">Mamta</span>
+            </div>
+            <div class="party-row">
+                <label>पद</label>
+                <span class="val">डायरेक्टर, NearPop Private Limited</span>
+            </div>
+            <div class="party-row">
+                <label>स्थान</label>
+                <span class="val">फरीदाबाद, हरियाणा</span>
+            </div>
+        </div>
+        <div class="party">
+            <h4>फील्ड मार्केटिंग एग्जीक्यूटिव</h4>
+            <div class="party-row">
+                <label>पूरा नाम</label>
+                <input class="edit-field" id="exec-name" placeholder="एग्जीक्यूटिव का नाम लिखें" oninput="syncName()">
+            </div>
+            <div class="party-row">
+                <label>पता</label>
+                <input class="edit-field" placeholder="पूरा पता">
+            </div>
+            <div class="party-row">
+                <label>आधार नंबर</label>
+                <input class="edit-field" placeholder="XXXX XXXX XXXX" maxlength="14">
+            </div>
+            <div class="party-row">
+                <label>मोबाइल नंबर</label>
+                <input class="edit-field" placeholder="+91 XXXXX XXXXX" maxlength="14">
+            </div>
+            <div class="party-row">
+                <label>कार्यक्षेत्र (Zone)</label>
+                <input class="edit-field" placeholder="जैसे — सेक्टर 16, फरीदाबाद">
+            </div>
+            <div class="party-row">
+                <label>ज्वाइनिंग की तारीख</label>
+                <input type="date" class="date-field" id="join-date">
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="section">
+        <div class="section-num">धारा 1</div>
+        <h3>काम की प्रकृति और कार्यशैली</h3>
+        <p>आप NearPop — एक हाइपरलोकल डिस्कवरी प्लेटफॉर्म — में <strong>फील्ड मार्केटिंग एग्जीक्यूटिव</strong> के रूप में जुड़ रहे हैं। आपका मुख्य काम है — स्थानीय दुकानदारों से मिलना, उन्हें NearPop ऐप के बारे में बताना, और उनकी दुकान को प्लेटफॉर्म पर सफलतापूर्वक लिस्ट कराना।</p>
+        <p>यह एक <strong>लचीली, प्रदर्शन-आधारित ठेका भूमिका</strong> है। काम के कोई निश्चित घंटे या अनिवार्य दिन नहीं हैं। आप अपना कार्यक्रम खुद तय कर सकते हैं — लेकिन आपकी कमाई पूरी तरह आपके प्रदर्शन पर निर्भर है।</p>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="section">
+        <div class="section-num">धारा 2</div>
+        <h3>मुख्य जिम्मेदारियाँ</h3>
+        <ul class="doc-list">
+            <li><span class="bullet">🔵</span><span><strong>संपर्क करें:</strong> अपने तय क्षेत्र में स्थानीय दुकानों पर जाएं।</span></li>
+            <li><span class="bullet">🔵</span><span><strong>समझाएं और ऑनबोर्ड करें:</strong> NearPop के फायदे बताएं, दुकानदार को साइन अप कराएं और उनकी लिस्टिंग पूरी कराएं।</span></li>
+            <li><span class="bullet">🔵</span><span><strong>सक्रिय करें:</strong> हर ऑनबोर्ड दुकानदार की कम से कम <strong>3 सक्रिय लिस्टिंग</strong> ऐप पर सुनिश्चित करें।</span></li>
+            <li><span class="bullet">🔵</span><span><strong>रिपोर्ट करें:</strong> हर दुकान की विज़िट उसी दिन NearPop फील्ड ट्रैकर में दर्ज करें।</span></li>
+            <li><span class="bullet">🔵</span><span><strong>सूचित करें:</strong> यदि किसी दिन काम पर न जा सकें, तो कंपनी को पहले से WhatsApp पर बताएं।</span></li>
+        </ul>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="section">
+        <div class="section-num">धारा 3</div>
+        <h3>वेतन और पुरस्कार संरचना</h3>
+
+        <div class="highlight-box">
+            <strong>मासिक आधार वेतन — ₹10,000</strong>
+            हर महीने की 7 तारीख को UPI या बैंक ट्रांसफर द्वारा भुगतान किया जाएगा।<br>
+            <em>बीच महीने जॉइन करने पर:</em> ₹10,000 ÷ महीने के कुल दिन × काम किए गए दिन = आनुपातिक वेतन।<br>
+            <em>बिना सूचना छुट्टी कटौती:</em> बिना पूर्व सूचना के अनुपस्थित रहने पर ₹400 प्रति दिन मासिक वेतन से काटा जाएगा।
+        </div>
+
+        <div class="highlight-box">
+            <strong>दैनिक व्यापारी प्रोत्साहन — ₹50 प्रति व्यापारी</strong>
+            हर उस व्यापारी के लिए जिसे कम से कम 3 सक्रिय लिस्टिंग के साथ ऑनबोर्ड किया गया हो। ट्रैकर सत्यापन के बाद उसी शाम या अगली सुबह UPI द्वारा भुगतान।<br>
+            उदाहरण: 5 व्यापारी ऑनबोर्ड = उस दिन ₹250 मिलेंगे।
+        </div>
+
+        <div class="highlight-box">
+            <strong>साप्ताहिक प्रदर्शन बोनस — ₹200</strong>
+            यदि आप एक सप्ताह (सोमवार से रविवार) में <strong>25 या अधिक व्यापारी</strong> ऑनबोर्ड करते हैं तो ₹200 बोनस मिलेगा। हर सोमवार को पिछले सप्ताह का बोनस दिया जाएगा। लक्ष्य से कम होने पर कोई आंशिक भुगतान नहीं।
+        </div>
+
+        <div class="highlight-box">
+            <strong>मासिक उपलब्धि बोनस — ₹500</strong>
+            यदि आप पूरे कैलेंडर महीने में <strong>100 या अधिक व्यापारी</strong> ऑनबोर्ड करते हैं तो ₹500 अतिरिक्त बोनस मिलेगा। 7 तारीख को मासिक वेतन के साथ भुगतान।
+        </div>
+
+        <p style="margin-top:12px; font-weight:700; font-size:13px;">सभी लक्ष्य पूरे होने पर अधिकतम मासिक कमाई:</p>
+        <table class="pay-table">
+            <tr>
+                <th>घटक</th>
+                <th>गणना</th>
+                <th>राशि</th>
+            </tr>
+            <tr>
+                <td>मासिक आधार वेतन</td>
+                <td>निश्चित</td>
+                <td class="tick">₹10,000</td>
+            </tr>
+            <tr>
+                <td>दैनिक व्यापारी प्रोत्साहन</td>
+                <td>100 व्यापारी × ₹50</td>
+                <td class="tick">₹5,000</td>
+            </tr>
+            <tr>
+                <td>साप्ताहिक बोनस</td>
+                <td>4 सप्ताह × ₹200</td>
+                <td class="tick">₹800</td>
+            </tr>
+            <tr>
+                <td>मासिक उपलब्धि बोनस</td>
+                <td>100 व्यापारी पूरे किए</td>
+                <td class="tick">₹500</td>
+            </tr>
+            <tr style="background:#FFF7F5;">
+                <td><strong>कुल</strong></td>
+                <td><strong>सभी लक्ष्य पूरे</strong></td>
+                <td><strong style="color:#E64A19; font-size:15px;">₹16,300</strong></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="section">
+        <div class="section-num">धारा 4</div>
+        <h3>सत्यापित ऑनबोर्डिंग क्या मानी जाएगी</h3>
+        <p>एक व्यापारी की ऑनबोर्डिंग तभी सफल मानी जाएगी जब ये तीनों शर्तें पूरी हों:</p>
+        <ul class="doc-list">
+            <li><span class="bullet">1.</span><span>दुकान की लिस्टिंग NearPop पर बनाई गई हो और <strong>Active</strong> मार्क हो।</span></li>
+            <li><span class="bullet">2.</span><span>व्यापारी की प्रोफाइल पर कम से कम <strong>3 लाइव लिस्टिंग या डील</strong> हों।</span></li>
+            <li><span class="bullet">3.</span><span>विज़िट <strong>उसी दिन ट्रैकर में दर्ज</strong> की गई हो।</span></li>
+        </ul>
+        <p style="margin-top:8px;">भुगतान से पहले कंपनी सभी ऑनबोर्डिंग की जांच करेगी। किसी भी विवाद को 48 घंटे में सुलझाया जाएगा।</p>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="section">
+        <div class="section-num">धारा 5</div>
+        <h3>अनुपस्थिति और संचार नीति</h3>
+
+        <div class="highlight-box">
+            <strong>सूचित अनुपस्थिति</strong>
+            यदि आप किसी दिन काम नहीं कर सकते तो पहले से WhatsApp पर बताएं। ऐसे में कोई कटौती नहीं होगी।
+        </div>
+
+        <div class="alert-box">
+            <strong>बिना सूचना अनुपस्थिति — ₹400 प्रति दिन कटौती</strong>
+            यदि आप बिना सूचना के किसी दिन काम पर नहीं आते तो उस दिन के लिए ₹400 मासिक वेतन से काटा जाएगा।<br>
+            उदाहरण: 2 दिन बिना सूचना गैरहाज़िर रहे → ₹800 मासिक वेतन से काटे जाएंगे।
+        </div>
+
+        <div class="alert-box">
+            <strong>3 दिन का नियम — स्वतः अनुबंध समाप्ति</strong>
+            यदि आप लगातार 3 दिन बिना किसी विज़िट लॉग, संदेश या कारण के गैरहाज़िर रहते हैं, तो यह अनुबंध <strong>तीसरे दिन स्वतः समाप्त</strong> हो जाएगा — किसी नोटिस की ज़रूरत नहीं।<br><br>
+            <strong>स्वतः समाप्ति पर अंतिम भुगतान:</strong><br>
+            (₹10,000 ÷ महीने के कुल दिन) × अनुपस्थिति से पहले काम किए गए वास्तविक दिन<br>
+            + अनुपस्थिति से पहले के सत्यापित दैनिक प्रोत्साहन<br>
+            = अंतिम भुगतान। इसके बाद कोई और भुगतान नहीं किया जाएगा।
+        </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="section">
+        <div class="section-num">धारा 6</div>
+        <h3>आचार संहिता</h3>
+        <ul class="doc-list">
+            <li><span class="bullet">✅</span><span>सभी व्यापारियों के साथ हमेशा विनम्र, ईमानदार और पेशेवर व्यवहार रखें।</span></li>
+            <li><span class="bullet">✅</span><span>NearPop की आधिकारिक सामग्री से बाहर कोई वादा या गारंटी न दें।</span></li>
+            <li><span class="bullet">❌</span><span><strong>किसी भी व्यापारी से किसी भी परिस्थिति में पैसे न लें।</strong></span></li>
+            <li><span class="bullet">✅</span><span>सभी व्यापारियों की जानकारी, संपर्क विवरण और NearPop की आंतरिक सामग्री को पूरी तरह गोपनीय रखें।</span></li>
+            <li><span class="bullet">✅</span><span>काम छोड़ने पर सभी भौतिक सामग्री (स्टैंडी, प्रिंट मैटेरियल) तुरंत वापस करें।</span></li>
+        </ul>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="section">
+        <div class="section-num">धारा 7</div>
+        <h3>अनुबंध समाप्ति</h3>
+        <ul class="doc-list">
+            <li><span class="bullet">📤</span><span><strong>स्वैच्छिक इस्तीफा:</strong> 7 दिन का नोटिस दें (WhatsApp संदेश मान्य है)। अंतिम कार्यदिवस से 15 दिन के भीतर सभी बकाया राशि का भुगतान।</span></li>
+            <li><span class="bullet">📥</span><span><strong>कंपनी द्वारा समाप्ति:</strong> 7 दिन का नोटिस दिया जाएगा। 15 दिन के भीतर सभी बकाया का भुगतान।</span></li>
+            <li><span class="bullet">⚡</span><span><strong>तत्काल बर्खास्तगी (बिना नोटिस, केवल सत्यापित बकाया):</strong> ट्रैकर डेटा में गड़बड़ी • व्यापारी से पैसे लेना • गोपनीय जानकारी साझा करना • NearPop की प्रतिष्ठा को नुकसान।</span></li>
+            <li><span class="bullet">🔴</span><span><strong>स्वतः समाप्ति:</strong> बिना किसी सूचना के लगातार 3 दिन की अनुपस्थिति (देखें धारा 5)।</span></li>
+        </ul>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="section">
+        <div class="section-num">धारा 8</div>
+        <h3>कानूनी शर्तें</h3>
+        <ul class="doc-list">
+            <li><span class="bullet">⚖️</span><span><strong>विवाद समाधान:</strong> दोनों पक्ष पहले 15 दिनों में आपसी बातचीत से विवाद सुलझाने का प्रयास करेंगे। यदि समाधान न हो तो मामला <strong>फरीदाबाद, हरियाणा</strong> की अदालतों के अधिकार क्षेत्र में होगा।</span></li>
+            <li><span class="bullet">📜</span><span><strong>शासी कानून:</strong> भारतीय अनुबंध अधिनियम, 1872।</span></li>
+            <li><span class="bullet">🏢</span><span><strong>रोजगार की स्थिति:</strong> यह एक संविदात्मक व्यवस्था है। यह Factories Act, PF Act या ESI Act के अंतर्गत नियोक्ता-कर्मचारी संबंध नहीं बनाता।</span></li>
+        </ul>
+    </div>
+
+    <!-- SIGNATURES -->
+    <div class="signatures">
+        <p style="font-size:13px; font-weight:600; color:#1E293B; margin-bottom:20px;">नीचे हस्ताक्षर करके दोनों पक्ष इस बात की पुष्टि करते हैं कि उन्होंने इस अनुबंध की सभी शर्तें पढ़ी, समझी और स्वीकार की हैं।</p>
+
+        <div class="sig-grid">
+            <div class="sig-block">
+                <h4>NearPop Private Limited की ओर से</h4>
+                <div class="sig-line">
+                    <div class="sig-row"><label>नाम</label><div class="sig-val">Mamta</div></div>
+                    <div class="sig-row"><label>पद</label><div class="sig-val">डायरेक्टर</div></div>
+                    <div class="sig-row"><label>हस्ताक्षर</label><div class="sig-val" style="min-height:44px;"></div></div>
+                    <div class="sig-row"><label>तारीख</label><div class="sig-val"></div></div>
+                </div>
+            </div>
+            <div class="sig-block">
+                <h4>फील्ड मार्केटिंग एग्जीक्यूटिव</h4>
+                <div class="sig-line">
+                    <div class="sig-row"><label>नाम</label><div class="sig-val" id="sig-exec-name" style="color:#E64A19;">——</div></div>
+                    <div class="sig-row"><label>आधार (अंतिम 4 अंक)</label><div class="sig-val"></div></div>
+                    <div class="sig-row"><label>हस्ताक्षर</label><div class="sig-val" style="min-height:44px;"></div></div>
+                    <div class="sig-row"><label>तारीख</label><div class="sig-val"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="witness-box">
+            <h4>गवाह</h4>
+            <div class="witness-grid">
+                <div class="sig-row">
+                    <label>नाम</label>
+                    <input class="edit-field" placeholder="गवाह का नाम">
+                </div>
+                <div class="sig-row">
+                    <label>हस्ताक्षर</label>
+                    <div class="sig-val"></div>
+                </div>
+                <div class="sig-row">
+                    <label>तारीख</label>
+                    <input type="date" class="date-field" style="width:100%;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p style="text-align:center; font-size:11px; color:#94A3B8; margin-top:24px; font-weight:600;">
+        NearPop Private Limited • फरीदाबाद, हरियाणा
+    </p>
+
+</div>
+
+<script>
+    function syncName() {
+        const name = document.getElementById('exec-name').value.trim();
+        const sigName = document.getElementById('sig-exec-name');
+        sigName.textContent = name || '——';
+        sigName.style.color = name ? '#0A0E1A' : '#E64A19';
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('agreement-date').value = today;
+    });
+
+    function resetForm() {
+        if (!confirm('सभी भरे हुए फ़ील्ड रीसेट करें?')) return;
+        document.querySelectorAll('.edit-field').forEach(f => f.value = '');
+        document.querySelectorAll('input[type="date"]').forEach(f => {
+            const today = new Date().toISOString().split('T')[0];
+            f.value = f.id === 'agreement-date' ? today : '';
+        });
+        document.getElementById('sig-exec-name').textContent = '——';
+        document.getElementById('sig-exec-name').style.color = '#E64A19';
+    }
+</script>
+
+</body>
+</html>

@@ -216,7 +216,48 @@
         .search-box:focus { border-color: var(--primary); }
 
         /* TABS */
-        .tabs { display: flex; gap: 0; padding: 14px 16px 0; overflow-x: auto; scrollbar-width: none; }
+        /* ── TABS SCROLL WRAPPER WITH FADE ───────────── */
+        .tabs-wrapper {
+            position: relative;
+            padding: 14px 16px 0;
+        }
+        /* Fade gradient on right edge — mobile only */
+        .tabs-wrapper::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 14px;
+            bottom: 0;
+            width: 60px;
+            background: linear-gradient(to right, transparent, var(--bg) 80%);
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 0.3s;
+        }
+        /* Arrow indicator */
+        .tabs-wrapper::before {
+            content: '›';
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-20%);
+            font-size: 22px;
+            font-weight: 900;
+            color: var(--primary);
+            pointer-events: none;
+            z-index: 3;
+            line-height: 1;
+            transition: opacity 0.3s;
+        }
+        /* Hide fade+arrow when scrolled to end */
+        .tabs-wrapper.scrolled-end::after,
+        .tabs-wrapper.scrolled-end::before { opacity: 0; }
+        /* Hide on desktop — all tabs visible */
+        @media (min-width: 640px) {
+            .tabs-wrapper::after,
+            .tabs-wrapper::before { display: none; }
+        }
+        .tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; }
         .tabs::-webkit-scrollbar { display: none; }
         .tab { padding: 10px 14px; border-radius: 8px 8px 0 0; font-size: 13px; font-weight: 800; cursor: pointer; white-space: nowrap; border: 2px solid transparent; border-bottom: none; color: var(--text-muted); background: transparent; transition: 0.15s; }
         .tab.active { background: var(--surface); color: var(--primary); border-color: var(--border); border-bottom-color: var(--surface); position: relative; z-index: 1; }
@@ -478,13 +519,16 @@
     <input type="text" id="search" class="search-box" placeholder="Search any material...">
 </div>
 
-<div class="tabs">
-    <div class="tab active" onclick="switchTab('launch', this)">🚀 Launch Plan</div>
-    <div class="tab" onclick="switchTab('merchant', this)">🏢 Merchant</div>
-    <div class="tab" onclick="switchTab('customer', this)">👥 Customer</div>
-    <div class="tab" onclick="switchTab('field', this)">📋 Field Tools</div>
-    <div class="tab" onclick="switchTab('brand', this)">🎨 Brand</div>
-    <div class="tab" onclick="switchTab('contact', this)">📞 Contact</div>
+<div class="tabs-wrapper" id="tabs-wrapper">
+<div class="tabs" id="tabs-scroll">
+    <div class="tab active" data-tab="launch"   onclick="switchTab('launch', this)">🚀 Launch</div>
+    <div class="tab"        data-tab="merchant" onclick="switchTab('merchant', this)">🏢 Merchant</div>
+    <div class="tab"        data-tab="customer" onclick="switchTab('customer', this)">👥 Customer</div>
+    <div class="tab"        data-tab="field"    onclick="switchTab('field', this)">📋 Field Tools</div>
+    <div class="tab"        data-tab="social"   onclick="switchTab('social', this)">📣 Social</div>
+    <div class="tab"        data-tab="brand"    onclick="switchTab('brand', this)">🎨 Brand</div>
+    <div class="tab"        data-tab="contact"  onclick="switchTab('contact', this)">📞 Contact</div>
+</div>
 </div>
 
 <!-- ===================== LAUNCH PLAN TAB ===================== -->
@@ -1648,7 +1692,33 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
 
     window.addEventListener('DOMContentLoaded', () => {
         tryRestoreHubSession();
+        initTabsScroll();
     });
+
+    function initTabsScroll() {
+        const wrapper = document.getElementById('tabs-wrapper');
+        const scroller = document.getElementById('tabs-scroll');
+        if (!scroller || !wrapper) return;
+
+        function checkScroll() {
+            const atEnd = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 8;
+            wrapper.classList.toggle('scrolled-end', atEnd);
+        }
+
+        scroller.addEventListener('scroll', checkScroll, { passive: true });
+        // Also check on resize
+        window.addEventListener('resize', checkScroll);
+        // Initial check after short delay (tabs may not be laid out yet)
+        setTimeout(checkScroll, 100);
+    }
+
+    // Scroll active tab into view when switching
+    const _origSwitchTab = switchTab;
+    function switchTab(name, el) {
+        _origSwitchTab(name, el);
+        // Scroll the clicked tab into view smoothly
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
 </script>
 </body>
 </html>

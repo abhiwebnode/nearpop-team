@@ -67,62 +67,97 @@
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding-bottom: 60px; font-size: 15px; font-weight: 600; }
 
         /* HEADER */
+        /* ── HEADER — two rows on mobile ─────────────── */
         .header {
             background: var(--surface);
             border-bottom: 3px solid var(--primary);
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            padding: 10px 16px;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+            box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        /* Row 1: logo+name on left, sign out on right */
+        .header-row1 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
 
         .header-main {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
         }
 
         .header-logo {
-            height: 36px;
+            height: 32px;
             width: auto;
             flex-shrink: 0;
         }
 
+        .header-text { min-width: 0; }
+
         .header-text h1 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 800;
             color: var(--text);
             line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .header-text p {
             font-size: 12px;
-            color: var(--text-muted);
+            color: var(--primary);
             font-weight: 700;
             line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
         }
 
-        .header-actions {
+        .signout-btn {
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* Row 2: theme + lang + report — spread full width */
+        .header-row2 {
             display: flex;
             align-items: center;
             gap: 8px;
-            flex-shrink: 0;
         }
 
         .theme-toggle-btn {
             background: var(--bg);
             border: 2px solid var(--border);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 7px 10px;
             font-size: 14px;
             cursor: pointer;
             color: var(--text);
             font-weight: 700;
             line-height: 1;
+            flex-shrink: 0;
         }
 
         .lang-toggle {
@@ -132,10 +167,11 @@
             border: 2px solid var(--border);
             border-radius: 8px;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .lang-btn {
-            padding: 6px 10px;
+            padding: 7px 10px;
             font-size: 12px;
             font-weight: 800;
             border: none;
@@ -154,31 +190,24 @@
         .header-report-btn {
             background: var(--primary);
             color: #fff;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 800;
-            padding: 7px 12px;
+            padding: 7px 16px;
             border-radius: 8px;
             text-decoration: none;
             white-space: nowrap;
             line-height: 1;
+            flex: 1;
+            text-align: center;
         }
 
-        @media (max-width: 640px) {
-            .header { padding: 10px 12px; gap: 6px; }
-            .header-main { gap: 8px; min-width: 0; flex: 1 1 auto; }
-            .header-logo { height: 28px; }
-            .header-text { min-width: 0; }
-            .header-text h1 { font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .header-text p { font-size: 10.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .header-actions { gap: 4px; }
-            .theme-toggle-btn { padding: 5px 7px; font-size: 12px; }
-            .lang-btn { padding: 5px 6px; font-size: 11px; }
-            .header-report-btn { font-size: 11px; padding: 6px 8px; }
-        }
-
-        @media (max-width: 360px) {
-            .header-text p { display: none; }
-            .header-logo { height: 24px; }
+        /* Desktop — collapse back to single row */
+        @media (min-width: 640px) {
+            .header { flex-direction: row; align-items: center; padding: 12px 20px; gap: 0; justify-content: space-between; }
+            .header-row1 { flex: 1; border: none; padding: 0; }
+            .header-row2 { gap: 8px; }
+            .header-text p { max-width: none; }
+            .header-logo { height: 36px; }
         }
 
         /* SEARCH */
@@ -423,22 +452,25 @@
 <div id="app-wrapper">
 
 <div class="header">
-    <div class="header-main">
-        <img src="https://nearpop.in/icons/logo.png" alt="NearPop" class="header-logo">
-        <div class="header-text">
-            <h1>Marketing Hub</h1>
-            <p id="user-status-text">Internal Team Portal</p>
+    <!-- Row 1: Logo + Name | Sign out -->
+    <div class="header-row1">
+        <div class="header-main">
+            <img src="https://nearpop.in/icons/logo.png" alt="NearPop" class="header-logo">
+            <div class="header-text">
+                <h1>Marketing Hub</h1>
+                <p id="user-status-text">Internal Team Portal</p>
+            </div>
         </div>
+        <button class="signout-btn" onclick="hubSignOut()" id="signout-btn" style="display:none;">Sign out</button>
     </div>
-    
-    <div class="header-actions">
+    <!-- Row 2: Theme | Lang | Report -->
+    <div class="header-row2">
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme" aria-label="Toggle Theme">☀️</button>
         <div class="lang-toggle">
             <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
             <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
         </div>
-        <a href="report.html" class="header-report-btn">📋 Report</a>
-        <button class="signout-btn" onclick="hubSignOut()" id="signout-btn" style="display:none;">Sign out</button>
+        <a href="report.html" class="header-report-btn">📋 Visit Tracker</a>
     </div>
 </div>
 
@@ -1579,12 +1611,15 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
             if (!res.ok || data.error) throw new Error(data.error?.message || res.statusText);
 
             const rows = (data.values || []).slice(1);
+            // Today in DD/MM/YYYY to match sheet date format
+            const now = new Date();
+            const todayDate = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
             const visits = showAll
-                ? rows  // founder sees everyone
-                : rows.filter(r => r[1]?.trim().toLowerCase() === hubUser?.email.trim().toLowerCase());
+                ? rows.filter(r => r[0]?.trim() === todayDate)
+                : rows.filter(r => r[1]?.trim().toLowerCase() === hubUser?.email.trim().toLowerCase() && r[0]?.trim() === todayDate);
 
             if (visits.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--text-muted);">No visits recorded yet.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--text-muted);">No visits recorded today.</td></tr>`;
                 return;
             }
 

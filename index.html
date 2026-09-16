@@ -160,33 +160,6 @@
             flex-shrink: 0;
         }
 
-        .lang-toggle {
-            display: flex;
-            align-items: center;
-            background: var(--bg);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .lang-btn {
-            padding: 7px 10px;
-            font-size: 12px;
-            font-weight: 800;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-muted);
-            line-height: 1;
-        }
-
-        .lang-btn.active {
-            background: var(--primary);
-            color: #fff;
-        }
-
         .header-report-btn {
             background: var(--primary);
             color: #fff;
@@ -380,9 +353,7 @@
         .req-qty { background: var(--primary-light); color: var(--primary); font-weight: 800; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1.5px solid var(--primary); white-space: nowrap; }
 
         /* GOOGLE TRANSLATE CLEANUP */
-        .goog-te-banner-frame, .skiptranslate { display: none !important; }
         body { top: 0 !important; }
-        .goog-te-gadget { display: none !important; }
 
         /* SEARCH EMPTY STATE */
         #no-results { text-align: center; color: var(--text-muted); padding: 40px 20px; display: none; }
@@ -507,10 +478,6 @@
     <!-- Row 2: Theme | Lang | Report -->
     <div class="header-row2">
         <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle Theme" aria-label="Toggle Theme">☀️</button>
-        <div class="lang-toggle">
-            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-            <button class="lang-btn" data-lang="hi" onclick="setLang('hi')">हिं</button>
-        </div>
         <a href="report.html" class="header-report-btn">📋 Visit Tracker</a>
     </div>
 </div>
@@ -1639,58 +1606,6 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
     }
 
-    // ── LANGUAGE TOGGLE (GOOGLE TRANSLATE) ────────────
-    let currentLang = 'en';
-
-    function initTranslate() {
-        // Guard against double init
-        if (document.getElementById('google_translate_element')) return;
-        const el = document.createElement('div');
-        el.id = 'google_translate_element';
-        el.style.display = 'none';
-        document.body.appendChild(el);
-
-        const s = document.createElement('script');
-        s.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateInit';
-        document.head.appendChild(s);
-    }
-
-    window.googleTranslateInit = function() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'hi',
-            autoDisplay: false
-        }, 'google_translate_element');
-    };
-
-    function setLang(lang) {
-        currentLang = lang;
-        document.querySelectorAll('.lang-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.lang === lang);
-        });
-
-        if (lang === 'hi') {
-            const sel = document.querySelector('.goog-te-combo');
-            if (sel) {
-                sel.value = 'hi';
-                sel.dispatchEvent(new Event('change'));
-            } else {
-                setTimeout(() => setLang('hi'), 600);
-            }
-        } else {
-            const sel = document.querySelector('.goog-te-combo');
-            if (sel) {
-                sel.value = '';
-                sel.dispatchEvent(new Event('change'));
-            }
-            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=' + location.hostname;
-            if (currentLang !== 'en') location.reload();
-        }
-    }
-
-    // initTranslate() called from enterHub() after login
-
     // ── GOOGLE SHEETS LIVE SYNC ───────────────────────
     const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
     const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
@@ -1776,7 +1691,6 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         }
 
         loadChecklist();
-        initTranslate();
         initTheme();
     }
 

@@ -594,7 +594,7 @@
             <div style="height:10px;"></div>
             <div class="target-row">
                 <div class="target-box"><div class="num">75</div><div class="label">Shops visited</div></div>
-                <div class="target-box"><div class="num">25</div><div class="label">Onboarded</div></div>
+                <div class="target-box"><div class="num">30</div><div class="label">Onboarded</div></div>
                 <div class="target-box"><div class="num">10</div><div class="label">Standees placed</div></div>
             </div>
             <div class="info-box" style="margin-top:10px; margin-bottom:0;">
@@ -612,7 +612,7 @@
                 <li><input type="checkbox" id="c1" onchange="markDone(this)"><label for="c1">Introduced NearPop and explained the offer clearly</label></li>
                 <li><input type="checkbox" id="c2" onchange="markDone(this)"><label for="c2">Showed the listing sample (demo page)</label></li>
                 <li><input type="checkbox" id="c3" onchange="markDone(this)"><label for="c3">Collected merchant's Gmail address</label></li>
-                <li><input type="checkbox" id="c4" onchange="markDone(this)"><label for="c4">Created the listing in admin panel on the spot</label></li>
+                <li><input type="checkbox" id="c4" onchange="markDone(this)"><label for="c4">Created the listing in admin panel on the spot — with at least 3 active listings (needed to count as onboarded)</label></li>
                 <li><input type="checkbox" id="c5" onchange="markDone(this)"><label for="c5">Took a photo of the shop for the listing</label></li>
                 <li><input type="checkbox" id="c6" onchange="markDone(this)"><label for="c6">Placed the standee / QR sticker at counter</label></li>
                 <li><input type="checkbox" id="c7" onchange="markDone(this)"><label for="c7">Handed merchant the welcome card</label></li>
@@ -971,12 +971,13 @@
 
     <!-- SUCCESS STORIES -->
     <div class="section">
-        <div class="section-title">Verified Merchant Success Stories — Show these to hesitant shops</div>
+        <div class="section-title">Merchant Success Stories — Show these to hesitant shops</div>
         <div class="tip-box">
             <strong>💡 How to use this section</strong>
             As merchants start seeing results, add their story here. A real quote from a neighbour shop convinces better than any flyer.
         </div>
         <div class="story-card">
+            <div style="display:inline-block;background:#FEF3C7;color:#92400E;font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;margin-bottom:6px;">SAMPLE STORY — format example, not a real merchant. Do not show to shops as real.</div>
             <div class="shop-name">📍 Sector 16 Pharmacy</div>
             <div class="shop-meta">Chemist & Healthcare • Sector 16, Faridabad</div>
             <div class="result">Got 220+ profile views in the first 10 days. Multiple walking customers showed the NearPop listing for discounts.</div>
@@ -1629,6 +1630,16 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
     }
 
+
+    // Escape sheet values before putting them into HTML
+    function esc(v) {
+        return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function safeUrl(v) {
+        const u = String(v || '').trim();
+        return /^https:\/\//i.test(u) ? esc(u) : '';
+    }
+
     // ── GOOGLE SHEETS LIVE SYNC ───────────────────────
     const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
     const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
@@ -1770,25 +1781,25 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
             }
 
             tbody.innerHTML = [...visits].reverse().map(r => {
-                const shopPic    = r[9]  && r[9]  !== '—' ? `<a href="${r[9]}"  target="_blank" style="color:var(--blue);font-weight:800;text-decoration:underline;">📷</a>` : '';
-                const standeePic = r[10] && r[10] !== '—' ? `<a href="${r[10]}" target="_blank" style="color:var(--blue);font-weight:800;text-decoration:underline;">🖼️</a>` : '';
-                let statusBadge = r[5] || '—';
+                const shopPic    = safeUrl(r[9])  ? `<a href="${safeUrl(r[9])}"  target="_blank" rel="noopener" style="color:var(--blue);font-weight:800;text-decoration:underline;">📷</a>` : '';
+                const standeePic = safeUrl(r[10]) ? `<a href="${safeUrl(r[10])}" target="_blank" rel="noopener" style="color:var(--blue);font-weight:800;text-decoration:underline;">🖼️</a>` : '';
+                let statusBadge = esc(r[5] || '—');
                 if (statusBadge.includes('Onboarded'))    statusBadge = `✅ ${statusBadge}`;
-                else if (statusBadge.includes('Interested'))   statusBadge = `⏳ ${statusBadge}`;
                 else if (statusBadge.includes('Not Interested')) statusBadge = `❌ ${statusBadge}`;
+                else if (statusBadge.includes('Interested'))   statusBadge = `⏳ ${statusBadge}`;
                 return `<tr>
-                    <td>${r[0]||'—'}</td>
-                    <td><strong>${r[3]||'—'}</strong></td>
-                    <td>${r[4]||'—'}</td>
+                    <td>${esc(r[0]||'—')}</td>
+                    <td><strong>${esc(r[3]||'—')}</strong></td>
+                    <td>${esc(r[4]||'—')}</td>
                     <td>${statusBadge}</td>
-                    <td>${r[6]||'—'}</td>
-                    <td>${r[7]||'—'}</td>
-                    <td>${r[8]||'—'}</td>
+                    <td>${esc(r[6]||'—')}</td>
+                    <td>${esc(r[7]||'—')}</td>
+                    <td>${esc(r[8]||'—')}</td>
                     <td>${shopPic} ${standeePic}</td>
                 </tr>`;
             }).join('');
         } catch(e) {
-            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:#DC2626;">Could not load: ${e.message}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:#DC2626;">Could not load: ${esc(e.message)}</td></tr>`;
         }
     }
 

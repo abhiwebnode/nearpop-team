@@ -528,6 +528,16 @@
     }
     initTheme();
 
+
+    // Escape sheet values before putting them into HTML
+    function esc(v) {
+        return String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+    }
+    function safeUrl(v) {
+        const u = String(v || '').trim();
+        return /^https:\/\//i.test(u) ? esc(u) : '';
+    }
+
     const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
     const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
     const SHEET_NAME = 'ShopVisits';
@@ -710,21 +720,21 @@
                 let badgeClass = 'status-closed';
                 const st = r[5] || '';
                 if (st.includes('Onboarded')) badgeClass = 'status-onboarded';
-                else if (st.includes('Interested')) badgeClass = 'status-interested';
                 else if (st.includes('Not Interested')) badgeClass = 'status-rejected';
+                else if (st.includes('Interested')) badgeClass = 'status-interested';
 
-                const shopPic = r[9] && r[9] !== '—' ? `<a href="${r[9]}" target="_blank">📷 Shop</a>` : '';
-                const standeePic = r[10] && r[10] !== '—' ? `<a href="${r[10]}" target="_blank">🖼️ Standee</a>` : '';
+                const shopPic = safeUrl(r[9]) ? `<a href="${safeUrl(r[9])}" target="_blank" rel="noopener">📷 Shop</a>` : '';
+                const standeePic = safeUrl(r[10]) ? `<a href="${safeUrl(r[10])}" target="_blank" rel="noopener">🖼️ Standee</a>` : '';
                 const photos = (shopPic || standeePic) ? `• ${shopPic} ${standeePic}` : '';
 
                 return `
                 <div class="visit-row" id="row-${sheetRow}">
                     <div class="visit-info">
-                        <h4>${r[3]}</h4>
-                        <p>📍 ${r[4]} ${r[6] && r[6] !== '—' ? '• ✉️ ' + r[6] : ''} ${photos}</p>
+                        <h4>${esc(r[3])}</h4>
+                        <p>📍 ${esc(r[4])} ${r[6] && r[6] !== '—' ? '• ✉️ ' + esc(r[6]) : ''} ${photos}</p>
                     </div>
                     <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
-                        <span class="status-tag ${badgeClass}">${r[5]}</span>
+                        <span class="status-tag ${badgeClass}">${esc(r[5])}</span>
                         <button class="delete-btn" onclick="confirmDelete(${sheetRow}, decodeURIComponent('${encodeURIComponent(r[3] || '')}'))">🗑️</button>
                     </div>
                 </div>`;

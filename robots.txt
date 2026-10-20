@@ -1,5 +1,2 @@
 User-agent: *
-Disallow: /files/
-Disallow: /report.html
-Disallow: /agreement.html
-Disallow: /agreement_hindi.html
+Disallow: /

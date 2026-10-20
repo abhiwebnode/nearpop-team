@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700;800;900&family=Nunito:wght@700;800;900&display=swap');
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Noto Sans Devanagari', Arial, sans-serif;
+  background: #fff;
+  width: 794px;
+  min-height: 1123px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+  background: linear-gradient(135deg, #FF5722 0%, #FF3D00 100%);
+  padding: 16px 32px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.h-logo img { height: 40px; background:#fff; border-radius:9px; padding:4px 10px; display:block; }
+.h-center { text-align:center; }
+.h-center .tag { font-family:'Nunito',sans-serif; font-size:9px; font-weight:900; color:rgba(255,255,255,0.85); text-transform:uppercase; letter-spacing:2px; margin-bottom:2px; }
+.h-center .title { font-size:20px; font-weight:900; color:#fff; line-height:1.2; }
+.h-center .subtitle { font-size:10px; color:rgba(255,255,255,0.85); font-weight:700; margin-top:2px; }
+.h-right { text-align:right; }
+.h-right .badge { font-family:'Nunito',sans-serif; background:rgba(255,255,255,0.2); border:1.5px solid rgba(255,255,255,0.5); border-radius:8px; padding:5px 12px; font-size:10px; font-weight:900; color:#fff; margin-bottom:4px; display:block; }
+.h-right .web { font-family:'Nunito',sans-serif; font-size:11px; font-weight:900; color:rgba(255,255,255,0.9); }
+
+/* NOTICE BAR */
+.notice-bar {
+  background: #FFF8F5;
+  border-bottom: 2px solid #FF5722;
+  padding: 7px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.notice-bar .nb-icon { font-size:15px; flex-shrink:0; }
+.notice-bar .nb-text { font-size:10px; font-weight:700; color:#111827; line-height:1.5; }
+.notice-bar .nb-text span { color:#FF5722; font-weight:900; }
+
+/* MAIN */
+.main { padding: 14px 28px 12px; }
+
+/* STEP */
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border-left: 4px solid;
+  background: #F9FAFB;
+}
+.step-num {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items:center; justify-content:center;
+  font-family:'Nunito',sans-serif;
+  font-size:13px; font-weight:900;
+  color:#fff; flex-shrink:0; margin-top:1px;
+}
+.step-body { flex:1; }
+.step-body .sh {
+  font-size:12.5px; font-weight:800;
+  color:#111827; line-height:1.3; margin-bottom:2px;
+}
+.step-body .sd {
+  font-size:10px; font-weight:600;
+  color:#374151; line-height:1.5;
+}
+.step-body .sd strong { color:#111827; font-weight:800; }
+.step-body .sd .tag-pill {
+  display:inline-block;
+  background:#FFF3EE; border:1px solid #FFCCBC;
+  border-radius:5px; padding:1px 7px;
+  font-size:9px; font-weight:800; color:#C2410C;
+  margin-left:4px; vertical-align:middle;
+}
+.step-body .sd .tag-green {
+  display:inline-block;
+  background:#F0FDF4; border:1px solid #BBF7D0;
+  border-radius:5px; padding:1px 7px;
+  font-size:9px; font-weight:800; color:#059669;
+  margin-left:4px; vertical-align:middle;
+}
+
+/* section divider */
+.sec-divider {
+  display:flex; align-items:center; gap:10px;
+  margin: 10px 0 8px;
+}
+.sec-divider .sd-line { flex:1; height:1.5px; background:#E5E7EB; }
+.sec-divider .sd-label {
+  font-family:'Nunito',sans-serif;
+  font-size:8.5px; font-weight:900;
+  color:#FF5722; text-transform:uppercase; letter-spacing:1.5px;
+  white-space:nowrap;
+}
+
+/* FOOTER */
+.footer {
+  background: #111827;
+  padding: 10px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.footer .fl { font-size:9.5px; color:rgba(255,255,255,0.7); font-weight:600; line-height:1.6; }
+.footer .fl strong { color:#fff; font-weight:800; }
+.footer .fr { text-align:right; font-size:9.5px; color:rgba(255,255,255,0.7); font-weight:600; line-height:1.6; }
+.footer .fr strong { color:#FF5722; font-weight:900; }
+
+@media print {
+  body { width:210mm; min-height:297mm; }
+  @page { size:A4; margin:0; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="h-logo"><img src="https://nearpop.in/icons/logo.png" alt="NearPop"></div>
+  <div class="h-center">
+    <div class="tag">Field Executive Guide</div>
+    <div class="title">Merchant Onboarding Steps</div>
+    <div class="subtitle">मर्चेंट को NearPop पर Register करने की पूरी Process</div>
+  </div>
+  <div class="h-right">
+    <span class="badge">📋 18 Steps</span>
+    <div class="web">nearpop.in</div>
+  </div>
+</div>
+
+<!-- NOTICE BAR -->
+<div class="notice-bar">
+  <div class="nb-icon">⚠️</div>
+  <div class="nb-text">
+    <span>हर step carefully follow करें।</span> किसी step में problem आए तो अगला step मत करें — पहले Abhishek को WhatsApp करें।
+    GPS Camera से shop की photo जरूर लें — <span>यह mandatory है।</span>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- SECTION 1 -->
+<div class="sec-divider">
+  <div class="sd-line"></div>
+  <div class="sd-label">📱 App Setup</div>
+  <div class="sd-line"></div>
+</div>
+
+<div class="step" style="border-color:#FF5722;">
+  <div class="step-num" style="background:#FF5722;">1</div>
+
+  <div class="step-body">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:15px;">
+
+      <div>
+        <div class="sh">App Download करें</div>
+
+        <div class="sd">
+          PlayStore पर जाएं → Search करें <strong>"NearPop Deal"</strong> → Install करें।<br>
+          iPhone / Website user के लिए: <strong>https://www.nearpop.in</strong> खोलें।<br>
+          या दिए <strong>QR Code को scan</strong> करके भी app खोल सकते हैं।
+        </div>
+      </div>
+
+      <img 
+        src="https://www.nearpop.in/icons/playstore-qr-code.png" 
+        width="100" 
+        height="100" 
+        style="width:100px; height:100px; flex-shrink:0;"
+        alt="NearPop QR Code"
+      >
+
+    </div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#3B82F6;">
+  <div class="step-num" style="background:#3B82F6;">2</div>
+  <div class="step-body">
+    <div class="sh">GPS ON करें <span class="tag-pill">जरूरी</span></div>
+    <div class="sd">App खोलने से पहले phone का <strong>GPS / Location ON</strong> करें।<br>
+    Setting → Location → <strong>High Accuracy</strong> mode select करें। बिना GPS के app काम नहीं करेगा।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#8B5CF6;">
+  <div class="step-num" style="background:#8B5CF6;">3</div>
+  <div class="step-body">
+    <div class="sh">Merchant Google ID से Login करें</div>
+    <div class="sd"><strong>Merchant की खुद की Google ID</strong> से login करवाएं — अपनी ID use मत करें।<br>
+    Login screen पर <strong>"Merchant"</strong> option select करें (Customer नहीं)।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#10B981;">
+  <div class="step-num" style="background:#10B981;">4</div>
+  <div class="step-body">
+    <div class="sh">Merchant Name Set करें</div>
+    <div class="sd">Login के बाद profile में <strong>दुकान का सही नाम</strong> डालें — जैसे "Sharma General Store" या "Raj Mobile"।<br>
+    यही नाम customers को app में दिखेगा, इसलिए सही और clear रखें।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#F59E0B;">
+  <div class="step-num" style="background:#F59E0B;">5</div>
+  <div class="step-body">
+    <div class="sh">सभी Permissions Allow करें <span class="tag-pill">जरूरी</span></div>
+    <div class="sd">App जब भी permission मांगे — <strong>सब Allow करें:</strong><br>
+    ✅ Notifications — <strong>"Allow"</strong> &nbsp;&nbsp; ✅ Location — <strong>"Always Allow"</strong> &nbsp;&nbsp; ✅ Camera — <strong>"Allow"</strong><br>
+    "Always Allow" नहीं किया तो nearby customers को notification नहीं जाएगी।</div>
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="sec-divider">
+  <div class="sd-line"></div>
+  <div class="sd-label">📝 First Listing</div>
+  <div class="sd-line"></div>
+</div>
+
+<div class="step" style="border-color:#EF4444;">
+  <div class="step-num" style="background:#EF4444;">6</div>
+
+  <div class="step-body">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:15px;">
+
+      <div>
+        <div class="sh">पहली Listing बनाएं — Sample देखकर</div>
+
+        <div class="sd">
+          <strong>QR scan करें</strong> — listing का sample देखें। उसी format में merchant की 
+          <strong>पहली listing</strong> बनाएं।<br>
+          Validity: <strong>30 दिन</strong> रखें। अच्छा offer डालें — जैसे 
+          "10% OFF सभी items पर"।
+        </div>
+      </div>
+
+      <img 
+        src="https://cdn.jsdelivr.net/gh/abhiwebnode/mediahub/NearPop/listing_sample.png"
+        width="100"
+        height="100"
+        style="width:100px; height:100px; object-fit:cover; flex-shrink:0;"
+        alt="Listing Sample"
+      >
+
+    </div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#FF5722;">
+  <div class="step-num" style="background:#FF5722;">7</div>
+  <div class="step-body">
+    <div class="sh">Location Update करें <span class="tag-pill">जरूरी</span></div>
+    <div class="sd">Listing page पर जाकर <strong>Location / Map pin जरूर update करें।</strong><br>
+    दुकान के अंदर खड़े होकर करें — सही GPS location मिलेगी। गलत location = customers को offer नहीं दिखेगा।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#3B82F6;">
+  <div class="step-num" style="background:#3B82F6;">8</div>
+  <div class="step-body">
+    <div class="sh">Premium Merchant Prompt — OK करें</div>
+    <div class="sd">दूसरी listing बनाते समय app <strong>"Premium Merchant"</strong> का popup दिखाएगा — <strong>OK / Continue click करें।</strong><br>
+    यह Early Access में free है, merchant को बताएं कि यह normally paid feature है।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#10B981;">
+  <div class="step-num" style="background:#10B981;">9</div>
+  <div class="step-body">
+    <div class="sh">Daily Points Claim करना सिखाएं <span class="tag-green">Habit बनाएं</span></div>
+    <div class="sd">App में <strong>100 Points रोज़ Claim</strong> हो सकते हैं — merchant को खुद करके दिखाएं।<br>
+    बताएं: "यह points future में benefits देंगे — रोज़ app खोलें और claim करें।" यह engagement बढ़ाता है।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#8B5CF6;">
+  <div class="step-num" style="background:#8B5CF6;">10</div>
+  <div class="step-body">
+    <div class="sh">2nd और 3rd Listing बनाएं</div>
+    <div class="sd">अलग-अलग products / offers की listings बनाएं। Validity: <strong>Unlimited</strong> रखें।<br>
+    उदाहरण: पहली — General Discount, दूसरी — New Arrival, तीसरी — Seasonal Offer।</div>
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="sec-divider">
+  <div class="sd-line"></div>
+  <div class="sd-label">📌 QR & Physical Setup</div>
+  <div class="sd-line"></div>
+</div>
+
+<div class="step" style="border-color:#D97706;">
+  <div class="step-num" style="background:#D97706;">11</div>
+  <div class="step-body">
+    <div class="sh">Pre-printed QR Claim करें</div>
+    <div class="sd">NearPop QR sticker / standee merchant को दें। Merchant के phone से <strong>QR Scan करवाएं।</strong><br>
+    Login मांगे तो merchant की <strong>Google ID से login</strong> करें। QR उनकी shop से link हो जाएगा।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#EF4444;">
+  <div class="step-num" style="background:#EF4444;">12</div>
+  <div class="step-body">
+    <div class="sh">QR के फायदे Merchant को बताएं</div>
+    <div class="sd">✅ Customer scan करे → directly उनकी shop की listings खुलें<br>
+    ✅ Counter पर रखें / window पर लगाएं — <strong>passive footfall बढ़ेगा</strong><br>
+    ✅ WhatsApp Status / Instagram पर share करें — digital reach भी बढ़ेगी</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#10B981;">
+  <div class="step-num" style="background:#10B981;">13</div>
+  <div class="step-body">
+    <div class="sh">Pause / Edit करना सिखाएं</div>
+    <div class="sd">Merchant को दिखाएं कि listing कैसे <strong>Edit, Pause या Delete</strong> होती है।<br>
+    बताएं: "Sale खत्म हो जाए तो listing Pause करें — Delete मत करें। फिर चालू कर सकते हैं।"</div>
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="sec-divider">
+  <div class="sd-line"></div>
+  <div class="sd-label">📸 Documentation & Expectations</div>
+  <div class="sd-line"></div>
+</div>
+
+<div class="step" style="border-color:#3B82F6;">
+  <div class="step-num" style="background:#3B82F6;">14</div>
+  <div class="step-body">
+    <div class="sh">Listing का Screenshot लें <span class="tag-pill">Proof</span></div>
+    <div class="sd">Listing live होने के बाद उसका <strong>screenshot अपने phone में save करें।</strong><br>
+    यह आपका काम का proof है। अगर merchant बाद में बोले "कुछ नहीं दिख रहा" — screenshot दिखाएं।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#FF5722;">
+  <div class="step-num" style="background:#FF5722;">15</div>
+  <div class="step-body">
+    <div class="sh">GPS Camera से Shop Photo लें <span class="tag-pill">Mandatory</span></div>
+    <div class="sd"><strong>GPS Camera app</strong> use करके दुकान की 1-2 photos लें — location timestamp के साथ।<br>
+    Phone Gallery में save करें। यह visit का official record है — बिना photo visit incomplete मानी जाएगी।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#8B5CF6;">
+  <div class="step-num" style="background:#8B5CF6;">16</div>
+  <div class="step-body">
+    <div class="sh">Merchant का WhatsApp Number नोट करें</div>
+    <div class="sd">Visit Tracker में merchant का <strong>WhatsApp number जरूर भरें।</strong><br>
+    यह future support, update और follow-up के लिए जरूरी है। बिना number के record incomplete है।</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#10B981;">
+  <div class="step-num" style="background:#10B981;">17</div>
+  <div class="step-body">
+    <div class="sh">Merchant को Realistic Expectation दें</div>
+    <div class="sd">बताएं: <strong>"NearPop अभी NCR में grow कर रहा है।"</strong><br>
+    "जितने ज्यादा merchants join करेंगे — उतना ज्यादा customers का traffic आएगा।"<br>
+    "App daily check करें, listings active रखें — पहले results 2-4 हफ्ते में दिखेंगे।"</div>
+  </div>
+</div>
+
+<div class="step" style="border-color:#D97706;">
+  <div class="step-num" style="background:#D97706;">18</div>
+  <div class="step-body">
+    <div class="sh">Visit Tracker में Entry करें</div>
+    <div class="sd"><strong>nearpopteam.in</strong> पर जाएं → Visit Tracker खोलें → इस visit की entry करें।<br>
+    Shop Name, Address, Contact, Listings बनाई या नहीं — सब accurately भरें। <strong>यह रोज़ submit करना है।</strong></div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="fl">
+    <strong>NearPop Team Portal</strong><br>
+    nearpopteam.in · nearpop.in
+  </div>
+  <div style="text-align:center; font-size:9px; color:rgba(255,255,255,0.5); font-weight:600;">
+    किसी भी problem पर तुरंत WhatsApp करें
+  </div>
+  <div class="fr">
+    Support: <strong>Abhishek Kumar</strong><br>
+    <strong>abhishek@nearpop.in or WhatsApp : 7017302036</strong>
+  </div>
+</div>
+
+</body>
+</html>

@@ -16,7 +16,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
     <meta name="google-client-id" content="694448916478-bsnjhu3kanvo85qm2q7837eveucq9uo1.apps.googleusercontent.com">
-    <meta name="sheet-id" content="1xpsSCQtxUxnTWOGxCykI3rQFEEmbtxhKyo881Ac2x8U">
+    <meta name="api-url" content="https://script.google.com/macros/s/AKfycbwkoNTe_Rvsvdnr46gnAwsqXjkTqCRwbkbL2YCmIoqrtIc_RE1J8hbTsPJgRLhrSQ5ldw/exec">
 
     <style>
         /* HIGH CONTRAST OUTDOOR THEME */
@@ -538,14 +538,27 @@
         return /^https:\/\//i.test(u) ? esc(u) : '';
     }
 
-    const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
-    const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
-    const SHEET_NAME = 'ShopVisits';
+    const CLIENT_ID = document.querySelector('meta[name="google-client-id"]').content;
+    const API_URL   = document.querySelector('meta[name="api-url"]').content;
 
-    let currentUser  = null;  
-    let accessToken  = null;
+    let currentUser  = null;
     let allVisits    = [];
-    let targetSheetNumericId = null;
+
+    async function api(action, data) {
+        const token = localStorage.getItem('nearpop_token');
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // text/plain avoids CORS preflight
+            body: JSON.stringify({ action, data: data || {}, token })
+        });
+        const out = await res.json();
+        if (!out.ok) {
+            const err = new Error(out.error || 'Request failed');
+            err.auth = /^(AUTH|DENIED)/.test(out.error || '');
+            throw err;
+        }
+        return out;
+    }
 
     function todayStr() {
         return new Date().toLocaleDateString('en-IN', { day:'2-digit', month:'2-digit', year:'numeric' });
@@ -558,75 +571,42 @@
         return d.toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'short' });
     }
 
-    async function getShopVisitsSheetId() {
-        if (targetSheetNumericId !== null) return targetSheetNumericId;
-        try {
-            const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets.properties`, {
-                headers: { Authorization: 'Bearer ' + accessToken }
-            });
-            const meta = await res.json();
-            const found = meta.sheets?.find(s => s.properties.title.toLowerCase() === SHEET_NAME.toLowerCase());
-            if (found) {
-                targetSheetNumericId = found.properties.sheetId;
-                return targetSheetNumericId;
-            }
-        } catch(e) {}
-        return 0;
-    }
-
     function startLogin() {
         google.accounts.oauth2.initTokenClient({
             client_id: CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile',
+            scope: 'openid email profile',
             callback: onTokenReceived,
         }).requestAccessToken();
     }
 
     async function onTokenReceived(resp) {
         if (resp.error) { showError('Login failed: ' + resp.error); return; }
-        accessToken = resp.access_token;
         const expiry = Date.now() + ((resp.expires_in || 3600) * 1000);
-        localStorage.setItem('nearpop_token', accessToken);
+        localStorage.setItem('nearpop_token', resp.access_token);
         localStorage.setItem('nearpop_token_exp', expiry);
-
-        try {
-            const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                headers: { Authorization: 'Bearer ' + accessToken }
-            }).then(r => r.json());
-            await loadExecutiveData(info.email, info.given_name || info.name);
-        } catch(e) {
-            showError('Could not fetch profile. Try again.');
-        }
+        await loadExecutiveData();
     }
 
     async function tryRestoreSession() {
         const token = localStorage.getItem('nearpop_token');
         const exp = localStorage.getItem('nearpop_token_exp');
         const cachedUser = localStorage.getItem('nearpop_user');
+        if (!(token && exp && Date.now() < parseInt(exp))) return;
 
-        if (token && exp && Date.now() < parseInt(exp)) {
-            accessToken = token;
-            if (cachedUser) {
-                currentUser = JSON.parse(cachedUser);
-                enterApp();
-                loadVisits().then(() => renderDashboard());
-            } else {
-                try {
-                    const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-                        headers: { Authorization: 'Bearer ' + accessToken }
-                    }).then(r => r.json());
-                    await loadExecutiveData(info.email, info.given_name || info.name);
-                } catch(e) {
-                    signOut();
-                }
-            }
+        if (cachedUser) {
+            try { currentUser = JSON.parse(cachedUser); } catch(e) { currentUser = null; }
+        }
+        if (currentUser) {
+            enterApp();
+            loadVisits().then(() => renderDashboard());
+        } else {
+            await loadExecutiveData();
         }
     }
 
     function signOut() {
-        accessToken = null; 
         currentUser = null;
-        targetSheetNumericId = null;
+        allVisits = [];
         localStorage.removeItem('nearpop_token');
         localStorage.removeItem('nearpop_token_exp');
         localStorage.removeItem('nearpop_user');
@@ -636,44 +616,34 @@
         showScreen('login');
     }
 
-    async function loadExecutiveData(email, googleName) {
+    async function loadExecutiveData() {
         try {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Executives!A:F`;
-            const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
-            const data = await res.json();
-            const rows = data.values || [];
-            const match = rows.find(r => r[0]?.trim().toLowerCase() === email.trim().toLowerCase());
-            
-            if (!match) { alert('Account not registered. Contact Abhishek.'); return; }
-
+            const { user } = await api('me');
+            if (!user.exec) { showError('Account not registered as a field executive. Contact Abhishek.'); return; }
             currentUser = {
-                email:         match[0].trim(),
-                name:          match[1] || googleName,
-                zone:          match[2] || '—',
-                targetVisits:  parseInt(match[3]) || 0,
-                targetOnboard: parseInt(match[4]) || 0,
-                targetStandee: parseInt(match[5]) || 0,
+                email:         user.email,
+                name:          user.exec.name || user.email,
+                zone:          user.exec.zone,
+                targetVisits:  user.exec.targetVisits,
+                targetOnboard: user.exec.targetOnboard,
+                targetStandee: user.exec.targetStandee,
             };
-
             localStorage.setItem('nearpop_user', JSON.stringify(currentUser));
             await loadVisits();
             enterApp();
         } catch(e) {
-            showError('Could not connect to Google Sheet.');
+            showError(e.auth ? 'Account not registered. Contact Abhishek.' : 'Could not connect. Try again.');
         }
     }
 
     async function loadVisits() {
         try {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A:K`;
-            const res = await fetch(url, { headers: { Authorization: 'Bearer ' + accessToken }});
-            const data = await res.json();
-            const rows = (data.values || []).slice(1);
-            allVisits = rows
-                .map((r, i) => ({ data: r, sheetRow: i + 2 }))
-                .filter(entry => entry.data[1]?.trim().toLowerCase() === currentUser.email.toLowerCase());
-        } catch(e) { 
-            allVisits = []; 
+            const { visits } = await api('listVisits', { scope: 'mine' });
+            allVisits = visits;
+        } catch(e) {
+            if (e.auth) { signOut(); return; }
+            allVisits = [];
+            showToast('Could not load visits');
         }
     }
 
@@ -784,31 +754,15 @@
         });
     }
 
-    async function uploadImageToDrive(file, fileName) {
-        if (!file) return '—';
-        const compressedBlob = await compressImage(file);
-        const metadata = { name: `${Date.now()}_${fileName}.jpg`, mimeType: 'image/jpeg' };
-
-        const form = new FormData();
-        form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
-        form.append('file', compressedBlob);
-
-        const res = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink', {
-            method: 'POST',
-            headers: { Authorization: 'Bearer ' + accessToken },
-            body: form
+    async function toDataUrl(file) {
+        if (!file) return null;
+        const blob = await compressImage(file);
+        return new Promise((resolve, reject) => {
+            const fr = new FileReader();
+            fr.onload = () => resolve(fr.result);
+            fr.onerror = reject;
+            fr.readAsDataURL(blob);
         });
-
-        if (!res.ok) throw new Error('Drive upload failed');
-        const data = await res.json();
-
-        await fetch(`https://www.googleapis.com/drive/v3/files/${data.id}/permissions`, {
-            method: 'POST',
-            headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ role: 'reader', type: 'anyone' })
-        }).catch(() => {});
-
-        return data.webViewLink || `https://drive.google.com/file/d/${data.id}/view`;
     }
 
     async function submitShopVisit() {
@@ -829,33 +783,13 @@
         btn.textContent = 'Saving visit...';
 
         try {
-            let shopPhotoUrl = '—';
-            let standeePhotoUrl = '—';
-
-            if (shopFile) shopPhotoUrl = await uploadImageToDrive(shopFile, `shop_${shop.replace(/\s+/g, '_')}`);
-            if (standeeFile) standeePhotoUrl = await uploadImageToDrive(standeeFile, `standee_${shop.replace(/\s+/g, '_')}`);
-
-            const row = [todayStr(), currentUser.email, currentUser.name, shop, area, status, gmail || '—', standee, followupDate || '—', shopPhotoUrl, standeePhotoUrl];
-
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A:K:append?valueInputOption=USER_ENTERED`;
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ values: [row] })
+            const { visit } = await api('addVisit', {
+                shop, area, status,
+                gmail, standee, followupDate,
+                shopPhoto:    await toDataUrl(shopFile),
+                standeePhoto: await toDataUrl(standeeFile),
             });
-
-            if (!res.ok) throw new Error('Sheet write failed');
-
-            let newSheetRow = allVisits.length + 2;
-            try {
-                const appendData = await res.clone().json().catch(() => null);
-                if (appendData?.updates?.updatedRange) {
-                    const match = appendData.updates.updatedRange.match(/(\d+)$/);
-                    if (match) newSheetRow = parseInt(match[1]);
-                }
-            } catch(e) {}
-
-            allVisits.push({ data: row, sheetRow: newSheetRow });
+            allVisits.push(visit);
             showToast('Visit logged! ✅');
 
             document.getElementById('form-shop').value = '';
@@ -874,6 +808,7 @@
             showTab('dashboard');
             renderDashboard();
         } catch(e) {
+            if (e.auth) { signOut(); showError('Session expired. Please sign in again.'); return; }
             showSubmitError('Submit failed: ' + e.message);
         } finally {
             btn.disabled = false;
@@ -897,13 +832,13 @@
                 <p><strong>${safeShop}</strong><br>Permanently delete this visit from Google Sheet?</p>
                 <div class="confirm-btn-row">
                     <button class="confirm-btn confirm-cancel" onclick="document.getElementById('confirm-overlay').remove()">Cancel</button>
-                    <button class="confirm-btn confirm-delete" onclick="deleteRow(${sheetRow})">Delete</button>
+                    <button class="confirm-btn confirm-delete" onclick="deleteRow(${sheetRow}, decodeURIComponent('${encodeURIComponent(shopName || '')}'))">Delete</button>
                 </div>
             </div>`;
         document.body.appendChild(overlay);
     }
 
-    async function deleteRow(sheetRow) {
+    async function deleteRow(sheetRow, shopName) {
         const overlay = document.getElementById('confirm-overlay');
         if (overlay) overlay.remove();
 
@@ -911,26 +846,7 @@
         if (rowEl) rowEl.style.opacity = '0.3';
 
         try {
-            const numericSheetId = await getShopVisitsSheetId();
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}:batchUpdate`;
-            const res = await fetch(url, {
-                method: 'POST',
-                headers: { Authorization: 'Bearer ' + accessToken, 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    requests: [{
-                        deleteDimension: {
-                            range: {
-                                sheetId: numericSheetId,
-                                dimension: 'ROWS',
-                                startIndex: sheetRow - 1,
-                                endIndex: sheetRow
-                            }
-                        }
-                    }]
-                })
-            });
-
-            if (!res.ok) throw new Error('Delete rejected');
+            await api('deleteVisit', { sheetRow, shop: shopName });
 
             allVisits = allVisits.filter(e => e.sheetRow !== sheetRow);
             allVisits = allVisits.map(e => ({
@@ -943,6 +859,7 @@
         } catch(e) {
             if (rowEl) rowEl.style.opacity = '1';
             showToast('Delete failed: ' + e.message);
+            if (/Row changed|no longer exists/.test(e.message)) loadVisits().then(() => renderDashboard());
         }
     }
 

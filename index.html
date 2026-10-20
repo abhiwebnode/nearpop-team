@@ -16,7 +16,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
     <meta name="google-client-id" content="694448916478-bsnjhu3kanvo85qm2q7837eveucq9uo1.apps.googleusercontent.com">
-    <meta name="sheet-id" content="1xpsSCQtxUxnTWOGxCykI3rQFEEmbtxhKyo881Ac2x8U">
+    <meta name="api-url" content="https://script.google.com/macros/s/AKfycbwkoNTe_Rvsvdnr46gnAwsqXjkTqCRwbkbL2YCmIoqrtIc_RE1J8hbTsPJgRLhrSQ5ldw/exec">
     <style>
         /* HIGH CONTRAST OUTDOOR THEME (SUNLIGHT READABILITY) */
         :root {
@@ -608,6 +608,20 @@
     <div class="section">
         <div class="section-title">Merchant Onboarding Checklist — Do this for every shop</div>
         <div class="card">
+            <div class="card-top">
+                <div class="icon">📖</div>
+                <div class="details">
+                    <h3>Merchant Onboarding Steps (18 steps)</h3>
+                    <p>Full step-by-step process to register a merchant on NearPop — read before your first visit</p>
+                    <span class="badge badge-orange">Hindi</span>
+                </div>
+            </div>
+            <div class="btn-row">
+                <a href="files/Merchant_Onboarding_Steps.html" target="_blank" class="btn btn-view">Open Guide</a>
+                <a href="#" onclick="whatsapp('Merchant Onboarding Steps', 'files/Merchant_Onboarding_Steps.html'); return false;" class="btn btn-wa">WhatsApp</a>
+            </div>
+        </div>
+        <div class="card">
             <ul class="checklist" id="checklist">
                 <li><input type="checkbox" id="c1" onchange="markDone(this)"><label for="c1">Introduced NearPop and explained the offer clearly</label></li>
                 <li><input type="checkbox" id="c2" onchange="markDone(this)"><label for="c2">Showed the listing sample (demo page)</label></li>
@@ -769,7 +783,7 @@
             <strong>🔒 Sign in to view your live visits</strong>
             Your Google account is not signed in on this page.
             <div style="margin-top:10px;">
-                <button onclick="loginFromHub()" class="btn btn-view" style="display:inline-block; padding:8px 16px;">Sign In with Google</button>
+                <button onclick="startHubLogin()" class="btn btn-view" style="display:inline-block; padding:8px 16px;">Sign In with Google</button>
             </div>
         </div>
 
@@ -866,13 +880,18 @@
 			<div class="btn-row">
 				<a href="files/Merchant_Flyer.html" target="_blank" class="btn btn-view">Open</a>
 				<a href="files/Merchant_Flyer.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-				<a href="#" onclick="shareFlyerFile('NearPop Delhi Merchant Flyer (Hindi)', 'files/Merchant_Flyer.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+				<a href="#" onclick="shareFlyerFile('NearPop NCR Merchant Flyer (Hindi)', 'files/Merchant_Flyer.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+			</div>
+			<div class="lang-divider">Hindi Version — Light (saves printer ink)</div>
+			<div class="btn-row">
+				<a href="files/Merchant_Flyer_light.html" target="_blank" class="btn btn-view">Open</a>
+				<a href="#" onclick="whatsapp('NCR Merchant Flyer (Hindi, Light)', 'files/Merchant_Flyer_light.html'); return false;" class="btn btn-wa">WhatsApp</a>
 			</div>
 			<div class="lang-divider">English Version</div>
 			<div class="btn-row">
 				<a href="files/Merchant_Flyer_English.html" target="_blank" class="btn btn-view">Open</a>
 				<a href="files/Merchant_Flyer_English.pdf" target="_blank" class="btn btn-pdf">PDF</a>
-				<a href="#" onclick="shareFlyerFile('NearPop Delhi Merchant Flyer (English)', 'files/Merchant_Flyer_English.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
+				<a href="#" onclick="shareFlyerFile('NearPop NCR Merchant Flyer (English)', 'files/Merchant_Flyer_English.pdf', 'application/pdf'); return false;" class="btn btn-wa">WhatsApp</a>
 			</div>
         </div>
     </div>
@@ -1640,26 +1659,36 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         return /^https:\/\//i.test(u) ? esc(u) : '';
     }
 
-    // ── GOOGLE SHEETS LIVE SYNC ───────────────────────
-    const CLIENT_ID  = document.querySelector('meta[name="google-client-id"]').content;
-    const SHEET_ID   = document.querySelector('meta[name="sheet-id"]').content;
-    const SHEET_NAME = 'ShopVisits';
+    // ── BACKEND (Apps Script) ─────────────────────────
+    const CLIENT_ID = document.querySelector('meta[name="google-client-id"]').content;
+    const API_URL   = document.querySelector('meta[name="api-url"]').content;
 
-    // loginFromHub replaced by startHubLogin + auth system above
-
-    // fetchLiveVisits replaced by updated version in auth section below
+    async function api(action, data) {
+        const token = localStorage.getItem('nearpop_token');
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // text/plain avoids CORS preflight
+            body: JSON.stringify({ action, data: data || {}, token })
+        });
+        const out = await res.json();
+        if (!out.ok) {
+            const err = new Error(out.error || 'Request failed');
+            err.auth = /^(AUTH|DENIED)/.test(out.error || '');
+            throw err;
+        }
+        return out;
+    }
 
     // ══════════════════════════════════════════════
     // HUB AUTH SYSTEM
     // ══════════════════════════════════════════════
 
-    const AUTH_SHEET_TAB = 'AuthorizedUsers'; // Tab name in your sheet
     let hubUser = null; // { email, name, role }
 
     function startHubLogin() {
         google.accounts.oauth2.initTokenClient({
             client_id: CLIENT_ID,
-            scope: 'https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/drive.file email profile',
+            scope: 'openid email profile',
             callback: onHubToken,
         }).requestAccessToken();
     }
@@ -1668,61 +1697,41 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         if (resp.error) return;
         const token = resp.access_token;
         const expiry = Date.now() + ((resp.expires_in || 3600) * 1000);
+        localStorage.setItem('nearpop_token', token);
+        localStorage.setItem('nearpop_token_exp', expiry);
 
-        // Fetch Google profile
-        const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: { Authorization: 'Bearer ' + token }
-        }).then(r => r.json()).catch(() => null);
-        if (!info) return;
-
-        // Check AuthorizedUsers tab in the existing sheet
+        const errEl = document.getElementById('login-error');
         try {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${AUTH_SHEET_TAB}!A:B`;
-            const res = await fetch(url, { headers: { Authorization: 'Bearer ' + token }});
-            const data = await res.json();
-            const rows = (data.values || []).slice(1); // skip header row
-            const match = rows.find(r => r[0]?.trim().toLowerCase() === info.email.trim().toLowerCase());
+            const info = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                headers: { Authorization: 'Bearer ' + token }
+            }).then(r => r.json()).catch(() => ({}));
 
-            if (!match) {
-                document.getElementById('login-error').style.display = 'block';
+            const { user } = await api('me');
+            if (!user.hubRole) {
+                errEl.textContent = '⛔ Access denied. Contact Abhishek to get added.';
+                errEl.style.display = 'block';
                 return;
             }
-
-            // Authorized — store session
-            const role = (match[1] || 'executive').trim().toLowerCase();
-            hubUser = { email: info.email, name: info.given_name || info.name, role };
+            hubUser = { email: user.email, name: info.given_name || info.name || (user.exec && user.exec.name) || user.email, role: user.hubRole };
             localStorage.setItem('nearpop_hub_user', JSON.stringify(hubUser));
-            localStorage.setItem('nearpop_token', token);
-            localStorage.setItem('nearpop_token_exp', expiry);
             enterHub();
-
         } catch(e) {
-            document.getElementById('login-error').textContent = '⚠️ Could not verify access. Try again.';
-            document.getElementById('login-error').style.display = 'block';
+            errEl.textContent = e.auth ? '⛔ Access denied. Contact Abhishek to get added.' : '⚠️ Could not verify access. Try again.';
+            errEl.style.display = 'block';
         }
     }
 
     function enterHub() {
-        // Hide login, show app
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('app-wrapper').style.display = 'block';
         document.getElementById('signout-btn').style.display = 'inline-block';
 
-        // Show user name in header
         const statusEl = document.getElementById('user-status-text');
         if (statusEl) statusEl.textContent = hubUser.name + (hubUser.role === 'founder' ? ' (Founder)' : '');
 
-        // Role-based visibility
-        if (hubUser.role === 'founder') {
-            // Founder sees everything including tracker
-            document.querySelectorAll('.founder-only').forEach(el => el.style.display = 'block');
-            // Founder tracker shows ALL visits not just their own
-            fetchLiveVisits(true);
-        } else {
-            // Executive — tracker section hidden
-            document.querySelectorAll('.founder-only').forEach(el => el.style.display = 'none');
-            fetchLiveVisits(false);
-        }
+        const isFounder = hubUser.role === 'founder';
+        document.querySelectorAll('.founder-only').forEach(el => el.style.display = isFounder ? 'block' : 'none');
+        if (isFounder) fetchLiveVisits();
 
         loadChecklist();
         initTheme();
@@ -1745,35 +1754,27 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
         const exp   = localStorage.getItem('nearpop_token_exp');
         const saved = localStorage.getItem('nearpop_hub_user');
         if (token && exp && Date.now() < parseInt(exp) && saved) {
-            hubUser = JSON.parse(saved);
-            enterHub();
+            try { hubUser = JSON.parse(saved); enterHub(); } catch(e) {}
         }
-        // else stay on login screen
     }
 
-    // ── UPDATED fetchLiveVisits — founder sees all, exec sees own ──
-    async function fetchLiveVisits(showAll = false) {
+    // ── LIVE VISITS (founder sees all of today's visits) ──
+    async function fetchLiveVisits() {
         const tbody = document.getElementById('tracker-tbody');
         const cta   = document.getElementById('tracker-login-cta');
-        const token = localStorage.getItem('nearpop_token');
-        if (!tbody || !token) return;
+        if (!tbody || !hubUser) return;
         if (cta) cta.style.display = 'none';
 
         tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--text-muted);">Fetching visits...</td></tr>`;
 
         try {
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}!A:K`;
-            const res  = await fetch(url, { headers: { Authorization: 'Bearer ' + token }});
-            const data = await res.json();
-            if (!res.ok || data.error) throw new Error(data.error?.message || res.statusText);
-
-            const rows = (data.values || []).slice(1);
-            // Today in DD/MM/YYYY to match sheet date format
             const now = new Date();
             const todayDate = String(now.getDate()).padStart(2,'0') + '/' + String(now.getMonth()+1).padStart(2,'0') + '/' + now.getFullYear();
-            const visits = showAll
-                ? rows.filter(r => r[0]?.trim() === todayDate)
-                : rows.filter(r => r[1]?.trim().toLowerCase() === hubUser?.email.trim().toLowerCase() && r[0]?.trim() === todayDate);
+            const { visits: list } = await api('listVisits', {
+                scope: hubUser.role === 'founder' ? 'all' : 'mine',
+                date: todayDate
+            });
+            const visits = list.map(v => v.data);
 
             if (visits.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:var(--text-muted);">No visits recorded today.</td></tr>`;
@@ -1799,6 +1800,7 @@ Bilkul free hai, koi subscription nahi. Gmail ID share karein — 2 minute mein 
                 </tr>`;
             }).join('');
         } catch(e) {
+            if (e.auth) { hubSignOut(); return; }
             tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:18px;color:#DC2626;">Could not load: ${esc(e.message)}</td></tr>`;
         }
     }

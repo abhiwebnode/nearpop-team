@@ -1,5 +1,5 @@
 // Bump CACHE_NAME on every deploy that changes cached files.
-const CACHE_NAME = 'nearpop-hub-v2';
+const CACHE_NAME = 'nearpop-hub-v4';
 const ASSETS = [
   './',
   './index.html',
